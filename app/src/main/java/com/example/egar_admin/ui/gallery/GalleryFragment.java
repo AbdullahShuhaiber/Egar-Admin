@@ -1,4 +1,4 @@
-package com.example.egar_admin.ui.home;
+package com.example.egar_admin.ui.gallery;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.egar_admin.databinding.FragmentHomeBinding;
+import com.example.egar_admin.databinding.FragmentGalleryBinding;
 
-public class HomeFragment extends Fragment {
+public class GalleryFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentGalleryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 

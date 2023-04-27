@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.egar_admin.ui.home.HomeFragment"
+        android:name="com.example.egar_admin.ui.homeAdmin.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_order_details"
         android:name="com.example.egar_admin.ui.orderDetails.OrderDetailsFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_order_details" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_comments"
         android:name="com.example.egar_admin.ui.comments.CommentsFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_comments" />

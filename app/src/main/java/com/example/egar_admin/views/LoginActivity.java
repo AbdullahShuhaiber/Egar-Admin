@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
+import com.example.egar_admin.MainActivityDelivery;
 import com.example.egar_admin.ui.MainActivity;
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityLoginBinding;
@@ -103,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             switch (view.getId()){
                 case R.id.btn_login:
                     if (dataCheck()){
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MainActivityDelivery.class);
                         startActivity(intent);
                     }else {
                         Toast.makeText(this, "The Input Fields Required", Toast.LENGTH_SHORT).show();

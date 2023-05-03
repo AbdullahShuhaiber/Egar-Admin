@@ -1,4 +1,4 @@
-package com.example.egar_admin.views;
+package com.example.egar_admin.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

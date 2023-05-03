@@ -6,6 +6,8 @@ import android.view.Menu;
 
 
 import com.example.egar_admin.R;
+
+
 import com.example.egar_admin.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_order_details, R.id.nav_comments)
+                R.id.nav_home, R.id.nav_orders, R.id.nav_product, R.id.nav_add_product, R.id.nav_comments)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

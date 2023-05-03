@@ -1,4 +1,4 @@
-package com.example.egar_admin.ui.orderDetails;
+package com.example.egar_admin.ui.addProduct;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.egar_admin.databinding.FragmentOrderDetailsBinding;
+import com.example.egar_admin.databinding.FragmentAddProductBinding;
 
-public class OrderDetailsFragment extends Fragment {
+public class AddProductFragment extends Fragment {
 
-    private FragmentOrderDetailsBinding binding;
+    private FragmentAddProductBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentOrderDetailsBinding.inflate(inflater, container, false);
+        binding = FragmentAddProductBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 

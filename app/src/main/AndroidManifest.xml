@@ -14,7 +14,7 @@
         android:theme="@style/Theme.EgarAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivityDelivery"
+            android:name=".activity.MainActivityDelivery"
             android:exported="false"
             android:label="@string/title_activity_main_delivery"
             android:theme="@style/Theme.EgarAdmin.NoActionBar" />
@@ -27,20 +27,17 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <activity
-            android:name=".views.RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".views.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".views.GetStarted"
+            android:name=".activity.GetStarted"
             android:exported="false"
             android:theme="@style/SplashNoActionBar" />
         <activity
-            android:name=".views.AddProductActivity"
-            android:exported="false" />
-        <activity
-            android:name=".views.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashNoActionBar">
             <intent-filter>

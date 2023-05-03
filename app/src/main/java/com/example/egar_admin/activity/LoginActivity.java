@@ -1,4 +1,4 @@
-package com.example.egar_admin.views;
+package com.example.egar_admin.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,10 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
-import com.example.egar_admin.MainActivityDelivery;
-import com.example.egar_admin.ui.MainActivity;
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityLoginBinding;
+import com.example.egar_admin.ui.MainActivity;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -104,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             switch (view.getId()){
                 case R.id.btn_login:
                     if (dataCheck()){
-                        Intent intent = new Intent(getApplicationContext(), MainActivityDelivery.class);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }else {
                         Toast.makeText(this, "The Input Fields Required", Toast.LENGTH_SHORT).show();

@@ -51,6 +51,12 @@
     <string name="desc_three">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
     <string name="desc_fourth">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
     <string name="title_activity_main_delivery">MainActivityDelivery</string>
+    <string name="add_product">Add Product</string>
+    <string name="comments">Comments</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="orders">Orders</string>
+    <string name="products">Products</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

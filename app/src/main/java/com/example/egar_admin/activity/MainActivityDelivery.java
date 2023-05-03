@@ -1,9 +1,10 @@
-package com.example.egar_admin;
+package com.example.egar_admin.activity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.egar_admin.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 

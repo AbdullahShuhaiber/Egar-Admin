@@ -11,9 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
+import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityLoginBinding;
+import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.ui.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -103,8 +106,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             switch (view.getId()){
                 case R.id.btn_login:
                     if (dataCheck()){
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        login();
+
                     }else {
                         Toast.makeText(this, "The Input Fields Required", Toast.LENGTH_SHORT).show();
                     }
@@ -120,5 +123,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         }
+        private void login(){
+            FirebaseAuthController.getInstance().signIn(binding.etPhone.getText().toString().trim(), binding.etPassword.getText().toString().trim(), new ProcessCallback() {
+                @Override
+                public void onSuccess(String message) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
 
+                @Override
+                public void onFailure(String message) {
+
+                }
+            });
+        }
 }

@@ -23,8 +23,8 @@
     <string name="store_name">Store name</string>
     <string name="text_create_an_account">Create an account</string>
     <string name="store_owner_name">Store owner name</string>
-    <string name="commercial_registration_no">Commercial Registration No</string>
-    <string name="enter_commercial_registration">Enter Commercial Registration</string>
+    <string name="commercial_registration_no">Email Address</string>
+    <string name="enter_commercial_registration">Enter Email Address</string>
     <string name="next">Next</string>
     <string name="add">Add</string>
     <string name="add_a_product">Add a product</string>

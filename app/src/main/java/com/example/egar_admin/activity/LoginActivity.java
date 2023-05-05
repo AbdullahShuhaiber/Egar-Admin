@@ -72,12 +72,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         private  boolean setDataInInputFieldFromRegister (){
             Intent intent = getIntent();
-            String phone = intent.getStringExtra("phone");
+            String phone = intent.getStringExtra("email");
             String password =intent.getStringExtra("password");
             if (password == null && phone == null){
                 return false;
             }else {
-                binding.etPhone.setText(intent.getStringExtra("phone"));
+                binding.etPhone.setText(intent.getStringExtra("email"));
                 binding.etPassword.setText(intent.getStringExtra("password"));
                 return true;
             }
@@ -106,8 +106,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             switch (view.getId()){
                 case R.id.btn_login:
                     if (dataCheck()){
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                         login();
-
                     }else {
                         Toast.makeText(this, "The Input Fields Required", Toast.LENGTH_SHORT).show();
                     }

@@ -38,12 +38,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void intizilSccren() {
-        setOnClick();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        setOnClick();
     }
 
     private boolean isValidPalestinianPhoneNumber() {
@@ -129,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.bn_register:
-                if (dataCheck() && isValidPalestinianPhoneNumber() && isValidEmail()){
+                if (dataCheck() && isValidPalestinianPhoneNumber()){
                     register();
                     Intent intent1 = new Intent(getApplicationContext(),LoginActivity.class);
                     String email =binding.etEmail.getText().toString().trim();

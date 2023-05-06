@@ -368,21 +368,21 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginStart="4dp"
         android:text="Create an account"
         android:textColor="@color/white"
         android:textSize="@dimen/_19ssp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.704" />
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="NotSibling" />
 
     <ImageView
         android:id="@+id/btn_back"
         android:layout_width="@dimen/_23sdp"
         android:layout_height="@dimen/_23sdp"
-        android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_23sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

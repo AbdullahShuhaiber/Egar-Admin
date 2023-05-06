@@ -15,7 +15,9 @@ import androidx.core.content.ContextCompat;
 
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
+import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
+import com.example.egar_admin.controllers.ProductController;
 import com.example.egar_admin.databinding.ActivityLoginBinding;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.ui.MainActivity;
@@ -153,8 +155,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent1);
                 break;
             case R.id.tv_forgotPassword:
-                Intent intent3 = new Intent(getApplicationContext(),ResetPassword.class);
-                startActivity(intent3);
+                Product newProduct = new Product("123", "Product name", "Product description", 10.0, "https://example.com/image.jpg");
+                ProductController.getInstance().addProduct(newProduct);
+
                 break;
 
 

@@ -87,7 +87,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_Name" />
 
                 <EditText
-                    android:id="@+id/etCommercial_Registration"
+                    android:id="@+id/et_email"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_45sdp"
                     android:background="@drawable/shape_bac_edit_text"
@@ -113,7 +113,7 @@
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etCommercial_Registration" />
+                    app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
 
                 <EditText

@@ -52,6 +52,8 @@
                     android:hint="Enter Store name"
                     android:inputType="text"
                     android:paddingStart="@dimen/_20sdp"
+                    android:textStyle="bold"
+
                     android:paddingEnd="@dimen/_20sdp"
                     android:background="@drawable/shape_bac_edit_text"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -71,44 +73,18 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/store_owner_name"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/et_Name" />
-
-                <EditText
-                    android:id="@+id/et_email"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:hint="Enter Store owner name"
-                    android:background="@drawable/shape_bac_edit_text"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:paddingEnd="@dimen/_20sdp"
-                    android:paddingStart="@dimen/_20sdp"
-                    android:inputType="text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-                <TextView
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/commercial_registration_no"
+                    android:textStyle="bold"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/et_email" />
+                    app:layout_constraintTop_toBottomOf="@+id/et_Name" />
 
                 <EditText
                     android:id="@+id/etCommercial_Registration"
@@ -135,6 +111,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etCommercial_Registration" />
 
@@ -162,6 +139,8 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="Store Domain"
+                    android:textStyle="bold"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -262,6 +241,8 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="Address"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
+
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -273,6 +254,8 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/password"
+                    android:textStyle="bold"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -334,6 +317,8 @@
                     android:id="@+id/checked"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
+
                     android:layout_marginStart="@dimen/_19sdp"
                     android:layout_marginTop="@dimen/_100sdp"
                     android:text="I agree to all terms and conditions"

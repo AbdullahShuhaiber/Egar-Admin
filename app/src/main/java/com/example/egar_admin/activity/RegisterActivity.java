@@ -2,6 +2,8 @@ package com.example.egar_admin.activity;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -37,33 +39,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         binding=ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        intizilSccren();
+        screenOperations();
 
 
     }
 
-    private void intizilSccren() {
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void screenOperations (){
         setOnClick();
-    }
 
+    }
     private boolean isValidPalestinianPhoneNumber() {
         String phoneNumber = binding.etPhone.getText().toString().trim();
-        if (phoneNumber.isEmpty()){
-            Snackbar.make(binding.getRoot(), "Please enter a  phone number", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this,R.color.bronze)).show();
-            return false;
-        } else if (phoneNumber.matches("^\\+970(59|56)\\d{7}$")) {
+        if (phoneNumber.matches("^(059|056)\\d{7}$")) {
             return true;
-        }else {
-            Snackbar.make(binding.getRoot(), "Please enter a valid Palestinian phone number starting with 059 or 056.", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this,R.color.bronze)).show();
+        } else {
             return false;
         }
-
     }
 
     public boolean isValidEmail() {
@@ -101,12 +92,104 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             binding.etPhone.setError("Password field is Required");
             return false;
         }else if(!binding.checked.isChecked()) {
-            Snackbar.make(binding.getRoot(),"You must agree to the terms and conditions",Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();
+            Snackbar.make(binding.getRoot(),"You must agree to the terms and conditions",Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this,R.color.bronze)).show();
             return false;
         }
 
         return true;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    private void setOnClick(){
+
+        binding.bnRegister.setOnClickListener(this::onClick);
+        binding.btnBack.setOnClickListener(this::onClick);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.bn_register:
+                if (dataCheck() && isValidPalestinianPhoneNumber() && isValidEmail()) {
+                    register();
+                    Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
+                    String email = binding.etEmail.getText().toString().trim();
+                    String pass = binding.etPass.getText().toString().trim();
+                    intent1.putExtra("email", email);
+                    intent1.putExtra("password", pass);
+                    startActivity(intent1);
+                }
+                break;
+            case R.id.btn_back:
+                Intent intent2 = new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent2);
+
+                break;
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        // Create an exit dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit");
+        builder.setMessage("Are you sure you want to exit?");
+        builder.setIcon(R.drawable.baseline_exit_to_app_24);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Close the application
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog and continue with the application
+                dialog.dismiss();
+            }
+        });
+        // Create the dialog and show it
+        AlertDialog dialog = builder.create();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                // Do nothing
+            }
+        });
+        dialog.show();
+    }
+
     private void register() {
         FirebaseAuthController.getInstance().createAccount(binding.etName.getText().toString(),
                 binding.etEmail.getText().toString(),
@@ -115,7 +198,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onSuccess(String message) {
                         Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-                        onBackPressed();
                     }
 
                     @Override
@@ -124,29 +206,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
-
-    private  void setOnClick(){
-        binding.bnRegister.setOnClickListener(this::onClick);
-    }
-
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.bn_register:
-                if (dataCheck() && isValidPalestinianPhoneNumber()){
-                    register();
-                    Intent intent1 = new Intent(getApplicationContext(),LoginActivity.class);
-                    String email =binding.etEmail.getText().toString().trim();
-                    String pass = binding.etPass.getText().toString().trim();
-                    intent1.putExtra("email",email);
-                    intent1.putExtra("password",pass);
-                    startActivity(intent1);
-                }
-                break;
-        }
-    }
-
 
 }

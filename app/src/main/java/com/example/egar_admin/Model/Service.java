@@ -1,6 +1,7 @@
 package com.example.egar_admin.Model;
 
 public class Service {
+    private  String id;
     private String name;
     private String description;
     private double price;
@@ -8,13 +9,25 @@ public class Service {
     private boolean isFavorite;
     private boolean isInCart;
 
-    public Service(String name, String description, double price, String image) {
+    public Service() {
+    }
+
+    public Service(String id ,String name, String description, double price, String image) {
+        this.id =id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.image = image;
         this.isFavorite = false;
         this.isInCart = false;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

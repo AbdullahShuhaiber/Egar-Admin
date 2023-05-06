@@ -20,8 +20,8 @@
     <string name="enter_phone">Enter phone</string>
     <string name="password">password</string>
     <string name="enter_password">Enter password</string>
-    <string name="forgot_your_password">Forgot your password</string>
-    <string name="create_an_account">I dont have an account?</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="create_an_account">Do Not Have an Account ?</string>
     <string name="store_name">Store name</string>
     <string name="text_create_an_account">Create an account</string>
     <string name="store_owner_name">Store owner name</string>

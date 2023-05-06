@@ -65,8 +65,9 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="@dimen/_25sdp"
                     android:text="@string/store_name"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,9 +77,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/store_owner_name"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
+                    android:text="Email"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_Name" />
 
@@ -86,14 +88,14 @@
                     android:id="@+id/et_email"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_45sdp"
-                    android:hint="Enter Store owner name"
+                    android:hint="Enter Email Addres"
                     android:background="@drawable/shape_bac_edit_text"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_20sdp"
                     android:paddingStart="@dimen/_20sdp"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -104,19 +106,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/commercial_registration_no"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
+                    android:text="PHONE"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
                 <EditText
-                    android:id="@+id/etCommercial_Registration"
+                    android:id="@+id/et_phone_number"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_45sdp"
                     android:background="@drawable/shape_bac_edit_text"
-                    android:hint="@string/enter_commercial_registration"
-                    android:inputType="text"
+                    android:hint="@string/enter_phone"
+                    android:inputType="phone"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
@@ -126,46 +129,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
-                <TextView
-                    android:id="@+id/tv_createAccount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/phone"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etCommercial_Registration" />
-
-
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:background="@drawable/shape_bac_edit_text"
-                    android:hint="@string/enter_phone"
-                    android:inputType="phone"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_20sdp"
-                    android:paddingEnd="@dimen/_20sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_createAccount" />
 
                 <TextView
                     android:id="@+id/tv_StoreDomain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="Store Domain"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/et_phone" />
+                    app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"
@@ -257,8 +232,9 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="Address"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
@@ -269,8 +245,9 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/password"
-                    android:textColor="@color/text_app"
-                    android:textSize="@dimen/_18ssp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_address" />
 
@@ -369,13 +346,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="0dp"
         android:text="Create an account"
         android:textColor="@color/white"
         android:textSize="@dimen/_19ssp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back"
         app:layout_constraintVertical_bias="0.704" />
 
     <ImageView

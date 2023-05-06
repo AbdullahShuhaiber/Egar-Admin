@@ -19,7 +19,6 @@
         app:tabIndicatorGravity="stretch"
         app:tabSelectedTextColor="@color/white">
 
-
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

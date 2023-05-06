@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.egar_admin.adapters.MyFragmentAdapter;
 
 import com.example.egar_admin.databinding.ActivityRegisterBinding;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
@@ -36,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         binding=ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         intizilSccren();
+
+
     }
 
     private void intizilSccren() {
@@ -143,4 +147,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
+
 }

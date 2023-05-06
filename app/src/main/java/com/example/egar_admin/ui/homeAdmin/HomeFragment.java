@@ -20,6 +20,10 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        binding.tab.addTab(binding.tab.newTab().setText("Categories"));
+        binding.tab.addTab(binding.tab.newTab().setText("orders"));
+        binding.tab.addTab(binding.tab.newTab().setText("Comments"));
+
 
         return root;
     }

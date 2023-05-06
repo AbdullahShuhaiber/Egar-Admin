@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private boolean isValidPalestinianPhoneNumber() {
-        String phoneNumber = binding.etPhoneNumber.getText().toString().trim();
+        String phoneNumber = binding.etPhone.getText().toString().trim();
         if (phoneNumber.isEmpty()){
             Snackbar.make(binding.getRoot(), "Please enter a  phone number", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this,R.color.bronze)).show();
             return false;
@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             binding.etEmail.setError("Email field is Required");
             return false;
         } else if (password.isEmpty()) {
-            binding.etPhoneNumber.setError("Password field is Required");
+            binding.etPhone.setError("Password field is Required");
             return false;
         }else if(!binding.checked.isChecked()) {
             Snackbar.make(binding.getRoot(),"You must agree to the terms and conditions",Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();

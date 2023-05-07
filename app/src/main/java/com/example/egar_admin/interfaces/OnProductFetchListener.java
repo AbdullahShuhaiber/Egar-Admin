@@ -2,10 +2,12 @@ package com.example.egar_admin.interfaces;
 
 import com.example.egar_admin.Model.Product;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface OnProductFetchListener {
-    void onFetchLListSuccess(List<Product> list);
+    void onFetchLListSuccess(ArrayList<Product> list);
     void onFetchSuccess(Product product);
     void onFetchFailure(String message);
 

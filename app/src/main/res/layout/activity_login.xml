@@ -77,7 +77,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:hint="@string/enter_email"
-                android:inputType="phone"
+                android:inputType="textEmailAddress"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:background="@drawable/shape_bac_edit_text"

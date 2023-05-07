@@ -118,7 +118,7 @@ public class ProductController {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     // Get a list of products
-                    List<Product> productList = new ArrayList<>();
+                    ArrayList<Product> productList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Product product = document.toObject(Product.class);
                         productList.add(product);
@@ -130,6 +130,20 @@ public class ProductController {
                     // Return the error message to the listener
                     listener.onFetchFailure("Failed to fetch products");
                 });
+    }
+
+    public void delete(String path, ProcessCallback callback) {
+        db.collection("products").document(path).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                callback.onSuccess("Deleted successfully");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure("Delete failed");
+            }
+        });
     }
 
     public void getProductById(String productId, OnProductFetchListener listener) {

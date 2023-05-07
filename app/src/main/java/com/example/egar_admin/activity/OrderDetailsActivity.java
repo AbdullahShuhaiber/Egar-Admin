@@ -15,5 +15,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding= ActivityOrderDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
     }
 }

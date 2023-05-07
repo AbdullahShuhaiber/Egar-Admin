@@ -13,6 +13,14 @@ public class Product {
         // Default constructor required for Firestore
     }
 
+    public Product(String name, String description, double price, String imageUrl, int quantityInCart) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.quantityInCart = quantityInCart;
+    }
+
     public Product(String id, String name, String description, double price, String imageUrl) {
         this.id = id;
         this.name = name;

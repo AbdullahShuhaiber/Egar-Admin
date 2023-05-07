@@ -6,7 +6,9 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.databinding.ActivitySplashBinding;
+import com.example.egar_admin.ui.MainActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -36,8 +38,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                Intent intent = new Intent(getApplicationContext(),GetStarted.class);
+                /*getApplicationContext(),GetStarted.class*/
+                Intent intent = new Intent(getApplicationContext(), FirebaseAuthController.getInstance().isSignedIn() ? MainActivity.class : LoginActivity.class);
                 startActivity(intent);
             }
         }, 3000);

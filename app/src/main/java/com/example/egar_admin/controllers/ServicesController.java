@@ -16,6 +16,7 @@ import java.util.HashMap;
 public class ServicesController {
 
     private static ServicesController instance;
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private ServicesController() {

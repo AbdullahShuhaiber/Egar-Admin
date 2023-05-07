@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
+import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -40,7 +41,7 @@ public class ProductController {
     }
 
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product, ProcessCallback callback) {
         // Add product to Firestore
         // Get a reference to the products collection in Firestore
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
@@ -59,11 +60,11 @@ public class ProductController {
         productsCollection.add(productData)
                 .addOnSuccessListener(documentReference -> {
                     // On success, log a message to the console
-                    Log.d(TAG, "Product added with ID: " + documentReference.getId());
+                    callback.onSuccess("Product added with ID: " + documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
                     // On failure, log an error message to the console
-                    Log.e(TAG, "Error adding product", e);
+                    callback.onFailure("Error adding product");
                 });
     }
 
@@ -107,7 +108,7 @@ public class ProductController {
                 });
     }
 
-    public void getAllProducts() {
+    public void getAllProducts(OnProductFetchListener listener) {
         // Get all products from Firestore
         db.collection("products")
                 .get()
@@ -118,10 +119,12 @@ public class ProductController {
                         Product product = document.toObject(Product.class);
                         productList.add(product);
                     }
-                    // Do something with the list of products
+                    // Return the list of products to the listener
+                    listener.onFetchLListSuccess(productList);
                 })
                 .addOnFailureListener(e -> {
-                    // Handle any errors
+                    // Return the error message to the listener
+                    listener.onFetchFailure("Failed to fetch products");
                 });
     }
 

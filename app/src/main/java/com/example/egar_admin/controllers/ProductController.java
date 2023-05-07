@@ -68,7 +68,7 @@ public class ProductController {
                 });
     }
 
-    public void updateProduct(Product product) {
+    public void updateProduct(Product product,ProcessCallback callback) {
         // Update product in Firestore
         DocumentReference productRef = db.collection("products").document(product.getId());
 
@@ -80,17 +80,19 @@ public class ProductController {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Product updated successfully");
+                        callback.onSuccess("Product updated successfully");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error updating product", e);
+                        callback.onFailure("Error updating product");
                     }
                 });
     }
 
-    public void deleteProduct(Product product) {
+    public void deleteProduct(Product product,ProcessCallback callback) {
         // Delete product from Firestore
         db.collection("products").document(product.getId())
                 .delete()
@@ -98,12 +100,14 @@ public class ProductController {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Product deleted successfully");
+                        callback.onSuccess("Product deleted successfully");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error deleting product", e);
+                        callback.onFailure("Error deleting product");
                     }
                 });
     }

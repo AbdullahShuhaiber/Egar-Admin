@@ -1,17 +1,22 @@
 package com.example.egar_admin.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
 
+import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.R;
 
 
+import com.example.egar_admin.activity.LoginActivity;
 import com.example.egar_admin.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -65,5 +70,21 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_logOut) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void logout() {
+        FirebaseAuthController.getInstance().signOut();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -8,9 +8,17 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_logOut"
+        android:orderInCategory="100"
+        android:title="@string/logout"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_notifications"
         android:orderInCategory="100"
         android:icon="@drawable/notifications"
         app:showAsAction="always"
         android:title="Notifications" />
+
+
 </menu>

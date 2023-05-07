@@ -40,15 +40,16 @@ public class ProductController {
         return instance;
     }
 
-
     public void addProduct(Product product, ProcessCallback callback) {
         // Add product to Firestore
         // Get a reference to the products collection in Firestore
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
+        // Create a document reference with the product id
+        DocumentReference productRef = productsCollection.document(product.getId());
+
         // Convert product object to a HashMap
         HashMap<String, Object> productData = new HashMap<>();
-        productData.put("id", product.getId());
         productData.put("name", product.getName());
         productData.put("description", product.getDescription());
         productData.put("price", product.getPrice());
@@ -56,17 +57,18 @@ public class ProductController {
         productData.put("isFavorite", product.isFavorite());
         productData.put("quantityInCart", product.getQuantityInCart());
 
-        // Add the product to Firestore
-        productsCollection.add(productData)
-                .addOnSuccessListener(documentReference -> {
+        // Add the product to Firestore with the specified document id
+        productRef.set(productData)
+                .addOnSuccessListener(aVoid -> {
                     // On success, log a message to the console
-                    callback.onSuccess("Product added with ID: " + documentReference.getId());
+                    callback.onSuccess("Product added with ID: " + product.getId());
                 })
                 .addOnFailureListener(e -> {
                     // On failure, log an error message to the console
                     callback.onFailure("Error adding product");
                 });
     }
+
 
     public void updateProduct(Product product,ProcessCallback callback) {
         // Update product in Firestore

@@ -113,7 +113,7 @@ public class ProductFragment extends Fragment implements ItemCallback {
             @Override
             public void onSuccess(String message) {
                 adapter.notifyItemRemoved(index);
-                Toast.makeText(getActivity(), "product deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "products deleted successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override

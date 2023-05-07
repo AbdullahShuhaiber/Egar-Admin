@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 ProductController.getInstance().addProduct(newProduct, new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        
+
                     }
 
                     @Override

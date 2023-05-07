@@ -1,12 +1,15 @@
 package com.example.egar_admin.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
+import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivitySplashBinding;
 import com.example.egar_admin.ui.MainActivity;
 
@@ -32,6 +35,21 @@ public class SplashActivity extends AppCompatActivity {
         super.onStop();
         finish();
     }
+
+    private void showViewPagerOnce() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
+        boolean isViewPagerShown = sharedPreferences.getBoolean("viewpagerShown", false);
+
+        if (!isViewPagerShown) {
+            ViewPager viewPager = findViewById(R.id.viewPager);
+            // ...
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("viewpagerShown", true);
+            editor.apply();
+        }
+    }
+
 
     private void controlSplashActivity() {
         //3000ms - 3s

@@ -10,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.R;
+import com.example.egar_admin.SharedPreferences.AppSharedPreferences;
+
 import com.example.egar_admin.databinding.ActivitySplashBinding;
 import com.example.egar_admin.ui.MainActivity;
 
@@ -20,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivitySplashBinding.inflate(getLayoutInflater());
+        binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
     }
 
@@ -28,6 +30,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         controlSplashActivity();
+
     }
 
     @Override
@@ -36,29 +39,41 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    private void showViewPagerOnce() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsFile", MODE_PRIVATE);
-        boolean isViewPagerShown = sharedPreferences.getBoolean("viewpagerShown", false);
+    private boolean showViewPagerAndGoToNextScreenIfNeeded() {
+        boolean isFirstRun = AppSharedPreferences.getInstance().getSharedPreferences().getBoolean("isFirstRun", true);
+        if (isFirstRun) {
+            // عرض ViewPager
+            Intent intent = new Intent(getApplicationContext(), GetStarted.class);
+            startActivity(intent);
 
-        if (!isViewPagerShown) {
-            ViewPager viewPager = findViewById(R.id.viewPager);
             // ...
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("viewpagerShown", true);
-            editor.apply();
+            // تحديث حالة عرض الـViewPager
+            AppSharedPreferences.getInstance().getEditor().putBoolean("isFirstRun", false).apply();
+            return true;
+        } else {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            return false;
         }
     }
 
 
-    private void controlSplashActivity() {
+
+    private void controlSplashActivity () {
         //3000ms - 3s
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 /*getApplicationContext(),GetStarted.class*/
-                Intent intent = new Intent(getApplicationContext(), FirebaseAuthController.getInstance().isSignedIn() ? MainActivity.class : LoginActivity.class);
-                startActivity(intent);
+                FirebaseAuthController authController = FirebaseAuthController.getInstance();
+                if (authController != null && authController.isSignedIn() && showViewPagerAndGoToNextScreenIfNeeded()) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), GetStarted.class);
+                    startActivity(intent);
+                }
+
             }
         }, 3000);
     }

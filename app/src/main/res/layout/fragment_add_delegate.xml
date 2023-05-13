@@ -11,7 +11,6 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_170sdp"
-        android:layout_marginTop="-55dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:text="Delegate"
+                android:text="Name Delegate"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp"
                 android:textStyle="bold"
@@ -73,7 +72,7 @@
                 android:textSize="@dimen/_16ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_delegate" />
+                app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
             <EditText
                 android:id="@+id/et_phone"
@@ -83,7 +82,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/shape_bac_edit_text"
-                android:hint="@string/enter_password"
+                android:hint="@string/phone"
                 android:inputType="phone"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
@@ -112,7 +111,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/shape_bac_edit_text"
-                android:hint="@string/enter_password"
+                android:hint="city"
                 android:inputType="phone"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
@@ -138,6 +137,38 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_city" />
 
 
+
+
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Email Delegate"
+                android:textStyle="bold"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_delegate" />
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/shape_bac_edit_text"
+                android:hint="@string/enter_commercial_registration"
+                android:inputType="text"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

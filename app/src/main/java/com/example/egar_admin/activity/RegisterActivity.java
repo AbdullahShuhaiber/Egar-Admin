@@ -105,31 +105,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
     private void setOnClick(){
 
         binding.bnRegister.setOnClickListener(this::onClick);

@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean showViewPagerAndGoToNextScreenIfNeeded() {
+/*    private boolean showViewPagerAndGoToNextScreenIfNeeded() {
         boolean isFirstRun = AppSharedPreferences.getInstance().getSharedPreferences().getBoolean("isFirstRun", true);
         if (isFirstRun) {
             // عرض ViewPager
@@ -56,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
             return false;
         }
-    }
+    }*/
 
 
 
@@ -67,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 /*getApplicationContext(),GetStarted.class*/
                 FirebaseAuthController authController = FirebaseAuthController.getInstance();
-                if (authController != null && authController.isSignedIn() && showViewPagerAndGoToNextScreenIfNeeded()) {
+                if (authController != null && authController.isSignedIn() /*&& showViewPagerAndGoToNextScreenIfNeeded()*/) {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 } else {

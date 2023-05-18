@@ -108,11 +108,13 @@ public class ProductFragment extends Fragment implements ItemCallback {
     }
 
     @Override
-    public void onDelete(int index) {
-        ProductController.getInstance().delete(products.get(index).getId(), new ProcessCallback() {
+    public void onDelete(Product product) {
+        ProductController.getInstance().deleteProduct(product, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                adapter.notifyItemRemoved(index);
+                //products.remove(product);
+                adapter.notifyDataSetChanged();
+                //adapter.notifyItemRemoved(product);
                 Toast.makeText(getActivity(), "products deleted successfully", Toast.LENGTH_SHORT).show();
             }
 

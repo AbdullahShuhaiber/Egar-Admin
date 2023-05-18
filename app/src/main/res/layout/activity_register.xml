@@ -191,6 +191,15 @@
                             android:textSize="@dimen/_16ssp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/checkBox_equipment"  />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/checkBox_delivery"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"                            android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delivery"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:textSize="@dimen/_16ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/checkBox_equipment"  />
                         <com.google.android.material.chip.Chip
                             android:id="@+id/checkBox_Workspaces"
                             style="@style/Widget.MaterialComponents.Chip.Filter"                            android:layout_width="wrap_content"
@@ -333,20 +342,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginBottom="@dimen/_30sdp"
                     android:layout_marginTop="@dimen/_13sdp"
+                    android:layout_marginBottom="@dimen/_30sdp"
                     android:background="@drawable/btn_background"
                     android:text="Register"
                     android:textAllCaps="false"
-                    android:textSize="@dimen/_24ssp"
                     android:textColor="@color/white"
+                    android:textSize="@dimen/_24ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/checked"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-
+                    app:layout_constraintVertical_bias="1.0" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

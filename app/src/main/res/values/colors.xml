@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bac_edit_text">#F3F3F3</color>
-    <color name="text_app">#00C569</color>
+    <color name="text_app">#0B35AB</color>
     <color name="dark_blue">#001653</color>
     <color name="green">#4CAF50</color>
     <color name="red">#F44336</color>
@@ -86,5 +86,5 @@
 
     //indicator color
     <color name="inactive">#C4C4C4</color>
-    <color name="active">#00C569</color>
+    <color name="active">#0B35AB</color>
 </resources>

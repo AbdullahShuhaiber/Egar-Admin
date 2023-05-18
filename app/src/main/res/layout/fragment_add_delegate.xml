@@ -130,7 +130,7 @@
                 android:textStyle="bold"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:backgroundTint="@color/text_app"
+                android:backgroundTint="@color/active"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

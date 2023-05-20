@@ -149,7 +149,7 @@
 
 
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/radioGroup"
+                    android:id="@+id/chipGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
@@ -240,101 +240,69 @@
                 </com.google.android.material.chip.ChipGroup>
 
 
-
-
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="Address"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
                 <TextView
                     android:id="@+id/tv_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="0dp"
                     android:text="@string/password"
-                    android:textStyle="bold"
 
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_address" />
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
 
                 <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_pass">
+
                     <EditText
                         android:id="@+id/et_pass"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_45sdp"
-                        android:layout_weight="1"
                         android:layout_marginEnd="@dimen/_5sdp"
-                        android:background="@drawable/shape_bac_edit_text"
-                        android:hint="Enter Pass"
-                        android:inputType="textPassword"
-                        android:paddingStart="@dimen/_20sdp"
-                        android:paddingEnd="@dimen/_20sdp"
-                        />
-                    <EditText
-                        android:id="@+id/et_passC"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_45sdp"
                         android:layout_weight="1"
                         android:background="@drawable/shape_bac_edit_text"
-                        android:hint="Enter PassCon"
+                        android:hint="Enter Password"
                         android:inputType="textPassword"
                         android:paddingStart="@dimen/_20sdp"
-                        android:paddingEnd="@dimen/_20sdp"
-                        />
+                        android:paddingEnd="@dimen/_20sdp" />
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/et_passC"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="@dimen/_45sdp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/shape_bac_edit_text"-->
+<!--                        android:hint="Enter PassCon"-->
+<!--                        android:inputType="textPassword"-->
+<!--                        android:paddingStart="@dimen/_20sdp"-->
+<!--                        android:paddingEnd="@dimen/_20sdp" />-->
                 </LinearLayout>
-                <EditText
-                    android:id="@+id/edit_address"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_marginStart="@dimen/_19sdp"
-                    android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/shape_bac_edit_text"
-                    android:inputType="text"
-                    android:hint="address"
-                    android:drawableLeft="@drawable/place"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_10sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_address" />
 
                 <CheckBox
                     android:id="@+id/checked"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-
                     android:layout_marginStart="@dimen/_19sdp"
-                    android:layout_marginTop="@dimen/_100sdp"
+
+                    android:layout_marginTop="0dp"
                     android:text="I agree to all terms and conditions"
                     android:textSize="@dimen/_16ssp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_address" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
                 <Button

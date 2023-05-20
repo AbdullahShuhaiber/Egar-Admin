@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
@@ -13,8 +14,15 @@ import com.example.egar_admin.R;
 
 import com.example.egar_admin.activity.LoginActivity;
 import com.example.egar_admin.databinding.ActivityMainBinding;
+import com.example.egar_admin.interfaces.ProcessCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -33,11 +41,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        printUserData(new ProcessCallback() {
+            @Override
+            public void onSuccess(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
+            }
+        });
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.appBarMain.toolbar);
 //        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -87,4 +106,38 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    public void printUserData(ProcessCallback callback) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String name = documentSnapshot.getString("name");
+                    String email = documentSnapshot.getString("email");
+                    String providerType = documentSnapshot.getString("providerType");
+                    String phoneNumber = documentSnapshot.getString("phoneNumber");
+                    String password = documentSnapshot.getString("password");
+
+                    String userData = "Name: " + name + "\n"
+                            + "Email: " + email + "\n"
+                            + "Provider Type: " + providerType + "\n"
+                            + "Phone Number: " + phoneNumber + "\n"
+                            + "Password: " + password;
+
+                    Toast.makeText(getApplicationContext(), userData, Toast.LENGTH_LONG).show();
+                } else {
+                    callback.onFailure("User document does not exist");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e.getMessage());
+            }
+        });
+    }
+
 }

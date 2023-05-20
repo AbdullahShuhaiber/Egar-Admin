@@ -170,11 +170,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         });
         dialog.show();
     }
+    public String getSelectedChipText() {
+
+        int checkedChipId = binding.chipGroup.getCheckedChipId();
+
+        if (checkedChipId != View.NO_ID) {
+            Chip checkedChip = binding.chipGroup.findViewById(checkedChipId);
+            return checkedChip.getText().toString();
+        } else {
+            Snackbar.make(binding.getRoot(),"Select The Store Type ",Snackbar.LENGTH_LONG).show();
+            return null;
+        }
+    }
+
 
     private void register() {
         FirebaseAuthController.getInstance().createAccount(binding.etName.getText().toString(),
                 binding.etEmail.getText().toString(),
                 binding.etPass.getText().toString(),
+                binding.etPhone.getText().toString().trim(),
+                getSelectedChipText(),
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {

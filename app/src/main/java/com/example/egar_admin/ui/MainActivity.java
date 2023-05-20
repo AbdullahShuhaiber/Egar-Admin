@@ -12,8 +12,9 @@ import com.example.egar_admin.R;
 
 
 import com.example.egar_admin.activity.LoginActivity;
+
+import com.example.egar_admin.activity.NotificationsActivity;
 import com.example.egar_admin.databinding.ActivityMainBinding;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_orders, R.id.nav_product, R.id.nav_add_product, R.id.nav_comments)
+                R.id.nav_home, R.id.nav_orders, R.id.nav_add_product)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logOut) {
             logout();
+        } if (item.getItemId() == R.id.action_notifications){
+            Intent intent =new Intent(getApplicationContext(), NotificationsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

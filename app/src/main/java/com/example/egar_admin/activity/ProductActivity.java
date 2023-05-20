@@ -1,11 +1,10 @@
-package com.example.egar_admin.ui;
+package com.example.egar_admin.activity;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.viewpager.widget.PagerAdapter;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,63 +12,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+
 import com.example.egar_admin.Model.Product;
-import com.example.egar_admin.R;
 import com.example.egar_admin.adapters.ProductAdapter;
+
 import com.example.egar_admin.controllers.ProductController;
-import com.example.egar_admin.databinding.FragmentHomeBinding;
-import com.example.egar_admin.databinding.FragmentProductBinding;
+
+import com.example.egar_admin.databinding.ActivityProductBinding;
 import com.example.egar_admin.interfaces.ItemCallback;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
-import com.google.android.material.tabs.TabLayout;
+
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class ProductFragment extends Fragment implements ItemCallback {
+public class ProductActivity extends AppCompatActivity implements View.OnClickListener , ItemCallback {
 
-    private FragmentProductBinding binding;
+
     private ArrayList<Product> products = new ArrayList<>();
+
     private ProductAdapter adapter;
-
-    public ProductFragment() {
-        // Required empty public constructor
-    }
-
-
+    ActivityProductBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-
-        binding = FragmentProductBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityProductBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         initializeView();
 
-
-//        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Wedding clothes"));
-//        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("equipment"));
-//        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Homes ,Apartments"));
-//        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Workspaces"));
-//        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("cars"));
-//        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Stores"));
-//        binding.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-        return root;
     }
 
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+    public void onClick(View v) {
 
+    }
 
     private void initializeView() {
         initializeRecyclerAdapter();
@@ -80,7 +59,7 @@ public class ProductFragment extends Fragment implements ItemCallback {
         adapter = new ProductAdapter(products);
         adapter.setCallback(this);
         binding.recyclerViewProduct.setAdapter(adapter);
-        binding.recyclerViewProduct.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        binding.recyclerViewProduct.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
     }
 
     private void getProduct(){
@@ -108,6 +87,12 @@ public class ProductFragment extends Fragment implements ItemCallback {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onDelete(Product product) {
         ProductController.getInstance().deleteProduct(product, new ProcessCallback() {
             @Override
@@ -115,7 +100,7 @@ public class ProductFragment extends Fragment implements ItemCallback {
                 //products.remove(product);
                 adapter.notifyDataSetChanged();
                 //adapter.notifyItemRemoved(product);
-                Toast.makeText(getActivity(), "products deleted successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), "products deleted successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override

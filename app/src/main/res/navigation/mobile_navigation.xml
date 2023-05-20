@@ -18,20 +18,10 @@
         tools:layout="@layout/fragment_add_product" />
 
     <fragment
-        android:id="@+id/nav_comments"
-        android:name="com.example.egar_admin.ui.comments.CommentsFragment"
-        android:label="Comments"
-        tools:layout="@layout/fragment_comments" />
-
-    <fragment
         android:id="@+id/nav_orders"
         android:name="com.example.egar_admin.ui.OrdersFragment"
         android:label="Orders"
         tools:layout="@layout/fragment_orders" />
 
-    <fragment
-        android:id="@+id/nav_product"
-        android:name="com.example.egar_admin.ui.ProductFragment"
-        android:label="Product"
-        tools:layout="@layout/fragment_product" />
+
 </navigation>

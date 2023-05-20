@@ -13,8 +13,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.egar_admin.adapters.MyFragmentTapAdapter;
 
+
 import com.example.egar_admin.databinding.FragmentHomeBinding;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeFragment extends Fragment {
 
@@ -27,8 +29,11 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.tab.addTab(binding.tab.newTab().setText("Categories"));
-        binding.tab.addTab(binding.tab.newTab().setText("orders"));
+        String nameAdmin=FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString().trim();
+        binding.tvNameAdmin.setText(nameAdmin);
+
+        binding.tab.addTab(binding.tab.newTab().setText("Product"));
+        binding.tab.addTab(binding.tab.newTab().setText("Orders"));
         binding.tab.addTab(binding.tab.newTab().setText("Comments"));
 
        // FragmentManager fragmentManager = getSupportFragmentManager();

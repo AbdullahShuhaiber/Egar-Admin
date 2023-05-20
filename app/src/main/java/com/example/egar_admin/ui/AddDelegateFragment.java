@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.FragmentAddDelegateBinding;
-import com.example.egar_admin.databinding.FragmentProductBinding;
+
 import com.google.android.material.snackbar.Snackbar;
 
 

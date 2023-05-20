@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -72,7 +73,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void screenOperations (){
         setOnClick();
+        setTitle("LOGIN");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.active)));
+        getWindow().setStatusBarColor(ContextCompat.getColor(LoginActivity.this,R.color.active));
         setDataInInputFieldFromRegister();
+
+    }
+    private void operationsSccren() {
 
     }
 

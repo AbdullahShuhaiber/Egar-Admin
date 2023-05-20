@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -22,9 +23,11 @@ import com.example.egar_admin.adapters.MyFragmentAdapter;
 
 import com.example.egar_admin.databinding.ActivityRegisterBinding;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.example.egar_admin.ui.MainActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +49,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void screenOperations (){
         setOnClick();
+        setTitle("REGISTER");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.active)));
+        getWindow().setStatusBarColor(ContextCompat.getColor(RegisterActivity.this,R.color.active));
 
     }
     private boolean isValidPalestinianPhoneNumber() {

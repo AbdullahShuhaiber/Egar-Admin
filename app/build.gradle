@@ -34,6 +34,12 @@ android {
 
 dependencies {
 
+    // مكتبة الموقع والخرائط من Google Play Services
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+
+    // مكتبة Geocoder للتعامل مع تحويل الإحداثيات إلى عناوين والعكس
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

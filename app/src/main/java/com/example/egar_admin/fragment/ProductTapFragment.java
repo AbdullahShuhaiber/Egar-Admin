@@ -1,9 +1,10 @@
 package com.example.egar_admin.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,18 +13,21 @@ import android.view.ViewGroup;
 
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
-import com.example.egar_admin.adapters.ProductAdapter;
+import com.example.egar_admin.adapters.ProductHomeAdapter;
 import com.example.egar_admin.controllers.ProductController;
+
 import com.example.egar_admin.databinding.FragmentProductTapBinding;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
+import com.example.egar_admin.activity.ProductActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ProductTapFragment extends Fragment {
+public class ProductTapFragment extends Fragment implements View.OnClickListener {
 
     FragmentProductTapBinding binding;
     private ArrayList<Product> products = new ArrayList<>();
-    //private ProductAdapter adapter;
+    private ProductHomeAdapter adapter;
 
 
     public ProductTapFragment() {
@@ -53,18 +57,24 @@ public class ProductTapFragment extends Fragment {
 
     private void initializeView() {
         initializeRecyclerAdapter();
-        getCategory();
+        getProduct();
+        setOnClick();
+        //getCategory();
     }
 
     private void initializeRecyclerAdapter() {
-       // adapter = new ProductAdapter(products);
+        adapter = new ProductHomeAdapter(products);
         //adapter.setCallback(this);
-        //binding.rec.setAdapter(adapter);
-        //binding.rec.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        binding.rec.setAdapter(adapter);
+        binding.rec.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void getCategory(){
-/*        ProductController.getInstance().getAllProducts(new OnProductFetchListener() {
+    private  void setOnClick() {
+        binding.textShowAll.setOnClickListener(this::onClick);
+    }
+
+    private void getProduct(){
+        ProductController.getInstance().getAllProducts(new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list) {
                 products.clear();
@@ -83,10 +93,45 @@ public class ProductTapFragment extends Fragment {
                 Log.d("EGAR", "onFetchFailure: ");
 
             }
-        });*/
+        });
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.text_showAll){
+            Intent intent =new Intent(getActivity(), ProductActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
+/*
+    private void getCategory(){
+        ProductController.getInstance().getAllProducts(new OnProductFetchListener() {
+            @Override
+            public void onFetchLListSuccess(ArrayList<Product> list) {
+                products.clear();
+                products.addAll(list);
+                Log.d("EGAR", "onFetchLListSuccess: ");
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFetchSuccess(Product product) {
+                Log.d("EGAR", "onFetchSuccess: ");
+            }
+
+            @Override
+            public void onFetchFailure(String message) {
+                Log.d("EGAR", "onFetchFailure: ");
+
+            }
+        });
 
 
 
     }
+*/
 
 }

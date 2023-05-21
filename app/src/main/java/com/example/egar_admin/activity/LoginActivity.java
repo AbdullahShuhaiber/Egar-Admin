@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.btn_login:
                 if (dataCheck()){
-                    login();
+                    loginAndCheckProviderType();
                 }else {
                     Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();
                 }
@@ -173,15 +173,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
-    public String getCurrentUserId() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            return user.getUid();
-        }
-        return null;
+    private void loginAndCheckProviderType() {
+        FirebaseAuthController.getInstance().signIn(binding.etEmail.getText().toString(),
+                binding.etPassword.getText().toString(),
+                new ProcessCallback() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
+                        checkProviderTypeAndRedirect();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
+                    }
+                });
     }
 
-    private void CheckWithTheDeliveryServiceProvider(){
+    private void checkProviderTypeAndRedirect() {
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(getCurrentUserId(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
@@ -194,31 +203,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(intent);
                     }
                 } else {
-
+                    // إجراء عند عدم وجود نوع مقدم الخدمة
                 }
             }
-
         });
     }
-    private void login() {
-        FirebaseAuthController.getInstance().signIn(binding.etEmail.getText().toString(),
-                binding.etPassword.getText().toString(),
-                new ProcessCallback() {
-                    @Override
-                    public void onSuccess(String message) {
-                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
 
-                    @Override
-                    public void onFailure(String message) {
-                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-
-                    }
-                });
+    private String getCurrentUserId() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return user.getUid();
+        }
+        return null;
     }
+
 
 
 }

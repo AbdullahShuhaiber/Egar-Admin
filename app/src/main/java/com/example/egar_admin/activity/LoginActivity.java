@@ -203,7 +203,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(intent);
                     }
                 } else {
-                    // إجراء عند عدم وجود نوع مقدم الخدمة
                 }
             }
         });

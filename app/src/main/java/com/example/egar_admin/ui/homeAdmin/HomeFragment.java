@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 
+import com.example.egar_admin.FirebaseManger.FirebaseFetchingDataController;
 import com.example.egar_admin.adapters.MyFragmentTapAdapter;
 
 
 import com.example.egar_admin.databinding.FragmentHomeBinding;
+import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,6 +24,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
      MyFragmentTapAdapter adapter;
+     FirebaseFetchingDataController dataController=new FirebaseFetchingDataController();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,8 +32,9 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        String nameAdmin=FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString().trim();
-        binding.tvNameAdmin.setText(nameAdmin);
+        //String nameAdmin=FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString().trim();
+        //binding.tvNameAdmin.setText(nameAdmin);
+        getNameAdmin();
 
         binding.tab.addTab(binding.tab.newTab().setText("Product"));
         binding.tab.addTab(binding.tab.newTab().setText("Orders"));
@@ -73,5 +77,20 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+
+    public void getNameAdmin(){
+        dataController.getCurrentUserName(new ProcessCallback() {
+            @Override
+            public void onSuccess(String message) {
+                binding.tvNameAdmin.setText(message);
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
     }
 }

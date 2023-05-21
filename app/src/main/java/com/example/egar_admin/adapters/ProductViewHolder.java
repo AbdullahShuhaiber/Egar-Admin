@@ -11,6 +11,7 @@ import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ItemProductShowBinding;
 import com.example.egar_admin.databinding.ItemProductsBinding;
 import com.example.egar_admin.interfaces.ItemCallback;
+import com.squareup.picasso.Picasso;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
 
@@ -36,7 +37,9 @@ public class ProductViewHolder extends RecyclerView.ViewHolder /*implements View
     public void savaData(Product product){
         binding.tvProductName.setText(product.getName());
         binding.tvPrinc.setText(String.valueOf(product.getPrice()));
-        binding.imgProduct.setImageURI(Uri.parse(product.getImageUrl()));
+       // binding.imgProduct.setImageURI(Uri.parse(product.getImageUrl()));
+        Picasso.get().load(product.getImageUrl()).into(binding.imgProduct);
+
         binding.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

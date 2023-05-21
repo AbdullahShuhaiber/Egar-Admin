@@ -33,7 +33,7 @@ public class ProductHomeViewHolder extends RecyclerView.ViewHolder /*implements 
     public void savaData(Product product){
         binding.tvProductShow.setText(product.getName());
        // binding.imgProductShow.setImageURI(Uri.parse(product.getImageUrl()));
-        Picasso.get().load("https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg").into(binding.imgProductShow);
+        Picasso.get().load(product.getImageUrl()).into(binding.imgProductShow);
 /*
         binding.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override

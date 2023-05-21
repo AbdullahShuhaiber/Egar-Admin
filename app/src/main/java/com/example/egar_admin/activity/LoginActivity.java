@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
+import com.example.egar_admin.FirebaseManger.FirebaseFetchingDataController;
+import com.example.egar_admin.FirebaseManger.ProviderTypeCallback;
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
 import com.example.egar_admin.controllers.ProductController;
@@ -24,6 +26,7 @@ import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.ui.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -82,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void operationsSccren() {
 
     }
+
 
     @Override
     protected void onStart() {
@@ -168,6 +172,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         }
+    }
+    public String getCurrentUserId() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return user.getUid();
+        }
+        return null;
+    }
+
+    private void CheckWithTheDeliveryServiceProvider(){
+        FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(getCurrentUserId(), new ProviderTypeCallback() {
+            @Override
+            public void onProviderTypeChecked(String providerType) {
+                if (providerType != null) {
+                    if (providerType.equals("Delivery")) {
+                        Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                } else {
+
+                }
+            }
+
+        });
     }
     private void login() {
         FirebaseAuthController.getInstance().signIn(binding.etEmail.getText().toString(),

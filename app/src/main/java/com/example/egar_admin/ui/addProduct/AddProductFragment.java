@@ -106,7 +106,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
        // Product newProduct = new Product("123", "Product name", "Product description", 10.0, "https://example.com/image.jpg");
         Product product=new Product(nameProduct,description,price,imageUrl,quantityInCart);
-        ProductController.getInstance().addProduct(product, new ProcessCallback() {
+        ProductController.getInstance().addProduct(product,"", new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
                 Toast.makeText(getActivity(), "addProduct"+nameProduct, Toast.LENGTH_SHORT).show();

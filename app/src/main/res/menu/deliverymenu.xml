@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_orders"
+        android:icon="@drawable/ic_orders"
+        android:title="Orders" />
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/baseline_supervised_user_circle_24"
+        android:title="Profile" />
+    <item
+        android:id="@+id/menu_wallet"
+        android:icon="@drawable/baseline_account_balance_wallet_24"
+        android:title="Wallet" />
+</menu>

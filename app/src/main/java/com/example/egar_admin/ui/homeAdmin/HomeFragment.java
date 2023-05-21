@@ -24,7 +24,6 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
      MyFragmentTapAdapter adapter;
-     FirebaseFetchingDataController dataController=new FirebaseFetchingDataController();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,7 +80,7 @@ public class HomeFragment extends Fragment {
 
 
     public void getNameAdmin(){
-        dataController.getCurrentUserName(new ProcessCallback() {
+        FirebaseFetchingDataController.getInstance().getCurrentUserName(new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
                 binding.tvNameAdmin.setText(message);

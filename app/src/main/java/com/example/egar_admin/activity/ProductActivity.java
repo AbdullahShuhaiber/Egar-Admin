@@ -93,13 +93,13 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onDelete(Product product) {
-        ProductController.getInstance().deleteProduct(product, new ProcessCallback() {
+    public void onDelete(int index) {
+        ProductController.getInstance().delete(products.get(index).getId(), new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                //products.remove(product);
+                products.remove(index);
                 adapter.notifyDataSetChanged();
-                //adapter.notifyItemRemoved(product);
+               ;
                 Toast.makeText(getApplication(), "products deleted successfully", Toast.LENGTH_SHORT).show();
             }
 

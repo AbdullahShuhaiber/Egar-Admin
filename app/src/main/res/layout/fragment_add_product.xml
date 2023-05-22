@@ -55,12 +55,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/product_name"
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/image_add_product" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -146,41 +146,24 @@
                 android:id="@+id/textproductImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/product_image"
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_ProductDescription" />
-
-            <EditText
-                android:id="@+id/edit_product_image"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_45sdp"
-                android:layout_marginStart="@dimen/_19sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/shape_bac_edit_text"
-                android:inputType="text"
-                android:drawableLeft="@drawable/icon_add_photo"
-                android:paddingStart="@dimen/_20sdp"
-                android:paddingEnd="@dimen/_20sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textproductImage" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/quantity"
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_product_image" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_ProductDescription" />
 
             <EditText
                 android:id="@+id/editQuantity"
@@ -203,6 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/add"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_24ssp"
                 android:layout_marginEnd="@dimen/_20sdp"
@@ -212,6 +196,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editQuantity"/>
+
+            <ImageView
+                android:id="@+id/image_add_product"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:src="@drawable/ic_menu_gallery"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textproductImage" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -13,7 +13,7 @@ import com.example.egar_admin.databinding.ItemProductsBinding;
 import com.example.egar_admin.interfaces.ItemCallback;
 import com.squareup.picasso.Picasso;
 
-public class ProductViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
+public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     ItemProductsBinding binding;
     private ItemCallback callback;
@@ -30,28 +30,28 @@ public class ProductViewHolder extends RecyclerView.ViewHolder /*implements View
     }
 
     private void setOnClickListeners() {
-       // binding.imgDelete.setOnClickListener(this::onClick);
+        binding.imgDelete.setOnClickListener(this::onClick);
         //binding.noteItemView.setOnClickListener(this::onClick);
     }
 
     public void savaData(Product product){
         binding.tvProductName.setText(product.getName());
         binding.tvPrinc.setText(String.valueOf(product.getPrice()));
-       // binding.imgProduct.setImageURI(Uri.parse(product.getImageUrl()));
+        //binding.imgProduct.setImageURI(Uri.parse(product.getImageUrl()));
         Picasso.get().load(product.getImageUrl()).into(binding.imgProduct);
 
-        binding.imgDelete.setOnClickListener(new View.OnClickListener() {
+/*        binding.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (callback != null) {
                     callback.onDelete(product);
                 }
             }
-        });
+        });*/
 
     }
 
-/*    @Override
+    @Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.img_delete) {
@@ -60,5 +60,5 @@ public class ProductViewHolder extends RecyclerView.ViewHolder /*implements View
             }
         }
 
-    }*/
+    }
 }

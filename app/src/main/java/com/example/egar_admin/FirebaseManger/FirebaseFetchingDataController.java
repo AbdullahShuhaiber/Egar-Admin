@@ -3,6 +3,7 @@ package com.example.egar_admin.FirebaseManger;
 import androidx.annotation.NonNull;
 
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.example.egar_admin.interfaces.ProviderTypeCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

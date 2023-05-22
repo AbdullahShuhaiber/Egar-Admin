@@ -13,6 +13,7 @@ import com.example.egar_admin.R;
 import com.example.egar_admin.SharedPreferences.AppSharedPreferences;
 
 import com.example.egar_admin.databinding.ActivitySplashBinding;
+import com.example.egar_admin.interfaces.SignInStatusListener;
 import com.example.egar_admin.ui.MainActivity;
 
 
@@ -65,16 +66,26 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                /*getApplicationContext(),GetStarted.class*/
-                FirebaseAuthController authController = FirebaseAuthController.getInstance();
-                if (authController != null && authController.isSignedIn() /*&& showViewPagerAndGoToNextScreenIfNeeded()*/) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), GetStarted.class);
-                    startActivity(intent);
-                }
 
+                FirebaseAuthController.getInstance().isSignedIn(new SignInStatusListener() {
+                    @Override
+                    public void onUserSignedInAsDeliveryProvider() {
+                        Intent intent = new Intent(getApplicationContext(),DeliveryActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUserSignedInAsRegularProvider() {
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUserNotSignedIn() {
+                        Intent intent = new Intent(getApplicationContext(),GetStarted.class);
+                        startActivity(intent);
+                    }
+                });
             }
         }, 3000);
     }

@@ -1,4 +1,5 @@
 package com.example.egar_admin.FirebaseManger;
+import com.example.egar_admin.interfaces.SignInStatusListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -6,7 +7,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import androidx.annotation.NonNull;
 
 
-import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+
 
 public class FirebaseAuthController {
 
@@ -114,7 +116,41 @@ public class FirebaseAuthController {
 
     }
 
-    public boolean isSignedIn() {
-        return auth.getCurrentUser() != null;
+
+    public void isSignedIn(final SignInStatusListener listener) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            DocumentReference userRef = db.collection("serviceproviders").document(userId);
+            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        String role = documentSnapshot.getString("providerType");
+                        if (role != null) {
+                            if (role.equals("Delivery")) {
+                                listener.onUserSignedInAsDeliveryProvider();
+                            } else {
+                                listener.onUserSignedInAsRegularProvider();
+                            }
+                        }
+                    } else {
+                        listener.onUserNotSignedIn();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Handle the error
+                }
+            });
+        } else {
+            listener.onUserNotSignedIn();
+        }
     }
+
+
 }

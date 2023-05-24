@@ -2,6 +2,7 @@ package com.example.egar_admin.controllers;
 
 import static android.content.ContentValues.TAG;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -16,10 +17,16 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductController {
     private static ProductController instance;
@@ -40,7 +47,8 @@ public class ProductController {
         return instance;
     }
 
-    public void addProduct(Product product, String imageUrl, ProcessCallback callback) {
+
+    public void addProduct(Product product, Uri imageUrl, ProcessCallback callback) {
         // Get a reference to the products collection in Firestore
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
@@ -49,18 +57,50 @@ public class ProductController {
         productData.put("name", product.getName());
         productData.put("description", product.getDescription());
         productData.put("price", product.getPrice());
-        productData.put("imageUrl", imageUrl);
         productData.put("isFavorite", product.isFavorite());
         productData.put("quantityInCart", product.getQuantityInCart());
 
-        productsCollection.add(productData)
-                .addOnSuccessListener(documentReference -> {
-                    String documentId = documentReference.getId();
-                    callback.onSuccess("Product added with ID: " + documentId);
-                })
-                .addOnFailureListener(e -> {
-                    callback.onFailure("Error adding product");
-                });
+        // Get a reference to the Firebase Storage instance
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        // Create a unique image name using current timestamp
+        String imageName = "product_" + System.currentTimeMillis();
+
+        // Create a storage reference with a unique name for the image
+        StorageReference imagesRef = storage.getReference().child("product_images").child(imageName);
+
+        // Upload the image to Firebase Storage
+        UploadTask uploadTask = imagesRef.putFile(imageUrl);
+
+        // Register observers to listen for the upload progress or any errors
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+
+            // Return the download URL of the uploaded image
+            return imagesRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Get the URL of the uploaded image
+                Uri downloadUri = task.getResult();
+
+                // Add the image URL to the product data
+                productData.put("imageUrl", downloadUri.toString());
+
+                // Add the product data to Firestore
+                productsCollection.add(productData)
+                        .addOnSuccessListener(documentReference -> {
+                            String documentId = documentReference.getId();
+                            callback.onSuccess("Product added with ID: " + documentId);
+                        })
+                        .addOnFailureListener(e -> {
+                            callback.onFailure("Error adding product");
+                        });
+            } else {
+                callback.onFailure("Error uploading image");
+            }
+        });
     }
 
 
@@ -115,12 +155,39 @@ public class ProductController {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     // Get a list of products
                     ArrayList<Product> productList = new ArrayList<>();
+                    int productCount = queryDocumentSnapshots.size(); // عدد المنتجات الكلي
+                    AtomicInteger processedCount = new AtomicInteger(0); // عدد المنتجات المعالجة حتى الآن
+
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        // Retrieve product data
                         Product product = document.toObject(Product.class);
-                        productList.add(product);
+
+                        // Retrieve image URL from the product data
+                        String imageUrl = String.valueOf(product.getImageUrl());
+
+                        // Download the image from Firebase Storage
+                        FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
+                                .addOnSuccessListener(uri -> {
+                                    // Set the downloaded image URL to the product
+                                    product.setImageUrl(Uri.parse(uri.toString()));
+
+                                    // Add the product to the list
+                                    productList.add(product);
+
+                                    // Increase the processed count
+                                    int count = processedCount.incrementAndGet();
+
+                                    // Check if all products have been processed
+                                    if (count == productCount) {
+                                        // Return the list of products to the listener
+                                        listener.onFetchLListSuccess(productList);
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Handle image download failure
+                                    listener.onFetchFailure("Failed to download product image");
+                                });
                     }
-                    // Return the list of products to the listener
-                    listener.onFetchLListSuccess(productList);
                 })
                 .addOnFailureListener(e -> {
                     // Return the error message to the listener
@@ -145,21 +212,32 @@ public class ProductController {
     public void getProductById(String productId, OnProductFetchListener listener) {
         // Get product by ID from Firestore
         DocumentReference docRef = db.collection("products").document(productId);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    Product product = documentSnapshot.toObject(Product.class);
-                    listener.onFetchSuccess(product);
-                } else {
-                    listener.onFetchFailure("Product not found");
-                }
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                // Retrieve product data
+                Product product = documentSnapshot.toObject(Product.class);
+
+                // Retrieve image URL from the product data
+                String imageUrl = String.valueOf(product.getImageUrl());
+
+                // Download the image from Firebase Storage
+                FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
+                        .addOnSuccessListener(uri -> {
+                            // Set the downloaded image URL to the product
+                            product.setImageUrl(Uri.parse(uri.toString()));
+
+                            // Return the product to the listener
+                            listener.onFetchSuccess(product);
+                        })
+                        .addOnFailureListener(e -> {
+                            // Handle image download failure
+                            listener.onFetchFailure("Failed to download product image");
+                        });
+            } else {
+                listener.onFetchFailure("Product not found");
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                listener.onFetchFailure("Failed to fetch product");
-            }
+        }).addOnFailureListener(e -> {
+            listener.onFetchFailure("Failed to fetch product");
         });
     }
 }

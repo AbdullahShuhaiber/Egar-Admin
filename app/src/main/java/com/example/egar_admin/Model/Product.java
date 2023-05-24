@@ -1,11 +1,13 @@
 package com.example.egar_admin.Model;
 
+import android.net.Uri;
+
 public class Product {
     private String id;
     private String name;
     private String description;
     private double price;
-    private String imageUrl;
+    private Uri imageUrl;
     private boolean isFavorite;
     private int quantityInCart;
 
@@ -13,7 +15,7 @@ public class Product {
         // Default constructor required for Firestore
     }
 
-    public Product(String name, String description, double price, String imageUrl, int quantityInCart) {
+    public Product(String name, String description, double price, Uri imageUrl, int quantityInCart) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -21,7 +23,7 @@ public class Product {
         this.quantityInCart = quantityInCart;
     }
 
-    public Product(String id, String name, String description, double price, String imageUrl) {
+    public Product(String id, String name, String description, double price, Uri imageUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -63,11 +65,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getImageUrl() {
+    public Uri getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(Uri imageUrl) {
         this.imageUrl = imageUrl;
     }
 

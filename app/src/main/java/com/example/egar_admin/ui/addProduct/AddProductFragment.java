@@ -25,6 +25,7 @@ import com.example.egar_admin.R;
 import com.example.egar_admin.controllers.ProductController;
 import com.example.egar_admin.databinding.FragmentAddProductBinding;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.example.egar_admin.ui.MainActivity;
 import com.example.egar_admin.ui.homeAdmin.HomeFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -111,22 +112,22 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         return true;
     }
     private void addProduct(){
-
-        Log.d("TAG", "addProduct: ");
-
         String nameProduct = binding.etNameProduct.getText().toString();
         String description = binding.editProductDescription.getText().toString();
         double price = Double.parseDouble(binding.editPrice.getText().toString());
         //String imageUrl = binding.editProductImage.getText().toString();
         int quantityInCart = Integer.parseInt(binding.editQuantity.getText().toString());
 
-       // Product newProduct = new Product("123", "Product name", "Product description", 10.0, "https://example.com/image.jpg");
-        Product product=new Product(nameProduct,description,price,String.valueOf(pickedImageUri),quantityInCart);
-        ProductController.getInstance().addProduct(product,"", new ProcessCallback() {
+
+
+        // Product newProduct = new Product("123", "Product name", "Product description", 10.0, "https://example.com/image.jpg");
+        Product product=new Product(nameProduct,description,price,pickedImageUri,quantityInCart);
+        ProductController.getInstance().addProduct(product,pickedImageUri, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                Toast.makeText(getActivity(), "addProduct"+nameProduct, Toast.LENGTH_SHORT).show();
-                Log.d("addProduct", "onSuccess: ");
+                Toast.makeText(getActivity(), "Product Added Successful"+nameProduct, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
 
             @Override

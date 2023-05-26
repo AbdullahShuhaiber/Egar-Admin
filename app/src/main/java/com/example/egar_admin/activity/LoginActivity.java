@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.FirebaseManger.FirebaseFetchingDataController;
+import com.example.egar_admin.controllers.LocationUtilsController;
 import com.example.egar_admin.interfaces.ProviderTypeCallback;
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityLoginBinding;
@@ -35,6 +38,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         screenOperations();
+        LocationManager manager = null;
+        Geocoder geocoder = null;
+        LocationUtilsController.getInstance(manager,geocoder).getCurrentLocation();
 
     }
 

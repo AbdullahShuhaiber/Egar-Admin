@@ -21,13 +21,22 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.egar_admin.Model.Product;
+import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.R;
 import com.example.egar_admin.controllers.ProductController;
 import com.example.egar_admin.databinding.FragmentAddProductBinding;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.example.egar_admin.interfaces.ServiceProviderCallBack;
 import com.example.egar_admin.ui.MainActivity;
 import com.example.egar_admin.ui.homeAdmin.HomeFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class AddProductFragment extends Fragment implements View.OnClickListener{
 
@@ -111,31 +120,60 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         }
         return true;
     }
+    public void getServiceProviderData(String serviceProviderId, ServiceProviderCallBack callback) {
+        CollectionReference serviceProvidersCollection = FirebaseFirestore.getInstance().collection("serviceProviders");
+
+        DocumentReference serviceProviderDoc = serviceProvidersCollection.document(serviceProviderId);
+
+        serviceProviderDoc.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Provider serviceProvider = document.toObject(Provider.class);
+
+                    callback.onSuccess(serviceProvider);
+                } else {
+                    callback.onFailure("Service provider not found");
+                }
+            } else {
+                callback.onFailure("Error retrieving service provider data");
+            }
+        });
+    }
+
     private void addProduct(){
+
         String nameProduct = binding.etNameProduct.getText().toString();
         String description = binding.editProductDescription.getText().toString();
         double price = Double.parseDouble(binding.editPrice.getText().toString());
-        //String imageUrl = binding.editProductImage.getText().toString();
         int quantityInCart = Integer.parseInt(binding.editQuantity.getText().toString());
-
-
-
-        // Product newProduct = new Product("123", "Product name", "Product description", 10.0, "https://example.com/image.jpg");
-        Product product=new Product(nameProduct,description,price,pickedImageUri,quantityInCart);
-        ProductController.getInstance().addProduct(product,pickedImageUri, new ProcessCallback() {
+        getServiceProviderData(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ServiceProviderCallBack() {
             @Override
-            public void onSuccess(String message) {
-                Toast.makeText(getActivity(), "Product Added Successful"+nameProduct, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+            public void onSuccess(Provider provider) {
+                Product product=new Product(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),nameProduct,description,price,pickedImageUri,quantityInCart,provider.getProviderType());
+                ProductController.getInstance().addProduct(product,pickedImageUri, new ProcessCallback() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Toast.makeText(getActivity(), "Product Added Successful"+nameProduct, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Log.d("addProduct", "onFailure: ");
+
+                    }
+                });
             }
 
             @Override
             public void onFailure(String message) {
-                Log.d("addProduct", "onFailure: ");
 
             }
         });
+
+
 
 
     }

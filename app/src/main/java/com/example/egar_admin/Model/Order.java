@@ -5,7 +5,7 @@ import java.util.Date;
 public class Order {
     private String orderId;
     private String customerId;
-    private String serviceId;
+    private String serviceProviderId;
     private int quantity;
     private double totalAmount;
     private Date orderDate ;
@@ -14,10 +14,10 @@ public class Order {
         // Required empty constructor for Firebase
     }
 
-    public Order(String orderId, String customerId, String serviceId, int quantity, double totalAmount,Date orderDate) {
+    public Order(String orderId, String customerId, String serviceProviderId, int quantity, double totalAmount,Date orderDate) {
         this.orderId = orderId;
         this.customerId = customerId;
-        this.serviceId = serviceId;
+        this.serviceProviderId = serviceProviderId;
         this.quantity = quantity;
         this.totalAmount = totalAmount;
         this.orderDate=orderDate;
@@ -40,12 +40,12 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public String getServiceId() {
-        return serviceId;
+    public String getServiceProviderId() {
+        return serviceProviderId;
     }
 
-    public void setServiceId(String serviceId) {
-        this.serviceId = serviceId;
+    public void setServiceProviderId(String serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
     }
 
     public int getQuantity() {

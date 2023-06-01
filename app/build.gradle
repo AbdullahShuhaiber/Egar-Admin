@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
 
 // Firebase Firestore
-    implementation 'com.google.firebase:firebase-firestore:24.7.0'
+    implementation 'com.google.firebase:firebase-firestore'
 
 // Firebase Storage
     implementation 'com.google.firebase:firebase-storage'

@@ -4,33 +4,47 @@ import android.net.Uri;
 
 public class Product {
     private String id;
+    private String serviceProviderId; // New field for merchant ID
     private String name;
     private String description;
     private double price;
     private Uri imageUrl;
     private boolean isFavorite;
     private int quantityInCart;
+    private String category; // New field for product category
 
     public Product() {
-        // Default constructor required for Firestore
     }
 
-    public Product(String name, String description, double price, Uri imageUrl, int quantityInCart) {
+    public Product(String serviceProviderId ,String name, String description, double price, Uri imageUrl, int quantityInCart, String category) {
+        this.serviceProviderId = serviceProviderId;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
         this.quantityInCart = quantityInCart;
+        this.category = category;
     }
 
-    public Product(String id, String name, String description, double price, Uri imageUrl) {
+    public Product(String id, String serviceProviderId, String name, String description, double price, Uri imageUrl, String category) {
         this.id = id;
+        this.serviceProviderId = serviceProviderId;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
         this.isFavorite = false;
-        this.quantityInCart = 0;
+        this.quantityInCart  = getQuantityInCart();
+        this.category = category;
+    }
+
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getId() {
@@ -39,6 +53,14 @@ public class Product {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getServiceProviderId() {
+        return serviceProviderId;
+    }
+
+    public void setServiceProviderId(String serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
     }
 
     public String getName() {
@@ -88,19 +110,4 @@ public class Product {
     public void setQuantityInCart(int quantityInCart) {
         this.quantityInCart = quantityInCart;
     }
-
-    public void toggleFavorite() {
-        isFavorite = !isFavorite;
-    }
-
-    public void addToCart() {
-        quantityInCart++;
-    }
-
-    public void removeFromCart() {
-        if (quantityInCart > 0) {
-            quantityInCart--;
-        }
-    }
 }
-

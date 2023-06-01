@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -23,9 +22,7 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductController {
@@ -33,7 +30,6 @@ public class ProductController {
     private  FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private ProductController() {
-        // Private constructor to prevent direct instantiation
     }
 
     public static ProductController getInstance() {
@@ -59,20 +55,17 @@ public class ProductController {
         productData.put("price", product.getPrice());
         productData.put("isFavorite", product.isFavorite());
         productData.put("quantityInCart", product.getQuantityInCart());
+        productData.put("serviceProviderId", product.getServiceProviderId()); // Add merchantId to product data
+        productData.put("category", product.getCategory()); // Add category to product data
 
-        // Get a reference to the Firebase Storage instance
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
-        // Create a unique image name using current timestamp
         String imageName = "product_" + System.currentTimeMillis();
 
-        // Create a storage reference with a unique name for the image
         StorageReference imagesRef = storage.getReference().child("product_images").child(imageName);
 
-        // Upload the image to Firebase Storage
         UploadTask uploadTask = imagesRef.putFile(imageUrl);
 
-        // Register observers to listen for the upload progress or any errors
         uploadTask.continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 throw task.getException();
@@ -145,6 +138,54 @@ public class ProductController {
                         Log.w(TAG, "Error deleting product", e);
                         callback.onFailure("Error deleting product");
                     }
+                });
+    }
+
+    public void getAllProducts(String serviceProviderId, OnProductFetchListener listener) {
+        // Get all products from Firestore where merchantId matches
+        db.collection("products")
+                .whereEqualTo("serviceProviderId", serviceProviderId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    // Get a list of products
+                    ArrayList<Product> productList = new ArrayList<>();
+                    int productCount = queryDocumentSnapshots.size(); // Total product count
+                    AtomicInteger processedCount = new AtomicInteger(0); // Number of products processed so far
+
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        // Retrieve product data
+                        Product product = document.toObject(Product.class);
+
+                        // Retrieve image URL from the product data
+                        String imageUrl = String.valueOf(product.getImageUrl());
+
+                        // Download the image from Firebase Storage
+                        FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
+                                .addOnSuccessListener(uri -> {
+                                    // Set the downloaded image URL to the product
+                                    product.setImageUrl(Uri.parse(uri.toString()));
+
+                                    // Add the product to the list
+                                    productList.add(product);
+
+                                    // Increase the processed count
+                                    int count = processedCount.incrementAndGet();
+
+                                    // Check if all products have been processed
+                                    if (count == productCount) {
+                                        // Return the list of products to the listener
+                                        listener.onFetchLListSuccess(productList);
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Handle image download failure
+                                    listener.onFetchFailure("Failed to download product image");
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Return the error message to the listener
+                    listener.onFetchFailure("Failed to fetch products");
                 });
     }
 

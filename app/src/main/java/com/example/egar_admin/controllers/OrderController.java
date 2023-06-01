@@ -43,7 +43,7 @@ public class OrderController {
         HashMap<String, Object> orderData = new HashMap<>();
         orderData.put("orderId", order.getOrderId());
         orderData.put("customerId", order.getCustomerId());
-        orderData.put("serviceId", order.getServiceId());
+        orderData.put("serviceProviderId", order.getServiceProviderId());
         orderData.put("quantity", order.getQuantity());
         orderData.put("totalPrice", order.getTotalAmount());
         orderData.put("orderDate", order.getOrderDate());
@@ -65,7 +65,7 @@ public class OrderController {
         DocumentReference orderRef = db.collection("orders").document(order.getOrderId());
 
         orderRef.update("customerId", order.getCustomerId(),
-                        "serviceId", order.getServiceId(),
+                        "serviceProviderId", order.getServiceProviderId(),
                         "quantity", order.getQuantity(),
                         "totalPrice", order.getTotalAmount(),
                         "orderDate", order.getOrderDate())

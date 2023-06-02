@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public void printUserData(ProcessCallback callback) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("users").document(userId);
+        DocumentReference userRef = db.collection("serviceproviders").document(userId);
 
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

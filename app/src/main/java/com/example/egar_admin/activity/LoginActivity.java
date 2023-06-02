@@ -2,6 +2,7 @@ package com.example.egar_admin.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,6 +12,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -19,6 +21,7 @@ import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.FirebaseManger.FirebaseFetchingDataController;
 import com.example.egar_admin.controllers.LocationUtilsController;
+import com.example.egar_admin.interfaces.OnLocationFetchedListener;
 import com.example.egar_admin.interfaces.ProviderTypeCallback;
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityLoginBinding;
@@ -27,6 +30,8 @@ import com.example.egar_admin.ui.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Locale;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,9 +43,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         screenOperations();
-        LocationManager manager = null;
-        Geocoder geocoder = null;
-        LocationUtilsController.getInstance(manager,geocoder).getCurrentLocation();
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        LocationUtilsController locationUtilsController = LocationUtilsController.getInstance(manager, geocoder);
+        locationUtilsController.getCurrentLocation(new OnLocationFetchedListener() {
+            @Override
+            public void onLocationFetched(String location) {
+                Snackbar.make(binding.getRoot(),location,Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), location, Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
 
     }
 

@@ -23,6 +23,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductController {
@@ -122,7 +123,7 @@ public class ProductController {
     }
 
     public void deleteProduct(Product product,ProcessCallback callback) {
-        // Delete product from Firestore
+
         db.collection("products").document(product.getId())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -188,54 +189,6 @@ public class ProductController {
                     listener.onFetchFailure("Failed to fetch products");
                 });
     }
-
-    public void getAllProducts(OnProductFetchListener listener) {
-        // Get all products from Firestore
-        db.collection("products")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    // Get a list of products
-                    ArrayList<Product> productList = new ArrayList<>();
-                    int productCount = queryDocumentSnapshots.size(); // عدد المنتجات الكلي
-                    AtomicInteger processedCount = new AtomicInteger(0); // عدد المنتجات المعالجة حتى الآن
-
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        // Retrieve product data
-                        Product product = document.toObject(Product.class);
-
-                        // Retrieve image URL from the product data
-                        String imageUrl = String.valueOf(product.getImageUrl());
-
-                        // Download the image from Firebase Storage
-                        FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
-                                .addOnSuccessListener(uri -> {
-                                    // Set the downloaded image URL to the product
-                                    product.setImageUrl(Uri.parse(uri.toString()));
-
-                                    // Add the product to the list
-                                    productList.add(product);
-
-                                    // Increase the processed count
-                                    int count = processedCount.incrementAndGet();
-
-                                    // Check if all products have been processed
-                                    if (count == productCount) {
-                                        // Return the list of products to the listener
-                                        listener.onFetchLListSuccess(productList);
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                    // Handle image download failure
-                                    listener.onFetchFailure("Failed to download product image");
-                                });
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Return the error message to the listener
-                    listener.onFetchFailure("Failed to fetch products");
-                });
-    }
-
     public void delete(String path, ProcessCallback callback) {
         db.collection("products").document(path).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -259,10 +212,10 @@ public class ProductController {
                 Product product = documentSnapshot.toObject(Product.class);
 
                 // Retrieve image URL from the product data
-                String imageUrl = String.valueOf(product.getImageUrl());
+                Uri imageUrl = product.getImageUrl();
 
                 // Download the image from Firebase Storage
-                FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
+                FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(imageUrl)).getDownloadUrl()
                         .addOnSuccessListener(uri -> {
                             // Set the downloaded image URL to the product
                             product.setImageUrl(Uri.parse(uri.toString()));

@@ -19,6 +19,7 @@ import com.example.egar_admin.controllers.ProductController;
 import com.example.egar_admin.databinding.FragmentProductTapBinding;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.activity.ProductActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(),new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list) {
                 products.clear();

@@ -22,6 +22,7 @@ import com.example.egar_admin.databinding.ActivityProductBinding;
 import com.example.egar_admin.interfaces.ItemCallback;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(),new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list) {
                 products.clear();

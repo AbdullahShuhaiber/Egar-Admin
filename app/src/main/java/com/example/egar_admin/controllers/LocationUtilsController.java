@@ -8,16 +8,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.example.egar_admin.controllers.AppController;
+import com.example.egar_admin.interfaces.OnLocationFetchedListener;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 public class LocationUtilsController {
 
@@ -39,14 +38,16 @@ public class LocationUtilsController {
         return instance;
     }
 
-    public void getCurrentLocation() {
+    public void getCurrentLocation(final OnLocationFetchedListener listener) {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                // يتم استدعاء هذه الدالة عند تغيير الموقع الحالي
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                // استخدم المعلومات الجغرافية للقيام بأي عمليات إضافية
+                String currentLocation = "Latitude: " + latitude + ", Longitude: " + longitude;
+
+
+                listener.onLocationFetched(currentLocation);
             }
 
             @Override
@@ -65,7 +66,6 @@ public class LocationUtilsController {
             }
         };
 
-        // تأكد من إضافة الإذن المناسب في ملف Manifest
         if (ActivityCompat.checkSelfPermission(AppController.getInstance().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AppController.getInstance().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
@@ -75,23 +76,23 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(),new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getUid(), new OnProductFetchListener() {
             @Override
-            public void onFetchLListSuccess(ArrayList<Product> list) {
+            public void onFetchLListSuccess(ArrayList<Product> list, String id) {
                 products.clear();
                 products.addAll(list);
                 Log.d("EGAR", "onFetchLListSuccess: ");
                 adapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFetchSuccess(Product product) {
-                Log.d("EGAR", "onFetchSuccess: ");
+
             }
 
             @Override
             public void onFetchFailure(String message) {
-                Log.d("EGAR", "onFetchFailure: ");
 
             }
         });

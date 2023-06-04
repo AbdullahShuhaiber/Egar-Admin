@@ -64,23 +64,23 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(),new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getUid(), new OnProductFetchListener() {
             @Override
-            public void onFetchLListSuccess(ArrayList<Product> list) {
+            public void onFetchLListSuccess(ArrayList<Product> list, String id) {
                 products.clear();
                 products.addAll(list);
+                Toast.makeText(ProductActivity.this, id, Toast.LENGTH_SHORT).show();
                 Log.d("EGAR", "onFetchLListSuccess: ");
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFetchSuccess(Product product) {
-                Log.d("EGAR", "onFetchSuccess: ");
+
             }
 
             @Override
             public void onFetchFailure(String message) {
-                Log.d("EGAR", "onFetchFailure: ");
 
             }
         });

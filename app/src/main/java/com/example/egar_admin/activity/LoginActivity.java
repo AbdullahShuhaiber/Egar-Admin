@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
+//        Toast.makeText(this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners,intentFilter);
     }
@@ -198,7 +199,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
                         checkProviderTypeAndRedirect();
                     }
 
@@ -210,31 +210,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void checkProviderTypeAndRedirect() {
-        FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(getCurrentUserId(), new ProviderTypeCallback() {
+        FirebaseFetchingDataController.getInstance().getProviderTypeForCurrentUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),new ProcessCallback() {
             @Override
-            public void onProviderTypeChecked(String providerType) {
-                if (providerType != null) {
-                    if (providerType.equals("Delivery")) {
+            public void onSuccess(String message) {
+                if (message != null) {
+                    if (message.equals("Delivery")) {
+                        Snackbar.make(binding.getRoot(),"Logged In Successfully", Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
                         startActivity(intent);
                     } else {
+                        Snackbar.make(binding.getRoot(), "Logged In Successfully", Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 } else {
+                    Toast.makeText(LoginActivity.this, "Please Create Account", Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+
+
             }
         });
     }
-
-    private String getCurrentUserId() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            return user.getUid();
-        }
-        return null;
-    }
-
-
 
 }

@@ -40,8 +40,16 @@ public class Product {
         this.category = category;
     }
 
-    public Product(String currentUserId, String nameProduct, String description, double price, Uri pickedImageUri, int quantityInCart, Provider provider) {
+    public Product(String name, String description, double price, String imageUrl, int quantityInCart, String category,Provider provider) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.quantityInCart = quantityInCart;
+        this.category = category;
+        this.provider = provider;
     }
+
 
     public Provider getProvider() {
         return provider;

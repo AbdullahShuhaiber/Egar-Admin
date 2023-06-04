@@ -41,23 +41,15 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-/*    private boolean showViewPagerAndGoToNextScreenIfNeeded() {
+    private boolean showViewPagerAndGoToNextScreenIfNeeded() {
         boolean isFirstRun = AppSharedPreferences.getInstance().getSharedPreferences().getBoolean("isFirstRun", true);
         if (isFirstRun) {
-            // عرض ViewPager
-            Intent intent = new Intent(getApplicationContext(), GetStarted.class);
-            startActivity(intent);
-
-            // ...
-            // تحديث حالة عرض الـViewPager
             AppSharedPreferences.getInstance().getEditor().putBoolean("isFirstRun", false).apply();
             return true;
         } else {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
             return false;
         }
-    }*/
+    }
 
 
 
@@ -87,6 +79,6 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 2000);
+        }, 888);
     }
 }

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.egar_admin.R;
+import com.example.egar_admin.SharedPreferences.AppSharedPreferences;
 import com.example.egar_admin.adapters.ViewPagerAdapter;
 
 
@@ -198,7 +199,7 @@ public class GetStarted extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        boolean isFirstRun = AppSharedPreferences.getInstance().getSharedPreferences().getBoolean("isFirstRun", true);
     }
 
     @Override

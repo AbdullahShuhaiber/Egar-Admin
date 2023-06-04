@@ -93,7 +93,7 @@
                     android:layout_height="@dimen/_45sdp"
                     android:background="@drawable/shape_bac_edit_text"
                     android:hint="@string/enter_commercial_registration"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"

@@ -3,7 +3,7 @@ package com.example.egar_admin.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
+
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -41,10 +41,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toast.makeText(this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_LONG).show();
         printUserData(new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+//                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
             }
 
             @Override
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                             + "Phone Number: " + phoneNumber + "\n"
                             + "Password: " + password;
 
-                    Toast.makeText(getApplicationContext(), userData, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), userData, Toast.LENGTH_LONG).show();
                 } else {
                     callback.onFailure("User document does not exist");
                 }

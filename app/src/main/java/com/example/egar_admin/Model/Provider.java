@@ -1,6 +1,7 @@
 package com.example.egar_admin.Model;
 
 public class Provider {
+    private String id ;
     private String name;
     private String email;
     private String phoneNumber;
@@ -19,7 +20,8 @@ public class Provider {
         this.providerType = providerType;
     }
 
-    public Provider(String name, String email, String providerType, String phoneNumber, String address, String city, String bio) {
+    public Provider(String id ,String name, String email, String providerType, String phoneNumber, String address, String city, String bio) {
+        this.id =id;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -28,6 +30,14 @@ public class Provider {
         this.city=city;
         this.bio=bio;
 
+    }
+
+    public Provider(String id, String name, String email, String phoneNumber, String providerType) {
+        this.id =id;
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.providerType = providerType;
     }
 
     public String getName() {

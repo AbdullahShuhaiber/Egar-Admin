@@ -43,15 +43,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
-public class AddProductFragment extends Fragment implements View.OnClickListener{
-    private  String providerType;
-
+public class AddProductFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAddProductBinding binding;
     private Uri pickedImageUri;
     private ActivityResultLauncher<Void> cameraRL;
     private ActivityResultLauncher<String> permissionRL;
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -73,7 +70,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         binding = null;
     }
 
-    private void initializeView(){
+    private void initializeView() {
         setOnClickListeners();
         setupActivityResults();
 
@@ -85,15 +82,13 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     }
 
 
-
-
-
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_addProduct){
+        if (v.getId() == R.id.btn_addProduct) {
             performSave();
-        }if (v.getId() == R.id.image_add_product){
-           // pickImage();
+        }
+        if (v.getId() == R.id.image_add_product) {
+            // pickImage();
             selectImage();
         }
     }
@@ -102,7 +97,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         if (checkData()) {
 
             addProduct();
-        }else {
+        } else {
             Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(getActivity(), R.color.bronze)).show();
         }
     }
@@ -110,20 +105,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseFetchingDataController.getInstance().getProviderTypeForCurrentUser(new ProcessCallback() {
-            @Override
-            public void onSuccess(String message) {
-                providerType = message;
-            }
-
-            @Override
-            public void onFailure(String message) {
-
-            }
-        });
     }
 
-    private boolean checkData (){
+    private boolean checkData() {
         String nameProduct = binding.etNameProduct.getText().toString();
         String description = binding.editProductDescription.getText().toString();
         String price = binding.editPrice.getText().toString();
@@ -135,18 +119,18 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         } else if (price.isEmpty()) {
             binding.editPrice.setError("price field is Required");
             return false;
-        }else if (description.isEmpty()) {
+        } else if (description.isEmpty()) {
             binding.editProductDescription.setError("description field is Required");
             return false;
         }/*else if (true*//*imageUrl.isEmpty()*//*) {
            // binding.editProductImage.setError("image field is Required");
-            return false;*/
-        else if (quantityInCart.isEmpty()) {
+            return false;*/ else if (quantityInCart.isEmpty()) {
             binding.editQuantity.setError("Quantity field is Required");
             return false;
         }
         return true;
     }
+
     public void printUserData(ProcessCallback callback) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -175,7 +159,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    public void getServiceProviderData(String serviceProviderId, ServiceProviderCallBack callback) {
+    public void getServiceProviderData(ServiceProviderCallBack callback) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("serviceproviders").document(userId);
@@ -192,8 +176,14 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     String address = documentSnapshot.getString("address");
                     String city = documentSnapshot.getString("city");
                     String bio = documentSnapshot.getString("bio");
-                    Provider provider = new Provider(name,email,providerType,phoneNumber,address,city,bio);
-                    callback.onSuccess(provider);
+                    String id = FirebaseAuth.getInstance().getUid();
+                    if (id == null) {
+                        id = "no id ";
+                    }else {
+                        Provider provider = new Provider(id,name, email, providerType, phoneNumber, address, city, bio);
+                        callback.onSuccess(provider);
+                    }
+
                 } else {
                     callback.onFailure("User document does not exist");
                 }
@@ -208,17 +198,14 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
 
     private void addProduct() {
-
-
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
             Toast.makeText(getActivity(), "User not logged in", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String currentUserId = currentUser.getUid();
 
-        getServiceProviderData(currentUserId, new ServiceProviderCallBack() {
+        getServiceProviderData(new ServiceProviderCallBack() {
             @Override
             public void onSuccess(Provider provider) {
                 String nameProduct = binding.etNameProduct.getText().toString().trim();
@@ -240,25 +227,18 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getActivity(), "Invalid price or quantity value", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (provider == null) {
-                    Toast.makeText(getActivity(), "Service provider not found", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Product product = new Product(currentUserId, nameProduct, description, price, pickedImageUri, quantityInCart, provider);
-                ProductController.getInstance().addProduct(currentUserId, nameProduct, description, price, false, pickedImageUri, quantityInCart,providerType, provider, new ProcessCallback() {
+                ProductController.getInstance().addProduct(nameProduct, description, price, false, pickedImageUri, quantityInCart, provider.getProviderType(), provider, new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        Snackbar.make(binding.getRoot(),message+nameProduct,Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(getActivity(),MainActivity.class);
+                        Snackbar.make(binding.getRoot(), message + nameProduct, Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
 
                     }
 
                     @Override
                     public void onFailure(String message) {
-                        Snackbar.make(binding.getRoot(),message+"failure 1",Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), message + "failure 1", Snackbar.LENGTH_LONG).show();
 
 
                     }
@@ -267,33 +247,33 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onFailure(String message) {
-                Toast.makeText(getActivity(), message+"لا يوجد", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), message + "لا يوجد", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void selectImage(){
+    private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,100);
+        startActivityForResult(intent, 100);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 100&& data!= null && data.getData() != null){
+        if (requestCode == 100 && data != null && data.getData() != null) {
             pickedImageUri = data.getData();
             binding.imageAddProduct.setImageURI(pickedImageUri);
         }
     }
 
-    private void setupActivityResults(){
+    private void setupActivityResults() {
         permissionRL = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
             @Override
             public void onActivityResult(Boolean result) {
-                if (result){
+                if (result) {
                     cameraRL.launch(null);
 
                 }
@@ -314,7 +294,8 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         });*/
 
     }
-    private void pickImage(){
+
+    private void pickImage() {
         permissionRL.launch(Manifest.permission.CAMERA);
     }
 }

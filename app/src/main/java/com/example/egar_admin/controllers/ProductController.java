@@ -46,7 +46,7 @@ public class ProductController {
     }
 
 
-    public void addProduct(String currentUserId, String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
+    public void addProduct(String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
         // Convert product object to a HashMap
@@ -56,7 +56,6 @@ public class ProductController {
         productData.put("price", price);
         productData.put("isFavorite",isFavorite );
         productData.put("quantityInCart", quantityInCart);
-        productData.put("serviceProviderId",currentUserId);
         productData.put("category",category );
         productData.put("provider",provider);
 
@@ -176,7 +175,7 @@ public class ProductController {
                                     // Check if all products have been processed
                                     if (count == productCount) {
                                         // Return the list of products to the listener
-                                        listener.onFetchLListSuccess(productList);
+                                        listener.onFetchLListSuccess(productList,serviceProviderId);
                                     }
                                 })
                                 .addOnFailureListener(e -> {

@@ -11,9 +11,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class FirebaseFetchingDataController {
 
@@ -84,31 +87,28 @@ public class FirebaseFetchingDataController {
             }
         });
     }
-    public void getProviderTypeForCurrentUser(ProcessCallback callback) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference userRef = db.collection("serviceproviders").document(currentUser.getUid());
+    public void getProviderTypeForCurrentUser(String id, ProcessCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference providersRef = db.collection("serviceproviders");
 
-            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
+        Query query = providersRef.whereEqualTo("id", id);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
                         String providerType = documentSnapshot.getString("providerType");
                         callback.onSuccess(providerType);
                     } else {
                         callback.onFailure("User document does not exist");
                     }
+                } else {
+                    callback.onFailure(task.getException().getMessage());
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    callback.onFailure(e.getMessage());
-                }
-            });
-        } else {
-            callback.onFailure("No current user");
-        }
+            }
+        });
     }
 
 }

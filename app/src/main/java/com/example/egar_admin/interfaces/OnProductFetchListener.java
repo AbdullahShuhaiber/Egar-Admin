@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface OnProductFetchListener {
-    void onFetchLListSuccess(ArrayList<Product> list);
+    void onFetchLListSuccess(ArrayList<Product> list,String id);
     void onFetchSuccess(Product product);
     void onFetchFailure(String message);
 

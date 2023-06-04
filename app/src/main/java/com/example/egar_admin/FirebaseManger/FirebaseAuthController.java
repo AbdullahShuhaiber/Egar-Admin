@@ -41,7 +41,7 @@ public class FirebaseAuthController {
         return instance;
     }
 
-    public void createAccount(String name, String email, String password, String phoneNumber, String providerType,String address,String city,String bio, ProcessCallback callback) {
+    public void createAccount(String id, String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, ProcessCallback callback) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -51,13 +51,18 @@ public class FirebaseAuthController {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     CollectionReference usersRef = db.collection("serviceproviders");
 
-                    Provider provider = new Provider(name, email, phoneNumber, providerType);
-                    provider.setAddress(address);
-                    provider.setCity(city);
-                    provider.setBio(bio);
+                    Map<String, String> userData = new HashMap<>();
+                    userData.put("id", id);
+                    userData.put("name", name);
+                    userData.put("email", email);
+                    userData.put("phoneNumber", phoneNumber);
+                    userData.put("providerType", providerType);
+                    userData.put("address", address);
+                    userData.put("city", city);
+                    userData.put("bio", bio);
 
                     usersRef.document(auth.getCurrentUser().getUid())
-                            .set(provider)
+                            .set(userData)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

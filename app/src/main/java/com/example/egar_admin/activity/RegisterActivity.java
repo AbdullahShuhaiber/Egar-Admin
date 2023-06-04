@@ -186,15 +186,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void register() {
-        FirebaseAuthController.getInstance().createAccount(binding.etName.getText().toString(),
-                binding.etEmail.getText().toString(),
-                binding.etPass.getText().toString(),
+        String id = FirebaseAuth.getInstance().getUid();
+        FirebaseAuthController.getInstance().createAccount(
+                id,
+                binding.etName.getText().toString().trim(),
+                binding.etEmail.getText().toString().trim(),
+                binding.etPass.getText().toString().trim(),
                 binding.etPhone.getText().toString().trim(),
                 getSelectedChipText(),
-                "North Gaza",
+                "Khan Younes",
                 "Gaza",
-                "متجر إلكتروني شامل يوفر خدمات ومنتجات متنوعة لجميع احتياجاتك",
-
+                "End To The End Services And Products",
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {

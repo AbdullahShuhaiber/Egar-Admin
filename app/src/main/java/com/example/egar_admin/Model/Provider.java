@@ -5,21 +5,30 @@ public class Provider {
     private String email;
     private String phoneNumber;
     private String providerType;
-    private String password;
+    private String address;
+    private String city;
+    private String bio;
 
     public Provider() {
-        // يجب توفير البناء الافتراضي العام للاستخدام مع Firebase Realtime Database
     }
 
-    public Provider(String name, String email, String phoneNumber, String providerType, String password) {
+    public Provider(String name, String email, String phoneNumber, String providerType) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.providerType = providerType;
-        this.password = password;
     }
 
-    // Getters و Setters لكل حقل بيانات
+    public Provider(String name, String email, String providerType, String phoneNumber, String address, String city, String bio) {
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.providerType = providerType;
+        this.address=address;
+        this.city=city;
+        this.bio=bio;
+
+    }
 
     public String getName() {
         return name;
@@ -53,11 +62,28 @@ public class Provider {
         this.providerType = providerType;
     }
 
-    public String getPassword() {
-        return password;
+
+    public String getAddress() {
+        return address;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

@@ -16,6 +16,7 @@ import com.example.egar_admin.adapters.MyFragmentTapAdapter;
 
 
 import com.example.egar_admin.databinding.FragmentHomeBinding;
+import com.example.egar_admin.interfaces.DataCallBack;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,10 +81,12 @@ public class HomeFragment extends Fragment {
 
 
     public void getNameAdmin(){
-        FirebaseFetchingDataController.getInstance().getCurrentUserName(new ProcessCallback() {
+        FirebaseFetchingDataController.getInstance().getCurrentUserData(new DataCallBack() {
             @Override
-            public void onSuccess(String message) {
-                binding.tvNameAdmin.setText(message);
+            public void onSuccess(String name, String address,String number) {
+                binding.tvNameAdmin.setText(name);
+                binding.tvLoction.setText(address);
+                binding.tvPhoneNumber.setText(number);
             }
 
             @Override

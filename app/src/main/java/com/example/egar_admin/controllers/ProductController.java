@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.egar_admin.Model.Product;
+import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,19 +46,19 @@ public class ProductController {
     }
 
 
-    public void addProduct(Product product, Uri imageUrl, ProcessCallback callback) {
-        // Get a reference to the products collection in Firestore
+    public void addProduct(String currentUserId, String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
         // Convert product object to a HashMap
         HashMap<String, Object> productData = new HashMap<>();
-        productData.put("name", product.getName());
-        productData.put("description", product.getDescription());
-        productData.put("price", product.getPrice());
-        productData.put("isFavorite", product.isFavorite());
-        productData.put("quantityInCart", product.getQuantityInCart());
-        productData.put("serviceProviderId", product.getServiceProviderId()); // Add merchantId to product data
-        productData.put("category", product.getCategory()); // Add category to product data
+        productData.put("name", nameProduct);
+        productData.put("description", description);
+        productData.put("price", price);
+        productData.put("isFavorite",isFavorite );
+        productData.put("quantityInCart", quantityInCart);
+        productData.put("serviceProviderId",currentUserId);
+        productData.put("category",category );
+        productData.put("provider",provider);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -65,24 +66,19 @@ public class ProductController {
 
         StorageReference imagesRef = storage.getReference().child("product_images").child(imageName);
 
-        UploadTask uploadTask = imagesRef.putFile(imageUrl);
+        UploadTask uploadTask = imagesRef.putFile(pickedImageUri);
 
         uploadTask.continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 throw task.getException();
             }
-
-            // Return the download URL of the uploaded image
             return imagesRef.getDownloadUrl();
         }).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                // Get the URL of the uploaded image
                 Uri downloadUri = task.getResult();
 
-                // Add the image URL to the product data
                 productData.put("imageUrl", downloadUri.toString());
 
-                // Add the product data to Firestore
                 productsCollection.add(productData)
                         .addOnSuccessListener(documentReference -> {
                             String documentId = documentReference.getId();
@@ -93,6 +89,11 @@ public class ProductController {
                         });
             } else {
                 callback.onFailure("Error uploading image");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e.getMessage());
             }
         });
     }
@@ -164,7 +165,7 @@ public class ProductController {
                         FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
                                     // Set the downloaded image URL to the product
-                                    product.setImageUrl(Uri.parse(uri.toString()));
+                                    product.setImageUrl(uri.toString());
 
                                     // Add the product to the list
                                     productList.add(product);
@@ -212,13 +213,13 @@ public class ProductController {
                 Product product = documentSnapshot.toObject(Product.class);
 
                 // Retrieve image URL from the product data
-                Uri imageUrl = product.getImageUrl();
+                String imageUrl = product.getImageUrl();
 
                 // Download the image from Firebase Storage
                 FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(imageUrl)).getDownloadUrl()
                         .addOnSuccessListener(uri -> {
                             // Set the downloaded image URL to the product
-                            product.setImageUrl(Uri.parse(uri.toString()));
+                            product.setImageUrl(uri.toString());
 
                             // Return the product to the listener
                             listener.onFetchSuccess(product);

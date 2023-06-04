@@ -20,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.egar_admin.FirebaseManger.FirebaseFetchingDataController;
+import com.example.egar_admin.FirebaseManger.FirebaseFireStoreController;
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.R;
@@ -29,8 +31,11 @@ import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.interfaces.ServiceProviderCallBack;
 import com.example.egar_admin.ui.MainActivity;
 import com.example.egar_admin.ui.homeAdmin.HomeFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,11 +44,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Objects;
 
 public class AddProductFragment extends Fragment implements View.OnClickListener{
+    private  String providerType;
+
 
     private FragmentAddProductBinding binding;
     private Uri pickedImageUri;
     private ActivityResultLauncher<Void> cameraRL;
     private ActivityResultLauncher<String> permissionRL;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +64,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
 
         return root;
+
     }
 
     @Override
@@ -66,11 +76,12 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     private void initializeView(){
         setOnClickListeners();
         setupActivityResults();
+
     }
 
     private void setOnClickListeners() {
-        binding.btnAddProduct.setOnClickListener(this::onClick);
-        binding.imageAddProduct.setOnClickListener(this::onClick);
+        binding.btnAddProduct.setOnClickListener(this);
+        binding.imageAddProduct.setOnClickListener(this);
     }
 
 
@@ -89,13 +100,29 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
     private void performSave() {
         if (checkData()) {
-            //Log.d("TAG", "performSave: "+pickedImageUri);
-           // Toast.makeText(getActivity(), ""+pickedImageUri, Toast.LENGTH_SHORT).show();
+
             addProduct();
         }else {
             Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(getActivity(), R.color.bronze)).show();
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseFetchingDataController.getInstance().getProviderTypeForCurrentUser(new ProcessCallback() {
+            @Override
+            public void onSuccess(String message) {
+                providerType = message;
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+    }
+
     private boolean checkData (){
         String nameProduct = binding.etNameProduct.getText().toString();
         String description = binding.editProductDescription.getText().toString();
@@ -120,48 +147,119 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         }
         return true;
     }
-    public void getServiceProviderData(String serviceProviderId, ServiceProviderCallBack callback) {
-        CollectionReference serviceProvidersCollection = FirebaseFirestore.getInstance().collection("serviceProviders");
+    public void printUserData(ProcessCallback callback) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("serviceproviders").document(userId);
 
-        DocumentReference serviceProviderDoc = serviceProvidersCollection.document(serviceProviderId);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String name = documentSnapshot.getString("name");
+                    String email = documentSnapshot.getString("email");
+                    String providerType = documentSnapshot.getString("providerType");
+                    String phoneNumber = documentSnapshot.getString("phoneNumber");
+                    String password = documentSnapshot.getString("password");
 
-        serviceProviderDoc.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Provider serviceProvider = document.toObject(Provider.class);
 
-                    callback.onSuccess(serviceProvider);
                 } else {
-                    callback.onFailure("Service provider not found");
+                    callback.onFailure("User document does not exist");
                 }
-            } else {
-                callback.onFailure("Error retrieving service provider data");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e.getMessage());
             }
         });
     }
 
-    private void addProduct(){
+    public void getServiceProviderData(String serviceProviderId, ServiceProviderCallBack callback) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("serviceproviders").document(userId);
 
-        String nameProduct = binding.etNameProduct.getText().toString();
-        String description = binding.editProductDescription.getText().toString();
-        double price = Double.parseDouble(binding.editPrice.getText().toString());
-        int quantityInCart = Integer.parseInt(binding.editQuantity.getText().toString());
-        getServiceProviderData(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ServiceProviderCallBack() {
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String name = documentSnapshot.getString("name");
+                    String email = documentSnapshot.getString("email");
+                    String providerType = documentSnapshot.getString("providerType");
+                    String phoneNumber = documentSnapshot.getString("phoneNumber");
+                    String password = documentSnapshot.getString("password");
+                    String address = documentSnapshot.getString("address");
+                    String city = documentSnapshot.getString("city");
+                    String bio = documentSnapshot.getString("bio");
+                    Provider provider = new Provider(name,email,providerType,phoneNumber,address,city,bio);
+                    callback.onSuccess(provider);
+                } else {
+                    callback.onFailure("User document does not exist");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e.getMessage());
+            }
+        });
+    }
+
+
+    private void addProduct() {
+
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(getActivity(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String currentUserId = currentUser.getUid();
+
+        getServiceProviderData(currentUserId, new ServiceProviderCallBack() {
             @Override
             public void onSuccess(Provider provider) {
-                Product product=new Product(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),nameProduct,description,price,pickedImageUri,quantityInCart,provider.getProviderType());
-                ProductController.getInstance().addProduct(product,pickedImageUri, new ProcessCallback() {
+                String nameProduct = binding.etNameProduct.getText().toString().trim();
+                String description = binding.editProductDescription.getText().toString().trim();
+                String priceText = binding.editPrice.getText().toString().trim();
+                String quantityText = binding.editQuantity.getText().toString().trim();
+
+                if (nameProduct.isEmpty() || description.isEmpty() || priceText.isEmpty() || quantityText.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                double price;
+                int quantityInCart;
+                try {
+                    price = Double.parseDouble(priceText);
+                    quantityInCart = Integer.parseInt(quantityText);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Invalid price or quantity value", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (provider == null) {
+                    Toast.makeText(getActivity(), "Service provider not found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Product product = new Product(currentUserId, nameProduct, description, price, pickedImageUri, quantityInCart, provider);
+                ProductController.getInstance().addProduct(currentUserId, nameProduct, description, price, false, pickedImageUri, quantityInCart,providerType, provider, new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        Toast.makeText(getActivity(), "Product Added Successful"+nameProduct, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        Snackbar.make(binding.getRoot(),message+nameProduct,Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(),MainActivity.class);
                         startActivity(intent);
+
                     }
 
                     @Override
                     public void onFailure(String message) {
-                        Log.d("addProduct", "onFailure: ");
+                        Snackbar.make(binding.getRoot(),message+"failure 1",Snackbar.LENGTH_LONG).show();
+
 
                     }
                 });
@@ -169,13 +267,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onFailure(String message) {
-
+                Toast.makeText(getActivity(), message+"لا يوجد", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
     }
 
     private void selectImage(){

@@ -1,4 +1,5 @@
 package com.example.egar_admin.FirebaseManger;
+import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.interfaces.SignInStatusListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,26 +41,23 @@ public class FirebaseAuthController {
         return instance;
     }
 
-    public void createAccount(String name, String email, String password, String phoneNumber,String providerType, ProcessCallback callback) {
+    public void createAccount(String name, String email, String password, String phoneNumber, String providerType,String address,String city,String bio, ProcessCallback callback) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     auth.getCurrentUser().sendEmailVerification();
 
-
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     CollectionReference usersRef = db.collection("serviceproviders");
 
-                    Map<String, Object> userData = new HashMap<>();
-                    userData.put("name", name);
-                    userData.put("email", email);
-                    userData.put("providerType", providerType);
-                    userData.put("phoneNumber", phoneNumber);
-                    userData.put("password", password);
+                    Provider provider = new Provider(name, email, phoneNumber, providerType);
+                    provider.setAddress(address);
+                    provider.setCity(city);
+                    provider.setBio(bio);
 
                     usersRef.document(auth.getCurrentUser().getUid())
-                            .set(userData)
+                            .set(provider)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

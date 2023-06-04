@@ -2,6 +2,7 @@ package com.example.egar_admin.FirebaseManger;
 
 import androidx.annotation.NonNull;
 
+import com.example.egar_admin.interfaces.DataCallBack;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.interfaces.ProviderTypeCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,7 +20,6 @@ public class FirebaseFetchingDataController {
     private static FirebaseFetchingDataController instance;
 
     private FirebaseFetchingDataController() {
-        // تجنب إنشاء كائنات هنا
     }
 
     public static FirebaseFetchingDataController getInstance() {
@@ -33,7 +33,7 @@ public class FirebaseFetchingDataController {
         return instance;
     }
 
-    public void getCurrentUserName(ProcessCallback callback) {
+    public void getCurrentUserData(DataCallBack callback) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -44,7 +44,9 @@ public class FirebaseFetchingDataController {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
                         String name = documentSnapshot.getString("name");
-                        callback.onSuccess(name);
+                        String address = documentSnapshot.getString("address");
+                        String number = documentSnapshot.getString("phoneNumber");
+                        callback.onSuccess(name,address,number);
                     } else {
                         callback.onFailure("User document does not exist");
                     }
@@ -82,6 +84,33 @@ public class FirebaseFetchingDataController {
             }
         });
     }
+    public void getProviderTypeForCurrentUser(ProcessCallback callback) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference userRef = db.collection("serviceproviders").document(currentUser.getUid());
+
+            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        String providerType = documentSnapshot.getString("providerType");
+                        callback.onSuccess(providerType);
+                    } else {
+                        callback.onFailure("User document does not exist");
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    callback.onFailure(e.getMessage());
+                }
+            });
+        } else {
+            callback.onFailure("No current user");
+        }
+    }
+
 }
 
 

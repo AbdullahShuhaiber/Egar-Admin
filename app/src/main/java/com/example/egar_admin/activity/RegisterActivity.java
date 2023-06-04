@@ -59,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (phoneNumber.matches("^(059|056)\\d{7}$")) {
             return true;
         } else {
+            Toast.makeText(this, "Enter A Valid Palestinian Number", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -190,6 +191,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 binding.etPass.getText().toString(),
                 binding.etPhone.getText().toString().trim(),
                 getSelectedChipText(),
+                "North Gaza",
+                "Gaza",
+                "متجر إلكتروني شامل يوفر خدمات ومنتجات متنوعة لجميع احتياجاتك",
+
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {

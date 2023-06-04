@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity {
                     String phoneNumber = documentSnapshot.getString("phoneNumber");
                     String password = documentSnapshot.getString("password");
 
-                    String userData = "Name: " + name + "\n"
+                    String userData ="id" + FirebaseAuth.getInstance().getCurrentUser().getUid()+"\n"
+                            +"Name: " + name + "\n"
                             + "Email: " + email + "\n"
                             + "Provider Type: " + providerType + "\n"
                             + "Phone Number: " + phoneNumber + "\n"

@@ -20,6 +20,7 @@ public class Provider {
         this.providerType = providerType;
     }
 
+
     public Provider(String id ,String name, String email, String providerType, String phoneNumber, String address, String city, String bio) {
         this.id =id;
         this.name = name;
@@ -38,6 +39,14 @@ public class Provider {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.providerType = providerType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -179,12 +179,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     String city = documentSnapshot.getString("city");
                     String bio = documentSnapshot.getString("bio");
                     String id = FirebaseAuth.getInstance().getUid();
-                    if (id == null) {
-                        id = "no id ";
-                    }else {
-                        Provider provider = new Provider(id,name, email, providerType, phoneNumber, address, city, bio);
+                    Provider provider = new Provider(id,name, email, providerType, phoneNumber, address, city, bio);
                         callback.onSuccess(provider);
-                    }
+
 
                 } else {
                     callback.onFailure("User document does not exist");
@@ -229,7 +226,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getActivity(), "Invalid price or quantity value", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ProductController.getInstance().addProduct(nameProduct, description, price, false, pickedImageUri, quantityInCart, provider.getProviderType(), provider, new ProcessCallback() {
+                ProductController.getInstance().addProduct(provider.getId(),nameProduct, description, price, false, pickedImageUri, quantityInCart, provider.getProviderType(), provider, new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
                         Snackbar.make(binding.getRoot(), message + nameProduct, Snackbar.LENGTH_LONG).show();

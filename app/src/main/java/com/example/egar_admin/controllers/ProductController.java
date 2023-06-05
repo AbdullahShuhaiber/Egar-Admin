@@ -46,7 +46,7 @@ public class ProductController {
     }
 
 
-    public void addProduct(String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
+    public void addProduct(String id ,String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
         // Convert product object to a HashMap
@@ -142,16 +142,14 @@ public class ProductController {
                 });
     }
 
-    public void getAllProducts(String serviceProviderId, OnProductFetchListener listener) {
-        // Get all products from Firestore where merchantId matches
+    public void getAllProducts(String providerId, OnProductFetchListener listener) {
         db.collection("products")
-                .whereEqualTo("serviceProviderId", serviceProviderId)
+                .whereEqualTo("provider.id", providerId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    // Get a list of products
                     ArrayList<Product> productList = new ArrayList<>();
-                    int productCount = queryDocumentSnapshots.size(); // Total product count
-                    AtomicInteger processedCount = new AtomicInteger(0); // Number of products processed so far
+                    int productCount = queryDocumentSnapshots.size();
+                    AtomicInteger processedCount = new AtomicInteger(0);
 
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         // Retrieve product data
@@ -163,23 +161,15 @@ public class ProductController {
                         // Download the image from Firebase Storage
                         FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
-                                    // Set the downloaded image URL to the product
                                     product.setImageUrl(uri.toString());
 
-                                    // Add the product to the list
                                     productList.add(product);
-
-                                    // Increase the processed count
                                     int count = processedCount.incrementAndGet();
-
-                                    // Check if all products have been processed
                                     if (count == productCount) {
-                                        // Return the list of products to the listener
-                                        listener.onFetchLListSuccess(productList,serviceProviderId);
+                                        listener.onFetchListSuccess(productList, providerId);
                                     }
                                 })
                                 .addOnFailureListener(e -> {
-                                    // Handle image download failure
                                     listener.onFetchFailure("Failed to download product image");
                                 });
                     }

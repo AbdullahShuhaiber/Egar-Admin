@@ -40,7 +40,6 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding=FragmentProductTapBinding.inflate(getLayoutInflater());
 
         initializeView();
@@ -61,7 +60,6 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
         initializeRecyclerAdapter();
         getProduct();
         setOnClick();
-        //getCategory();
     }
 
     private void initializeRecyclerAdapter() {
@@ -76,14 +74,10 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getUid(), new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list, String id) {
-                products.clear();
-                products.addAll(list);
-                Log.d("EGAR", "onFetchLListSuccess: ");
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -94,6 +88,13 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
             @Override
             public void onFetchFailure(String message) {
 
+            }
+
+            @Override
+            public void onFetchListSuccess(ArrayList<Product> productList, String providerId) {
+                products.clear();
+                products.addAll(productList);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -106,34 +107,5 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
             startActivity(intent);
         }
     }
-
-
-/*
-    private void getCategory(){
-        ProductController.getInstance().getAllProducts(new OnProductFetchListener() {
-            @Override
-            public void onFetchLListSuccess(ArrayList<Product> list) {
-                products.clear();
-                products.addAll(list);
-                Log.d("EGAR", "onFetchLListSuccess: ");
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFetchSuccess(Product product) {
-                Log.d("EGAR", "onFetchSuccess: ");
-            }
-
-            @Override
-            public void onFetchFailure(String message) {
-                Log.d("EGAR", "onFetchFailure: ");
-
-            }
-        });
-
-
-
-    }
-*/
 
 }

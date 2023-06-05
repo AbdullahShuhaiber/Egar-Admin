@@ -136,30 +136,50 @@
                 android:text="@string/forgot_your_password"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/blue_grey"
                 android:textSize="@dimen/_11ssp"
                 android:padding="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
-            <Button
+
+            <RelativeLayout
                 android:id="@+id/btn_login"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_17sdp"
-                android:text="@string/login"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_24ssp"
-                android:textStyle="bold"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/btn_background"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/green_button_ripple"
+                android:clickable="true"
                 android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_forgotPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_forgotPassword">
+
+                <TextView
+                    android:id="@+id/button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Login"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_25ssp" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/button_animation"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/butto_loading_white" />
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/textView7"
@@ -184,8 +204,8 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_13ssp"
-                android:padding="@dimen/_7sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

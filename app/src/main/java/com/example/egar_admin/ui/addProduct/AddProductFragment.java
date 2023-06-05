@@ -95,7 +95,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
 
     private void performSave() {
         if (checkData()) {
-
+            binding.buttonAnimation.setVisibility(View.VISIBLE);
+            binding.buttonAnimation.playAnimation();
+            binding.buttonText.setVisibility(View.GONE);
             addProduct();
         } else {
             Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(getActivity(), R.color.bronze)).show();
@@ -239,7 +241,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     @Override
                     public void onFailure(String message) {
                         Snackbar.make(binding.getRoot(), message + "failure 1", Snackbar.LENGTH_LONG).show();
-
+                        binding.buttonAnimation.pauseAnimation();
+                        binding.buttonAnimation.setVisibility(View.GONE);
+                        binding.buttonText.setVisibility(View.VISIBLE);
 
                     }
                 });
@@ -248,6 +252,9 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
             @Override
             public void onFailure(String message) {
                 Toast.makeText(getActivity(), message + "لا يوجد", Toast.LENGTH_SHORT).show();
+                binding.buttonAnimation.pauseAnimation();
+                binding.buttonAnimation.setVisibility(View.GONE);
+                binding.buttonText.setVisibility(View.VISIBLE);
             }
         });
     }

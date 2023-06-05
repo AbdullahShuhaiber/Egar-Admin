@@ -62,7 +62,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_add_product" />
 
-            <TextView
+<!--            <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:background="@drawable/shape_bac_edit_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />-->
 
 
             <TextView
@@ -97,7 +97,7 @@
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/et_NameProduct" />
 
             <EditText
                 android:id="@+id/edit_price"
@@ -180,22 +180,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textQuantity" />
 
-            <Button
+
+            <RelativeLayout
                 android:id="@+id/btn_addProduct"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/add"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_24ssp"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/green_button_ripple"
                 android:backgroundTint="@color/text_app"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editQuantity"/>
+                app:layout_constraintTop_toBottomOf="@+id/editQuantity">
+
+                <TextView
+                    android:id="@+id/button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Add"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_25ssp" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/button_animation"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    app:lottie_autoPlay="false"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/butto_loading_white" />
+
+            </RelativeLayout>
+
+
+
 
             <ImageView
                 android:id="@+id/image_add_product"

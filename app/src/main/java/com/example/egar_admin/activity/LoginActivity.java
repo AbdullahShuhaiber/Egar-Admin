@@ -176,10 +176,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.btn_login:
                 if (dataCheck()){
+                    binding.buttonAnimation.setVisibility(View.VISIBLE);
+                    binding.buttonAnimation.playAnimation();
+                    binding.buttonText.setVisibility(View.GONE);
                     loginAndCheckProviderType();
                 }else {
                     Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();
                 }
+
                 break;
             case R.id.tv_createAccount:
                 Intent intent1 = new Intent(getApplicationContext(),RegisterActivity.class);
@@ -204,9 +208,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onFailure(String message) {
+                        binding.buttonAnimation.pauseAnimation();
+                        binding.buttonAnimation.setVisibility(View.GONE);
+                        binding.buttonText.setVisibility(View.VISIBLE);
                         Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
                     }
                 });
+
+
     }
 
 

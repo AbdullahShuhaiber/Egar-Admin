@@ -150,15 +150,9 @@ public class ProductController {
                     ArrayList<Product> productList = new ArrayList<>();
                     int productCount = queryDocumentSnapshots.size();
                     AtomicInteger processedCount = new AtomicInteger(0);
-
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        // Retrieve product data
                         Product product = document.toObject(Product.class);
-
-                        // Retrieve image URL from the product data
                         String imageUrl = String.valueOf(product.getImageUrl());
-
-                        // Download the image from Firebase Storage
                         FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
                                     product.setImageUrl(uri.toString());

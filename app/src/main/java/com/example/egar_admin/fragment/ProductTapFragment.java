@@ -93,9 +93,16 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
             @Override
             public void onFetchListSuccess(ArrayList<Product> productList, String providerId) {
                 products.clear();
-                products.addAll(productList);
+                products.addAll(productList.subList(0, Math.min(3, productList.size())));
+                /*int maxItemsToShow = 3;
+                int itemsToShow = Math.min(productList.size(), maxItemsToShow);
+                for (int i = 0; i < itemsToShow; i++) {
+                    Product product = productList.get(i);
+                    products.add(product);
+                }*/
                 adapter.notifyDataSetChanged();
             }
+
         });
 
     }

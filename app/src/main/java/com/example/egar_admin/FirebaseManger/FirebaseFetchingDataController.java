@@ -66,16 +66,19 @@ public class FirebaseFetchingDataController {
     }
 
 
-    public void checkProviderTypeAndRedirectToActivity(String userId, ProviderTypeCallback callback) {
+    public void checkProviderTypeAndRedirectToActivity(String email, ProviderTypeCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("serviceproviders").document(userId);
+        CollectionReference providersRef = db.collection("serviceproviders");
 
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        Query query = providersRef.whereEqualTo("email", email);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
+                    QuerySnapshot snapshot = task.getResult();
+                    if (snapshot != null && !snapshot.isEmpty()) {
+                        DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one document per email
                         String providerType = document.getString("providerType");
                         callback.onProviderTypeChecked(providerType);
                     } else {

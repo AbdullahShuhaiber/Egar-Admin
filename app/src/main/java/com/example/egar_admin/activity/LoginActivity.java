@@ -199,9 +199,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        checkProviderTypeAndRedirectToActivity();
                     }
 
                     @Override
@@ -211,12 +209,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    private void checkProviderTypeAndRedirect() {
-        FirebaseFetchingDataController.getInstance().getProviderTypeForCurrentUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),new ProcessCallback() {
+
+    private void checkProviderTypeAndRedirectToActivity() {
+        FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
-            public void onSuccess(String message) {
-                if (message != null) {
-                    if (message.equals("Delivery")) {
+            public void onProviderTypeChecked(String providerType) {
+                 if (providerType != null) {
+                    if (providerType.equals("Delivery")) {
                         Snackbar.make(binding.getRoot(),"Logged In Successfully", Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
                         startActivity(intent);
@@ -228,13 +227,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     Toast.makeText(LoginActivity.this, "Please Create Account", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(String message) {
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-
-
             }
         });
     }

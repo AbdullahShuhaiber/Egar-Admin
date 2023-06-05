@@ -199,7 +199,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        checkProviderTypeAndRedirect();
+                        Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override

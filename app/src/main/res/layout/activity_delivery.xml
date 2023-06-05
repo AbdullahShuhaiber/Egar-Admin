@@ -9,18 +9,20 @@
     <FrameLayout
         android:id="@+id/content_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/active"
+            app:itemIconSize="@dimen/_21sdp"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:menu="@menu/deliverymenu" />
+    </FrameLayout>
 
     <!-- Bottom Navigation Bar -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:background="@color/active"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
-        app:itemIconSize="@dimen/_21sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:menu="@menu/deliverymenu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

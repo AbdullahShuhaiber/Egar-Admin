@@ -1,16 +1,22 @@
 package com.example.egar_admin.activity;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.R;
 import com.example.egar_admin.adapters.MyFragmentAdapter;
+
 
 import com.example.egar_admin.databinding.ActivityRegisterBinding;
 import com.example.egar_admin.interfaces.ProcessCallback;
@@ -37,6 +44,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     ActivityRegisterBinding binding;
     private MyFragmentAdapter adapter;
 
+
+    private Uri pickedImageUri;
+
+    private ActivityResultLauncher<Void> cameraRL;
+    private ActivityResultLauncher<String> permissionRL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void screenOperations (){
         setOnClick();
         setTitle("REGISTER");
+        setupActivityResults();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.active)));
         getWindow().setStatusBarColor(ContextCompat.getColor(RegisterActivity.this,R.color.active));
 
@@ -116,6 +130,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         binding.bnRegister.setOnClickListener(this::onClick);
         binding.btnBack.setOnClickListener(this::onClick);
+        binding.imageRegister.setOnClickListener(this::onClick);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -137,6 +152,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent2 = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent2);
 
+                break;
+            case R.id.image_register:
+                selectImage();
                 break;
         }
     }
@@ -208,6 +226,42 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
                     }
                 });
+    }
+
+
+
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && data != null && data.getData() != null) {
+            pickedImageUri = data.getData();
+            binding.imageRegister.setImageURI(pickedImageUri);
+        }
+    }
+
+    private void setupActivityResults() {
+        permissionRL = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean result) {
+                if (result) {
+                    cameraRL.launch(null);
+
+                }
+            }
+        });
+
+    }
+
+    private void pickImage() {
+        permissionRL.launch(Manifest.permission.CAMERA);
     }
 
 }

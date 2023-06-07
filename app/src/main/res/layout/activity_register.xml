@@ -43,7 +43,7 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/image"
+                    android:id="@+id/image_register"
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -82,7 +82,7 @@
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image" />
+                    app:layout_constraintTop_toBottomOf="@+id/image_register" />
 
                 <TextView
                     android:id="@+id/textView1"

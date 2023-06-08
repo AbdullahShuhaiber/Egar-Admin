@@ -1,6 +1,8 @@
 package com.example.egar_admin.FirebaseManger;
-import com.example.egar_admin.Model.Provider;
+import android.net.Uri;
+
 import com.example.egar_admin.interfaces.SignInStatusListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -9,7 +11,6 @@ import androidx.annotation.NonNull;
 
 
 import com.example.egar_admin.interfaces.ProcessCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.util.HashMap;
@@ -41,43 +45,60 @@ public class FirebaseAuthController {
         return instance;
     }
 
-    public void createAccount(String id, String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, ProcessCallback callback) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    auth.getCurrentUser().sendEmailVerification();
+    public void createAccount(String id, String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                auth.getCurrentUser().sendEmailVerification();
 
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    CollectionReference usersRef = db.collection("serviceproviders");
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference imagesRef = storage.getReference().child("profile_images_providers").child(auth.getCurrentUser().getUid());
 
-                    Map<String, String> userData = new HashMap<>();
-                    userData.put("id", id);
-                    userData.put("name", name);
-                    userData.put("email", email);
-                    userData.put("phoneNumber", phoneNumber);
-                    userData.put("providerType", providerType);
-                    userData.put("address", address);
-                    userData.put("city", city);
-                    userData.put("bio", bio);
+                UploadTask uploadTask = imagesRef.putFile(profileImageUri);
+                uploadTask.continueWithTask(task2 -> {
+                    if (!task2.isSuccessful()) {
+                        throw task2.getException();
+                    }
+                    return imagesRef.getDownloadUrl();
+                }).addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()) {
+                        Uri downloadUri = task2.getResult();
 
-                    usersRef.document(auth.getCurrentUser().getUid())
-                            .set(userData)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        CollectionReference usersRef = db.collection("serviceproviders");
+
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("id", id);
+                        userData.put("name", name);
+                        userData.put("email", email);
+                        userData.put("phoneNumber", phoneNumber);
+                        userData.put("providerType", providerType);
+                        userData.put("address", address);
+                        userData.put("city", city);
+                        userData.put("bio", bio);
+                        userData.put("profileImageUrl", downloadUri.toString());
+
+                        usersRef.document(auth.getCurrentUser().getUid())
+                                .set(userData)
+                                .addOnSuccessListener(aVoid -> {
                                     callback.onSuccess("Account created successfully");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
+                                })
+                                .addOnFailureListener(e -> {
                                     callback.onFailure(e.getMessage());
-                                }
-                            });
-                } else {
-                    callback.onFailure(task.getException().getMessage());
-                }
+                                });
+                    } else {
+                        callback.onFailure("Error uploading profile image");
+                    }
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
+                });
+
+            } else {
+                callback.onFailure(task.getException().getMessage());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e.getMessage());
             }
         });
     }

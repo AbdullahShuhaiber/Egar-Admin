@@ -9,6 +9,7 @@ public class Provider {
     private String address;
     private String city;
     private String bio;
+    private String image;
 
     public Provider() {
     }
@@ -21,7 +22,7 @@ public class Provider {
     }
 
 
-    public Provider(String id ,String name, String email, String providerType, String phoneNumber, String address, String city, String bio) {
+    public Provider(String id ,String name, String email, String providerType, String phoneNumber, String address, String city, String bio,String image) {
         this.id =id;
         this.name = name;
         this.email = email;
@@ -30,6 +31,7 @@ public class Provider {
         this.address=address;
         this.city=city;
         this.bio=bio;
+        this.image=image;
 
     }
 

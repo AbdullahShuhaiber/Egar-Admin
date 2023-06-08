@@ -179,7 +179,7 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     String city = documentSnapshot.getString("city");
                     String bio = documentSnapshot.getString("bio");
                     String id = FirebaseAuth.getInstance().getUid();
-                    Provider provider = new Provider(id,name, email, providerType, phoneNumber, address, city, bio);
+                    Provider provider = new Provider(id,name, email, providerType, phoneNumber, address, city, bio,pickedImageUri.toString());
                         callback.onSuccess(provider);
 
 

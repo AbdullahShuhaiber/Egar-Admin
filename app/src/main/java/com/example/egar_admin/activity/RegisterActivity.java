@@ -215,6 +215,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 "Khan Younes",
                 "Gaza",
                 "End To The End Services And Products",
+                Uri.parse(pickedImageUri.toString()),
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {

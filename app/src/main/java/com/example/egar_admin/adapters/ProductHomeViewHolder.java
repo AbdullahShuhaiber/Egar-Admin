@@ -6,9 +6,8 @@ import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.egar_admin.Model.Product;
+
 import com.example.egar_admin.databinding.ItemProductShowBinding;
-import com.example.egar_admin.databinding.ItemProductsBinding;
-import com.example.egar_admin.interfaces.ItemCallback;
 import com.squareup.picasso.Picasso;
 
 public class ProductHomeViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
@@ -32,8 +31,10 @@ public class ProductHomeViewHolder extends RecyclerView.ViewHolder /*implements 
 
     public void savaData(Product product){
         binding.tvProductShow.setText(product.getName());
-        //binding.imgProductShow.setImageURI(Uri.parse(product.getImageUrl()));
+        binding.tvProductDescription.setText(product.getDescription());
+        binding.tvProductPrice.setText(String.valueOf(product.getPrice()));
         Picasso.get().load(product.getImageUrl()).into(binding.imgProductShow);
+
 /*
         binding.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override

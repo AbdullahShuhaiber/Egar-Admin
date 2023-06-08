@@ -131,6 +131,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         binding.bnRegister.setOnClickListener(this::onClick);
         binding.btnBack.setOnClickListener(this::onClick);
         binding.imageRegister.setOnClickListener(this::onClick);
+        binding.animationView.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -153,7 +154,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent2);
 
                 break;
-            case R.id.image_register:
+            case R.id.animationView:
                 selectImage();
                 break;
         }
@@ -215,7 +216,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 "Khan Younes",
                 "Gaza",
                 "End To The End Services And Products",
-                Uri.parse(pickedImageUri.toString()),
+                pickedImageUri,
                 new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
@@ -245,6 +246,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (requestCode == 100 && data != null && data.getData() != null) {
             pickedImageUri = data.getData();
             binding.imageRegister.setImageURI(pickedImageUri);
+            binding.imageRegister.setVisibility(View.VISIBLE);
+            binding.animationView.setVisibility(View.GONE);
+
         }
     }
 

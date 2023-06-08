@@ -1,6 +1,7 @@
 package com.example.egar_admin.FirebaseManger;
 import android.net.Uri;
 
+import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.interfaces.SignInStatusListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +45,52 @@ public class FirebaseAuthController {
         }
         return instance;
     }
+    public void createAccount(String id, String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                auth.getCurrentUser().sendEmailVerification();
 
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference imagesRef = storage.getReference().child("profile_images_providers").child(auth.getCurrentUser().getUid());
+
+                UploadTask uploadTask = imagesRef.putFile(profileImageUri);
+                uploadTask.continueWithTask(task2 -> {
+                    if (!task2.isSuccessful()) {
+                        throw task2.getException();
+                    }
+                    return imagesRef.getDownloadUrl();
+                }).addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()) {
+                        Uri downloadUri = task2.getResult();
+
+                        Provider provider = new Provider(id, name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString());
+
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        DocumentReference userRef = db.collection("serviceproviders").document(auth.getCurrentUser().getUid());
+
+                        userRef.set(provider)
+                                .addOnSuccessListener(aVoid -> {
+                                    callback.onSuccess("Account created successfully");
+                                })
+                                .addOnFailureListener(e -> {
+                                    callback.onFailure(e.getMessage());
+                                });
+                    } else {
+                        callback.onFailure("Error uploading profile image");
+                    }
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
+                });
+
+            } else {
+                callback.onFailure(task.getException().getMessage());
+            }
+        }).addOnFailureListener(e -> {
+            callback.onFailure(e.getMessage());
+        });
+    }
+
+/*
     public void createAccount(String id, String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -64,7 +110,7 @@ public class FirebaseAuthController {
                         Uri downloadUri = task2.getResult();
 
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        CollectionReference usersRef = db.collection("serviceproviders");
+                        DocumentReference userRef = db.collection("serviceproviders").document(auth.getCurrentUser().getUid());
 
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("id", id);
@@ -77,8 +123,7 @@ public class FirebaseAuthController {
                         userData.put("bio", bio);
                         userData.put("profileImageUrl", downloadUri.toString());
 
-                        usersRef.document(auth.getCurrentUser().getUid())
-                                .set(userData)
+                        userRef.set(userData)
                                 .addOnSuccessListener(aVoid -> {
                                     callback.onSuccess("Account created successfully");
                                 })
@@ -95,13 +140,11 @@ public class FirebaseAuthController {
             } else {
                 callback.onFailure(task.getException().getMessage());
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFailure(e.getMessage());
-            }
+        }).addOnFailureListener(e -> {
+            callback.onFailure(e.getMessage());
         });
     }
+*/
 
 
     public void signIn(String email, String password, ProcessCallback callback) {

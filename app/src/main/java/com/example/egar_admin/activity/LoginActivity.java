@@ -214,10 +214,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
                     }
                 });
-
-
     }
-
 
     private void checkProviderTypeAndRedirectToActivity() {
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
@@ -225,16 +222,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onProviderTypeChecked(String providerType) {
                  if (providerType != null) {
                     if (providerType.equals("Delivery")) {
-                        Snackbar.make(binding.getRoot(),"Logged In Successfully", Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
-                        startActivity(intent);
+                        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+                            Snackbar.make(binding.getRoot(),"Please Create Your Account", Snackbar.LENGTH_LONG).show();
+                        }else {
+                            Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
+                            startActivity(intent);
+                        }
                     } else {
-                        Snackbar.make(binding.getRoot(), "Logged In Successfully", Snackbar.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+                            Snackbar.make(binding.getRoot(),"Please Create Your Account", Snackbar.LENGTH_LONG).show();
+                        }else {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Please Create Account", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(LoginActivity.this, "Please Create Account + providertype is "+ providerType, Toast.LENGTH_SHORT).show();
                 }
             }
         });

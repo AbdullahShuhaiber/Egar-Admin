@@ -17,6 +17,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.UserData;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class FirebaseFetchingDataController {
 
@@ -42,23 +45,26 @@ public class FirebaseFetchingDataController {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference userRef = db.collection("serviceproviders").document(currentUser.getUid());
 
-            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
-                        String name = documentSnapshot.getString("name");
-                        String address = documentSnapshot.getString("address");
-                        String number = documentSnapshot.getString("phoneNumber");
-                        callback.onSuccess(name,address,number);
-                    } else {
-                        callback.onFailure("User document does not exist");
-                    }
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference profileImageRef = storage.getReference().child("profile_images_providers").child(currentUser.getUid());
+
+            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    String name = documentSnapshot.getString("name");
+                    String address = documentSnapshot.getString("address");
+                    String number = documentSnapshot.getString("phoneNumber");
+
+                    profileImageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                        String profileImageUrl = downloadUri.toString();
+                        callback.onSuccess(name,address,number,profileImageUrl);
+                    }).addOnFailureListener(e -> {
+                        callback.onFailure(e.getMessage());
+                    });
+                } else {
+                    callback.onFailure("User document does not exist");
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    callback.onFailure(e.getMessage());
-                }
+            }).addOnFailureListener(e -> {
+                callback.onFailure(e.getMessage());
             });
         } else {
             callback.onFailure("No current user");

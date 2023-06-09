@@ -59,17 +59,18 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_loction"
                 app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/place" />
-
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_edit"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
                 android:layout_margin="@dimen/_22sdp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.258"
                 app:srcCompat="@drawable/edit" />
+
 
             <TextView
                 android:id="@+id/tv_nameAdmin"
@@ -100,7 +101,7 @@
                 android:id="@+id/tv_phone_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:text="TextView ......."
                 android:layout_marginStart="@dimen/_22sdp"
                 android:textColor="#EEEEEE"

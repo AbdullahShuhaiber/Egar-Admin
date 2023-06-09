@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.example.egar_admin.interfaces.DataCallBack;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
 
@@ -83,10 +85,11 @@ public class HomeFragment extends Fragment {
     public void getNameAdmin(){
         FirebaseFetchingDataController.getInstance().getCurrentUserData(new DataCallBack() {
             @Override
-            public void onSuccess(String name, String address,String number) {
+            public void onSuccess(String name, String address,String number,String providerImage) {
                 binding.tvNameAdmin.setText(name);
                 binding.tvLoction.setText(address);
                 binding.tvPhoneNumber.setText(number);
+                Picasso.get().load(providerImage).into(binding.imgEdit);
             }
 
             @Override

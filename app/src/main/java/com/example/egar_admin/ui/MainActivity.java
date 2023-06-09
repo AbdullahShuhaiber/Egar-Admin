@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         Toast.makeText(this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_LONG).show();
         printUserData(new ProcessCallback() {
             @Override
@@ -54,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
 //        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override

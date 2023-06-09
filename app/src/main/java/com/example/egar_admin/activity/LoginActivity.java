@@ -237,8 +237,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 } else {
-
-                    Toast.makeText(LoginActivity.this, "Please Create Account + providertype is "+ providerType, Toast.LENGTH_SHORT).show();
+                     binding.buttonAnimation.pauseAnimation();
+                     binding.buttonAnimation.setVisibility(View.GONE);
+                     binding.buttonText.setVisibility(View.VISIBLE);
+                    Snackbar.make(binding.getRoot(), "Please Create Account + providertype is "+ providerType,Snackbar.LENGTH_LONG).show();
                 }
             }
         });

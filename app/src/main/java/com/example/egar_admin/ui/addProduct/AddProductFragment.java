@@ -110,6 +110,17 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
+        getServiceProviderData(new ServiceProviderCallBack() {
+            @Override
+            public void onSuccess(Provider provider) {
+                Snackbar.make(binding.getRoot(), provider.getProviderType(),Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
     }
 
     private boolean checkData() {

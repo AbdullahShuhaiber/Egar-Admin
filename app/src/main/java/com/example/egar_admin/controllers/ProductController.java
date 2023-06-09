@@ -202,7 +202,7 @@ public class ProductController {
                 boolean isFavorite = documentSnapshot.getBoolean("isFavorite");
                 int quantityInCart = documentSnapshot.getLong("quantityInCart").intValue();
                 String category = documentSnapshot.getString("category");
-                String providerId = documentSnapshot.getString("providerId");
+                String providerId = documentSnapshot.getString("provider.id");
                 String imageUrl = documentSnapshot.getString("imageUrl");
 
                 DocumentReference providerRef = db.collection("serviceproviders").document(providerId);

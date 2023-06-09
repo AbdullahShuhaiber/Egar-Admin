@@ -40,15 +40,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
 public class AddProductFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAddProductBinding binding;
-    private String imageProvider = "";
     private Uri pickedImageUri;
     private ActivityResultLauncher<Void> cameraRL;
     private ActivityResultLauncher<String> permissionRL;
@@ -110,17 +107,6 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        getServiceProviderData(new ServiceProviderCallBack() {
-            @Override
-            public void onSuccess(Provider provider) {
-                Snackbar.make(binding.getRoot(), provider.getProviderType(),Snackbar.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(String message) {
-
-            }
-        });
     }
 
     private boolean checkData() {
@@ -180,34 +166,32 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("serviceproviders").document(userId);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference profileImageRef = storage.getReference().child("profile_images_providers").child(userId);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String name = documentSnapshot.getString("name");
+                    String email = documentSnapshot.getString("email");
+                    String providerType = documentSnapshot.getString("providerType");
+                    String phoneNumber = documentSnapshot.getString("phoneNumber");
+                    String password = documentSnapshot.getString("password");
+                    String address = documentSnapshot.getString("address");
+                    String city = documentSnapshot.getString("city");
+                    String bio = documentSnapshot.getString("bio");
+                    String id = FirebaseAuth.getInstance().getUid();
+                    Provider provider = new Provider(id,name, email, providerType, phoneNumber, address, city, bio,pickedImageUri.toString());
+                        callback.onSuccess(provider);
 
-        userRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                String name = documentSnapshot.getString("name");
-                String email = documentSnapshot.getString("email");
-                String providerType = documentSnapshot.getString("providerType");
-                String phoneNumber = documentSnapshot.getString("phoneNumber");
-                String password = documentSnapshot.getString("password");
-                String address = documentSnapshot.getString("address");
-                String city = documentSnapshot.getString("city");
-                String bio = documentSnapshot.getString("bio");
-                String id = FirebaseAuth.getInstance().getUid();
 
-                profileImageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                    String profileImageUrl = downloadUri.toString();
-                    imageProvider = profileImageUrl;
-                    Provider provider = new Provider(id, name, email, providerType, phoneNumber, address, city, bio, profileImageUrl);
-                    callback.onSuccess(provider);
-                }).addOnFailureListener(e -> {
-                    callback.onFailure(e.getMessage());
-                });
-            } else {
-                callback.onFailure("User document does not exist");
+                } else {
+                    callback.onFailure("User document does not exist");
+                }
             }
-        }).addOnFailureListener(e -> {
-            callback.onFailure(e.getMessage());
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e.getMessage());
+            }
         });
     }
 
@@ -242,11 +226,11 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getActivity(), "Invalid price or quantity value", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                ProductController.getInstance().addProduct(nameProduct, description, price, false,pickedImageUri, quantityInCart, provider.getProviderType(), provider, new ProcessCallback() {
+                //provider.getId(),nameProduct, description, price, false, pickedImageUri, quantityInCart, provider.getProviderType(), provider
+                ProductController.getInstance().addProduct(nameProduct,description,price,false,pickedImageUri,quantityInCart,provider.getProviderType(),provider, new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        Snackbar.make(binding.getRoot(), provider.getProviderType(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), message + nameProduct, Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
 

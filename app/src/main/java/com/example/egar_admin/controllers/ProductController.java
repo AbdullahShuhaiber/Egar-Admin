@@ -11,6 +11,7 @@ import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.example.egar_admin.interfaces.ProductCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,7 +47,7 @@ public class ProductController {
     }
 
 
-    public void addProduct(String id ,String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
+    public void addProduct(String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
         // Convert product object to a HashMap
@@ -81,10 +82,11 @@ public class ProductController {
                 productsCollection.add(productData)
                         .addOnSuccessListener(documentReference -> {
                             String documentId = documentReference.getId();
+                            productData.put("id", documentId);
                             callback.onSuccess("Product added with ID: " + documentId);
                         })
                         .addOnFailureListener(e -> {
-                            callback.onFailure("Error adding product");
+                            callback.onFailure(e.getMessage());
                         });
             } else {
                 callback.onFailure("Error uploading image");
@@ -187,35 +189,44 @@ public class ProductController {
         });
     }
 
-    public void getProductById(String productId, OnProductFetchListener listener) {
-        // Get product by ID from Firestore
-        DocumentReference docRef = db.collection("products").document(productId);
-        docRef.get().addOnSuccessListener(documentSnapshot -> {
+    public void getProductById(String productId, ProductCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference productRef = db.collection("products").document(productId);
+
+        productRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
-                // Retrieve product data
-                Product product = documentSnapshot.toObject(Product.class);
+                String id = documentSnapshot.getId();
+                String name = documentSnapshot.getString("name");
+                String description = documentSnapshot.getString("description");
+                double price = documentSnapshot.getDouble("price");
+                boolean isFavorite = documentSnapshot.getBoolean("isFavorite");
+                int quantityInCart = documentSnapshot.getLong("quantityInCart").intValue();
+                String category = documentSnapshot.getString("category");
+                String providerId = documentSnapshot.getString("providerId");
+                String imageUrl = documentSnapshot.getString("imageUrl");
 
-                // Retrieve image URL from the product data
-                String imageUrl = product.getImageUrl();
+                DocumentReference providerRef = db.collection("serviceproviders").document(providerId);
+                providerRef.get().addOnSuccessListener(providerDocumentSnapshot -> {
+                    if (providerDocumentSnapshot.exists()) {
+                        String providerName = providerDocumentSnapshot.getString("name");
+                        String providerEmail = providerDocumentSnapshot.getString("email");
+                        String providerPhoneNumber = providerDocumentSnapshot.getString("phoneNumber");
 
-                // Download the image from Firebase Storage
-                FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(imageUrl)).getDownloadUrl()
-                        .addOnSuccessListener(uri -> {
-                            // Set the downloaded image URL to the product
-                            product.setImageUrl(uri.toString());
+                        Provider provider = new Provider(providerId, providerName, providerEmail, providerPhoneNumber);
 
-                            // Return the product to the listener
-                            listener.onFetchSuccess(product);
-                        })
-                        .addOnFailureListener(e -> {
-                            // Handle image download failure
-                            listener.onFetchFailure("Failed to download product image");
-                        });
+                        Product product = new Product(id, name, description, price, isFavorite, quantityInCart, category, provider, imageUrl);
+                        callback.onProductFetchSuccess(product);
+                    } else {
+                        callback.onFailure("Provider document does not exist");
+                    }
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(e.getMessage());
+                });
             } else {
-                listener.onFetchFailure("Product not found");
+                callback.onFailure("Product document does not exist");
             }
         }).addOnFailureListener(e -> {
-            listener.onFetchFailure("Failed to fetch product");
+            callback.onFailure(e.getMessage());
         });
     }
 }

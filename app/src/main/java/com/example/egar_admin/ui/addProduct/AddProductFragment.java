@@ -231,10 +231,11 @@ public class AddProductFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getActivity(), "Invalid price or quantity value", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ProductController.getInstance().addProduct(provider.getId(),nameProduct, description, price, false,pickedImageUri, quantityInCart, provider.getProviderType(), provider, new ProcessCallback() {
+
+                ProductController.getInstance().addProduct(nameProduct, description, price, false,pickedImageUri, quantityInCart, provider.getProviderType(), provider, new ProcessCallback() {
                     @Override
                     public void onSuccess(String message) {
-                        Snackbar.make(binding.getRoot(), message + nameProduct, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), provider.getProviderType(), Snackbar.LENGTH_LONG).show();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
 

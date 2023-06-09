@@ -26,8 +26,8 @@ public class Provider {
         this.id =id;
         this.name = name;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.providerType = providerType;
+        this.phoneNumber = phoneNumber;
         this.address=address;
         this.city=city;
         this.bio=bio;

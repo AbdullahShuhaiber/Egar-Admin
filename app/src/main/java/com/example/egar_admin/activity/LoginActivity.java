@@ -227,6 +227,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }else {
                             Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     } else {
                         if (FirebaseAuth.getInstance().getCurrentUser() == null){
@@ -234,6 +235,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }else {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     }
                 } else {

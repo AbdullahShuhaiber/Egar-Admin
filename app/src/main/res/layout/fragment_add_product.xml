@@ -173,7 +173,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/shape_bac_edit_text"
-                android:inputType="text"
+                android:inputType="numberSigned"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -58,7 +58,6 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 FirebaseAuthController.getInstance().isSignedIn(new SignInStatusListener() {
                     @Override
                     public void onUserSignedInAsDeliveryProvider() {

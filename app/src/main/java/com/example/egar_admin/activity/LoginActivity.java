@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     binding.buttonAnimation.setVisibility(View.VISIBLE);
                     binding.buttonAnimation.playAnimation();
                     binding.buttonText.setVisibility(View.GONE);
-                    loginAndCheckProviderType();
+                    checkProviderTypeAndRedirectToActivity();
                 }else {
                     Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();
                 }

@@ -47,18 +47,17 @@ public class ProductController {
     }
 
 
-    public void addProduct(String nameProduct, String description, double price,boolean isFavorite, Uri pickedImageUri, int quantityInCart,String category, Provider provider, ProcessCallback callback) {
+    public void addProduct(String nameProduct, String description, double price, boolean isFavorite, Uri pickedImageUri, int quantityInCart, String category, Provider provider, ProcessCallback callback) {
         CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
-        // Convert product object to a HashMap
         HashMap<String, Object> productData = new HashMap<>();
         productData.put("name", nameProduct);
         productData.put("description", description);
         productData.put("price", price);
-        productData.put("isFavorite",isFavorite );
+        productData.put("isFavorite", isFavorite);
         productData.put("quantityInCart", quantityInCart);
-        productData.put("category",category );
-        productData.put("provider",provider);
+        productData.put("category", category);
+        productData.put("provider", provider);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -82,8 +81,16 @@ public class ProductController {
                 productsCollection.add(productData)
                         .addOnSuccessListener(documentReference -> {
                             String documentId = documentReference.getId();
+
+                            // Update the product data with the updated product object
                             productData.put("id", documentId);
-                            callback.onSuccess("Product added with ID: " + documentId);
+                            productsCollection.document(documentId).set(productData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        callback.onSuccess("Product added with ID: " + documentId);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        callback.onFailure(e.getMessage());
+                                    });
                         })
                         .addOnFailureListener(e -> {
                             callback.onFailure(e.getMessage());
@@ -91,11 +98,8 @@ public class ProductController {
             } else {
                 callback.onFailure("Error uploading image");
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFailure(e.getMessage());
-            }
+        }).addOnFailureListener(e -> {
+            callback.onFailure(e.getMessage());
         });
     }
 

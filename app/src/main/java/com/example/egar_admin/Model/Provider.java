@@ -11,7 +11,15 @@ public class Provider {
     private String bio;
     private String image;
 
-    public Provider() {
+    public Provider(String name, String email, String phoneNumber, String providerType, String address, String city, String bio, String image) {
+        this.name = name;
+        this.email = email;
+        this.providerType = providerType;
+        this.phoneNumber = phoneNumber;
+        this.address=address;
+        this.city=city;
+        this.bio=bio;
+        this.image=image;
     }
 
     public Provider(String name, String email, String phoneNumber, String providerType) {
@@ -41,6 +49,8 @@ public class Provider {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.providerType = providerType;
+    }
+    public Provider() {
     }
 
     public String getId() {

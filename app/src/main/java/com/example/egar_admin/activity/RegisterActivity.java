@@ -205,14 +205,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void register() {
-        String id = FirebaseAuth.getInstance().getUid();
         FirebaseAuthController.getInstance().createAccount(
-                id,
                 binding.etName.getText().toString().trim(),
                 binding.etEmail.getText().toString().trim(),
                 binding.etPass.getText().toString().trim(),
-                getSelectedChipText(),
                 binding.etPhone.getText().toString().trim(),
+                getSelectedChipText(),
                 "Khan Younes",
                 "Gaza",
                 "End To The End Services And Products",

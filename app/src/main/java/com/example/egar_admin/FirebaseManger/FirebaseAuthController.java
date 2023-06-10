@@ -20,6 +20,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,7 +46,7 @@ public class FirebaseAuthController {
         }
         return instance;
     }
-    public void createAccount(String id, String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
+    public void createAccount(String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 auth.getCurrentUser().sendEmailVerification();
@@ -63,14 +64,24 @@ public class FirebaseAuthController {
                     if (task2.isSuccessful()) {
                         Uri downloadUri = task2.getResult();
 
-                        Provider provider = new Provider(id, name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString());
+                        Provider provider = new Provider(name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString());
 
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         DocumentReference userRef = db.collection("serviceproviders").document(auth.getCurrentUser().getUid());
 
                         userRef.set(provider)
                                 .addOnSuccessListener(aVoid -> {
-                                    callback.onSuccess("Account created successfully");
+                                    // Store the document ID in the provider object
+                                    provider.setId(userRef.getId());
+
+                                    // Update the provider data with the updated provider object
+                                    userRef.set(provider)
+                                            .addOnSuccessListener(aVoid1 -> {
+                                                callback.onSuccess("Account created successfully");
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                callback.onFailure(e.getMessage());
+                                            });
                                 })
                                 .addOnFailureListener(e -> {
                                     callback.onFailure(e.getMessage());
@@ -145,8 +156,6 @@ public class FirebaseAuthController {
         });
     }
 */
-
-
     public void signIn(String email, String password, ProcessCallback callback) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

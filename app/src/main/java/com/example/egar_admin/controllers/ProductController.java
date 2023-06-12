@@ -193,11 +193,10 @@ public class ProductController {
         });
     }
 
-    public void getProductById(String productId, ProductCallback callback) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference productRef = db.collection("products").document(productId);
+    public void getProductById(String productId, OnProductFetchListener callback) {
+        CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
 
-        productRef.get().addOnSuccessListener(documentSnapshot -> {
+        productsCollection.document(productId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String id = documentSnapshot.getId();
                 String name = documentSnapshot.getString("name");
@@ -206,31 +205,39 @@ public class ProductController {
                 boolean isFavorite = documentSnapshot.getBoolean("isFavorite");
                 int quantityInCart = documentSnapshot.getLong("quantityInCart").intValue();
                 String category = documentSnapshot.getString("category");
-                String providerId = documentSnapshot.getString("provider.id");
-                String imageUrl = documentSnapshot.getString("imageUrl");
 
-                DocumentReference providerRef = db.collection("serviceproviders").document(providerId);
+                // Retrieve the provider data
+                DocumentReference providerRef = documentSnapshot.getDocumentReference("provider");
                 providerRef.get().addOnSuccessListener(providerDocumentSnapshot -> {
                     if (providerDocumentSnapshot.exists()) {
+                        String providerId = providerDocumentSnapshot.getId();
                         String providerName = providerDocumentSnapshot.getString("name");
                         String providerEmail = providerDocumentSnapshot.getString("email");
+                        String providerType = providerDocumentSnapshot.getString("providerType");
                         String providerPhoneNumber = providerDocumentSnapshot.getString("phoneNumber");
+                        String providerAddress = providerDocumentSnapshot.getString("address");
+                        String providerCity = providerDocumentSnapshot.getString("city");
+                        String providerBio = providerDocumentSnapshot.getString("bio");
+                        String providerImage = providerDocumentSnapshot.getString("image");
 
-                        Provider provider = new Provider(providerId, providerName, providerEmail, providerPhoneNumber);
+                        Provider provider = new Provider(providerId, providerName, providerEmail, providerType, providerPhoneNumber, providerAddress, providerCity, providerBio, providerImage);
+
+                        // Retrieve the imageUrl
+                        String imageUrl = documentSnapshot.getString("imageUrl");
 
                         Product product = new Product(id, name, description, price, isFavorite, quantityInCart, category, provider, imageUrl);
-                        callback.onProductFetchSuccess(product);
+                        callback.onFetchSuccess(product);
                     } else {
-                        callback.onFailure("Provider document does not exist");
+                        callback.onFetchFailure("Provider document does not exist");
                     }
                 }).addOnFailureListener(e -> {
-                    callback.onFailure(e.getMessage());
+                    callback.onFetchFailure(e.getMessage());
                 });
             } else {
-                callback.onFailure("Product document does not exist");
+                callback.onFetchFailure("Product document does not exist");
             }
         }).addOnFailureListener(e -> {
-            callback.onFailure(e.getMessage());
+            callback.onFetchFailure(e.getMessage());
         });
     }
 }

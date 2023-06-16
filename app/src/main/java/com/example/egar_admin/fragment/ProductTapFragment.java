@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
+import com.example.egar_admin.activity.OfferActivity;
 import com.example.egar_admin.adapters.ProductHomeAdapter;
 import com.example.egar_admin.controllers.ProductController;
 
@@ -71,6 +72,8 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
 
     private  void setOnClick() {
         binding.textShowAll.setOnClickListener(this::onClick);
+        binding.buttonAddOffer.setOnClickListener(this::onClick);
+
     }
 
     private void getProduct(){
@@ -116,6 +119,10 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.text_showAll){
             Intent intent =new Intent(getActivity(), ProductActivity.class);
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.buttonAddOffer){
+            Intent intent =new Intent(getActivity(), OfferActivity.class);
             startActivity(intent);
         }
     }

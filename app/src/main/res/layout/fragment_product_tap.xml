@@ -7,7 +7,7 @@
     tools:context=".fragment.ProductTapFragment">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/buttonAddOffer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddOffer" />
 
     <TextView
         android:id="@+id/text_showAll"
@@ -43,9 +43,9 @@
         android:paddingEnd="@dimen/_5sdp"
         android:paddingStart="@dimen/_5sdp"
         android:textSize="@dimen/_16ssp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button"
+        app:layout_constraintBaseline_toBaselineOf="@+id/buttonAddOffer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.898"
-        app:layout_constraintStart_toEndOf="@+id/button" />
+        app:layout_constraintStart_toEndOf="@+id/buttonAddOffer" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

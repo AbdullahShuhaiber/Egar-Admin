@@ -13,6 +13,14 @@ public class Offer {
     public Offer() {
     }
 
+    public Offer(String productId, double price, int quantity, Date startDate, Date endDate) {
+        this.productId = productId;
+        this.price = price;
+        this.quantity = quantity;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Offer(String id, String productId, double price, int quantity, Date startDate, Date endDate) {
         this.id = id;
         this.productId = productId;

@@ -148,30 +148,7 @@ public class ProductController {
                 });
     }
 
-    public void getProductNamesByServiceProvider(String providerId, OnProductFetchListener listener) {
-        db.collection("products")
-                .whereEqualTo("provider.id", providerId)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    ArrayList<String> productNames = new ArrayList<>();
-                    int productCount = queryDocumentSnapshots.size();
-                    AtomicInteger processedCount = new AtomicInteger(0);
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Product product = document.toObject(Product.class);
-                        productNames.add(product.getName());
-
-                        int count = processedCount.incrementAndGet();
-                        if (count == productCount) {
-                            listener.onFetchNamesSuccess(productNames, providerId);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    listener.onFetchFailure("Failed to fetch product names");
-                });
-    }
-
-    public void getAllProductsByServicesProvider(String providerId, OnProductFetchListener listener) {
+    public void getAllProducts(String providerId, OnProductFetchListener listener) {
         db.collection("products")
                 .whereEqualTo("provider.id", providerId)
                 .get()
@@ -216,10 +193,11 @@ public class ProductController {
         });
     }
 
-    public void getProductById(String productId, OnProductFetchListener callback) {
-        CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
+    public void getProductById(String productId, ProductCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference productRef = db.collection("products").document(productId);
 
-        productsCollection.document(productId).get().addOnSuccessListener(documentSnapshot -> {
+        productRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String id = documentSnapshot.getId();
                 String name = documentSnapshot.getString("name");
@@ -228,39 +206,31 @@ public class ProductController {
                 boolean isFavorite = documentSnapshot.getBoolean("isFavorite");
                 int quantityInCart = documentSnapshot.getLong("quantityInCart").intValue();
                 String category = documentSnapshot.getString("category");
+                String providerId = documentSnapshot.getString("provider.id");
+                String imageUrl = documentSnapshot.getString("imageUrl");
 
-                // Retrieve the provider data
-                DocumentReference providerRef = documentSnapshot.getDocumentReference("provider");
+                DocumentReference providerRef = db.collection("serviceproviders").document(providerId);
                 providerRef.get().addOnSuccessListener(providerDocumentSnapshot -> {
                     if (providerDocumentSnapshot.exists()) {
-                        String providerId = providerDocumentSnapshot.getId();
                         String providerName = providerDocumentSnapshot.getString("name");
                         String providerEmail = providerDocumentSnapshot.getString("email");
-                        String providerType = providerDocumentSnapshot.getString("providerType");
                         String providerPhoneNumber = providerDocumentSnapshot.getString("phoneNumber");
-                        String providerAddress = providerDocumentSnapshot.getString("address");
-                        String providerCity = providerDocumentSnapshot.getString("city");
-                        String providerBio = providerDocumentSnapshot.getString("bio");
-                        String providerImage = providerDocumentSnapshot.getString("image");
 
-                        Provider provider = new Provider(providerId, providerName, providerEmail, providerType, providerPhoneNumber, providerAddress, providerCity, providerBio, providerImage);
-
-                        // Retrieve the imageUrl
-                        String imageUrl = documentSnapshot.getString("imageUrl");
+                        Provider provider = new Provider(providerId, providerName, providerEmail, providerPhoneNumber);
 
                         Product product = new Product(id, name, description, price, isFavorite, quantityInCart, category, provider, imageUrl);
-                        callback.onFetchSuccess(product);
+                        callback.onProductFetchSuccess(product);
                     } else {
-                        callback.onFetchFailure("Provider document does not exist");
+                        callback.onFailure("Provider document does not exist");
                     }
                 }).addOnFailureListener(e -> {
-                    callback.onFetchFailure(e.getMessage());
+                    callback.onFailure(e.getMessage());
                 });
             } else {
-                callback.onFetchFailure("Product document does not exist");
+                callback.onFailure("Product document does not exist");
             }
         }).addOnFailureListener(e -> {
-            callback.onFetchFailure(e.getMessage());
+            callback.onFailure(e.getMessage());
         });
     }
 }

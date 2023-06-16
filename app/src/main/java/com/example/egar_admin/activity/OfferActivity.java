@@ -16,10 +16,12 @@ import com.example.egar_admin.controllers.OfferController;
 import com.example.egar_admin.controllers.ProductController;
 
 import com.example.egar_admin.databinding.ActivityOfferBinding;
+import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.interfaces.ProductCallback;
 import com.example.egar_admin.ui.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,24 +105,32 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void getProduct(){
-/*        ProductController.getInstance().getAllProducts(new ProductCallback() {
+        ProductController.getInstance().getProductNamesByServiceProvider(FirebaseAuth.getInstance().getUid(), new OnProductFetchListener() {
             @Override
-            public void onSuccess(List<Product> productList) {
-                products.addAll(productList);
-                adapter.notifyDataSetChanged();
+            public void onFetchLListSuccess(ArrayList<Product> list, String id) {
 
             }
 
             @Override
-            public void onProductFetchSuccess(Product product) {
+            public void onFetchSuccess(Product product) {
 
             }
 
             @Override
-            public void onFailure(String message) {
+            public void onFetchFailure(String message) {
 
             }
-        });*/
+
+            @Override
+            public void onFetchListSuccess(ArrayList<Product> productList, String providerId) {
+
+            }
+
+            @Override
+            public void onFetchNamesSuccess(ArrayList<String> productNames, String providerId) {
+
+            }
+        });
     }
 
     private void addProductView(){

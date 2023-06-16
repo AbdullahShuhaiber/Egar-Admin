@@ -102,51 +102,32 @@ public class ProductController {
             callback.onFailure(e.getMessage());
         });
     }
+    public void getProductNamesByServiceProvider(String providerId, OnProductFetchListener listener) {
+        db.collection("products")
+                .whereEqualTo("provider.id", providerId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<String> productNames = new ArrayList<>();
+                    int productCount = queryDocumentSnapshots.size();
+                    AtomicInteger processedCount = new AtomicInteger(0);
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Product product = document.toObject(Product.class);
+                        productNames.add(product.getName());
 
-
-    public void updateProduct(Product product,ProcessCallback callback) {
-        // Update product in Firestore
-        DocumentReference productRef = db.collection("products").document(product.getId());
-
-        productRef.update("name", product.getName(),
-                        "description", product.getDescription(),
-                        "price", product.getPrice(),
-                        "imageUrl", product.getImageUrl())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Product updated successfully");
-                        callback.onSuccess("Product updated successfully");
+                        int count = processedCount.incrementAndGet();
+                        if (count == productCount) {
+                            listener.onFetchNamesSuccess(productNames, providerId);
+                        }
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating product", e);
-                        callback.onFailure("Error updating product");
-                    }
+                .addOnFailureListener(e -> {
+                    // Return the error message to the listener
+                    listener.onFetchFailure("Failed to fetch product names");
                 });
     }
 
-    public void deleteProduct(Product product,ProcessCallback callback) {
 
-        db.collection("products").document(product.getId())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Product deleted successfully");
-                        callback.onSuccess("Product deleted successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting product", e);
-                        callback.onFailure("Error deleting product");
-                    }
-                });
-    }
+
 
     public void getAllProducts(String providerId, OnProductFetchListener listener) {
         db.collection("products")

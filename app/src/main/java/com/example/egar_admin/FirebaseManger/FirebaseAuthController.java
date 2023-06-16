@@ -49,50 +49,53 @@ public class FirebaseAuthController {
     public void createAccount(String name, String email, String password, String phoneNumber, String providerType, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                auth.getCurrentUser().sendEmailVerification();
+                auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(emailVerificationTask -> {
+                    if (emailVerificationTask.isSuccessful()) {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference imagesRef = storage.getReference().child("profile_images_providers").child(auth.getCurrentUser().getUid());
 
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference imagesRef = storage.getReference().child("profile_images_providers").child(auth.getCurrentUser().getUid());
+                        UploadTask uploadTask = imagesRef.putFile(profileImageUri);
+                        uploadTask.continueWithTask(task2 -> {
+                            if (!task2.isSuccessful()) {
+                                throw task2.getException();
+                            }
+                            return imagesRef.getDownloadUrl();
+                        }).addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                Uri downloadUri = task2.getResult();
 
-                UploadTask uploadTask = imagesRef.putFile(profileImageUri);
-                uploadTask.continueWithTask(task2 -> {
-                    if (!task2.isSuccessful()) {
-                        throw task2.getException();
-                    }
-                    return imagesRef.getDownloadUrl();
-                }).addOnCompleteListener(task2 -> {
-                    if (task2.isSuccessful()) {
-                        Uri downloadUri = task2.getResult();
+                                Provider provider = new Provider(name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString());
 
-                        Provider provider = new Provider(name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString());
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                DocumentReference userRef = db.collection("serviceproviders").document(auth.getCurrentUser().getUid());
 
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        DocumentReference userRef = db.collection("serviceproviders").document(auth.getCurrentUser().getUid());
+                                userRef.set(provider)
+                                        .addOnSuccessListener(aVoid -> {
+                                            // Store the document ID in the provider object
+                                            provider.setId(userRef.getId());
 
-                        userRef.set(provider)
-                                .addOnSuccessListener(aVoid -> {
-                                    // Store the document ID in the provider object
-                                    provider.setId(userRef.getId());
-
-                                    // Update the provider data with the updated provider object
-                                    userRef.set(provider)
-                                            .addOnSuccessListener(aVoid1 -> {
-                                                callback.onSuccess("Account created successfully");
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                callback.onFailure(e.getMessage());
-                                            });
-                                })
-                                .addOnFailureListener(e -> {
-                                    callback.onFailure(e.getMessage());
-                                });
+                                            // Update the provider data with the updated provider object
+                                            userRef.set(provider)
+                                                    .addOnSuccessListener(aVoid1 -> {
+                                                        callback.onSuccess("Account created successfully");
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        callback.onFailure(e.getMessage());
+                                                    });
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            callback.onFailure(e.getMessage());
+                                        });
+                            } else {
+                                callback.onFailure("Error uploading profile image");
+                            }
+                        }).addOnFailureListener(e -> {
+                            callback.onFailure(e.getMessage());
+                        });
                     } else {
-                        callback.onFailure("Error uploading profile image");
+                        callback.onFailure("Failed to send email verification");
                     }
-                }).addOnFailureListener(e -> {
-                    callback.onFailure(e.getMessage());
                 });
-
             } else {
                 callback.onFailure(task.getException().getMessage());
             }

@@ -197,24 +197,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
-    private void loginAndCheckProviderType() {
-        FirebaseAuthController.getInstance().signIn(binding.etEmail.getText().toString(),
-                binding.etPassword.getText().toString(),
-                new ProcessCallback() {
-                    @Override
-                    public void onSuccess(String message) {
-                        checkProviderTypeAndRedirectToActivity();
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        binding.buttonAnimation.pauseAnimation();
-                        binding.buttonAnimation.setVisibility(View.GONE);
-                        binding.buttonText.setVisibility(View.VISIBLE);
-                        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
-                    }
-                });
-    }
 
     private void checkProviderTypeAndRedirectToActivity() {
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {

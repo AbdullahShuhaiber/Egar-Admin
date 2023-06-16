@@ -12,4 +12,6 @@ public interface OnProductFetchListener {
     void onFetchFailure(String message);
 
     void onFetchListSuccess(ArrayList<Product> productList, String providerId);
+
+    void onFetchNamesSuccess(ArrayList<String> productNames, String providerId);
 }

@@ -64,7 +64,7 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
+        ProductController.getInstance().getAllProductsByServicesProvider(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list, String id) {
 
@@ -85,6 +85,11 @@ public class ProductActivity extends AppCompatActivity implements View.OnClickLi
                 products.clear();
                 products.addAll(productList);
                 adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFetchNamesSuccess(ArrayList<String> productNames, String providerId) {
+
             }
         });
 

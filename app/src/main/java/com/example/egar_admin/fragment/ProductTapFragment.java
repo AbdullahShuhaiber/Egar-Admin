@@ -74,7 +74,7 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
+        ProductController.getInstance().getAllProductsByServicesProvider(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list, String id) {
 
@@ -101,6 +101,11 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
                     products.add(product);
                 }*/
                 adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFetchNamesSuccess(ArrayList<String> productNames, String providerId) {
+
             }
 
         });

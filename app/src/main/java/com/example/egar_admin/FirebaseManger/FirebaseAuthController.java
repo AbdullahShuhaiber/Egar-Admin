@@ -161,7 +161,7 @@ public class FirebaseAuthController {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    if (Objects.requireNonNull(auth.getCurrentUser()).isEmailVerified()) {
+                    if (auth.getCurrentUser().isEmailVerified()) {
                         //TODO: Login success, Navigate to home screen (FROM UI)
                         callback.onSuccess("Logged in successfully");
                     } else {

@@ -148,7 +148,30 @@ public class ProductController {
                 });
     }
 
-    public void getAllProducts(String providerId, OnProductFetchListener listener) {
+    public void getProductNamesByServiceProvider(String providerId, OnProductFetchListener listener) {
+        db.collection("products")
+                .whereEqualTo("provider.id", providerId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<String> productNames = new ArrayList<>();
+                    int productCount = queryDocumentSnapshots.size();
+                    AtomicInteger processedCount = new AtomicInteger(0);
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Product product = document.toObject(Product.class);
+                        productNames.add(product.getName());
+
+                        int count = processedCount.incrementAndGet();
+                        if (count == productCount) {
+                            listener.onFetchNamesSuccess(productNames, providerId);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    listener.onFetchFailure("Failed to fetch product names");
+                });
+    }
+
+    public void getAllProductsByServicesProvider(String providerId, OnProductFetchListener listener) {
         db.collection("products")
                 .whereEqualTo("provider.id", providerId)
                 .get()

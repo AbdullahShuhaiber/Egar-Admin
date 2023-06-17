@@ -5,6 +5,8 @@ import java.util.Date;
 public class Offer {
     private String id;
     private String productId;
+
+    private String productName;
     private double price;
     private int quantity;
     private String startDate;
@@ -13,12 +15,28 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(String productId, double price, int quantity, String startDate, String endDate) {
+/*    public Offer(String productId, double price, int quantity, String startDate, String endDate) {
         this.productId = productId;
         this.price = price;
         this.quantity = quantity;
         this.startDate = startDate;
         this.endDate = endDate;
+    }*/
+
+    public Offer(String productId, String productName, double price, String startDate, String endDate) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Offer(String id, String productId, double price, int quantity, String startDate, String endDate) {

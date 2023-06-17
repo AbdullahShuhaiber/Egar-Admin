@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="product"
+                android:text="Product"
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -122,14 +122,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="discount percentage"
+                android:text="New price"
                 android:textColor="@color/text_app"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_product" />
 
             <EditText
-                android:id="@+id/et_discount_percentage"
+                android:id="@+id/et_New_price"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_45sdp"
                 android:layout_marginStart="@dimen/_19sdp"
@@ -159,7 +159,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_discount_percentage" />
+                app:layout_constraintTop_toBottomOf="@+id/et_New_price" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

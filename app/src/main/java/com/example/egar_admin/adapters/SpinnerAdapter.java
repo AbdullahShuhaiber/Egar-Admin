@@ -16,6 +16,7 @@ import java.util.List;
 
 public class SpinnerAdapter extends BaseAdapter {
     private List<Product> productList;
+
     private Context context;
 
     public SpinnerAdapter(List<Product> productList, Context context) {

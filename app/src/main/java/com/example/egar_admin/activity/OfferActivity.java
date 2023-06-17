@@ -5,7 +5,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.egar_admin.Model.Offer;
 import com.example.egar_admin.Model.Product;
@@ -22,8 +25,11 @@ import com.example.egar_admin.interfaces.ProductCallback;
 import com.example.egar_admin.ui.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +43,8 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
     SpinnerAdapter adapter;
     Offer offer ;
 
+    String idProduct;
+
     //private ProductSpinnerAdapter adapter;
 
     @Override
@@ -47,12 +55,16 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
 
         initializeView();
 
+
     }
 
     private void initializeView() {
      setOnClickListeners();
      initializeRecyclerAdapter();
+     gCalendar();
+     getIdProduct();
      getProduct();
+
     }
 
     private void setOnClickListeners() {
@@ -75,7 +87,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
     private boolean checkData() {
         String startDate = binding.etOfferStartDate.getText().toString();
         String endDate = binding.etOfferEndDate.getText().toString();
-        String price = binding.etDiscountPercentage.getText().toString();
+        String price = binding.etNewPrice.getText().toString();
         //String imageUrl = binding.editProductImage.getText().toString();
         //String quantityInCart = binding.editQuantity.getText().toString();
         if (startDate.isEmpty()) {
@@ -85,7 +97,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
             binding.etOfferEndDate.setError("endDate field is Required");
             return false;
         } else if (price.isEmpty()) {
-            binding.etDiscountPercentage.setError("description field is Required");
+            binding.etNewPrice.setError("description field is Required");
             return false;
         }/*else if (true*//*imageUrl.isEmpty()*//*) {
            // binding.editProductImage.setError("image field is Required");
@@ -105,7 +117,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void getProduct(){
-        ProductController.getInstance().getProductNamesByServiceProvider(FirebaseAuth.getInstance().getUid(), new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list, String id) {
 
@@ -123,24 +135,29 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFetchListSuccess(ArrayList<Product> productList, String providerId) {
-
+                products.addAll(productList);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFetchNamesSuccess(ArrayList<String> productNames, String providerId) {
 
             }
+
         });
     }
 
     private void addProductView(){
         String startDate = binding.etOfferStartDate.getText().toString();
         String endDate = binding.etOfferEndDate.getText().toString();
-        String price = binding.etDiscountPercentage.getText().toString();
+        String price = binding.etNewPrice.getText().toString();
+        offer = new Offer(idProduct,Double.parseDouble(price),1,startDate,endDate);
+
        // offer =new Offer("1",Double.parseDouble(price),1,startDate ,endDate);
         offerController.addOffer(offer, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
+                onBackPressed();
 
             }
 
@@ -149,5 +166,73 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
+    }
+
+
+    private void gCalendar(){
+        Calendar now = Calendar.getInstance();
+
+        binding.etOfferStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        binding.etOfferStartDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+
+                    }
+                    },
+                        now.get(Calendar.YEAR), // Initial year selection
+                        now.get(Calendar.MONTH), // Initial month selection
+                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+
+                );
+                dpd.show(getSupportFragmentManager(),"Datepickerdialog");
+
+
+            }
+        });
+
+        binding.etOfferEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        binding.etOfferEndDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+
+                    }
+                    },
+                        now.get(Calendar.YEAR), // Initial year selection
+                        now.get(Calendar.MONTH), // Initial month selection
+                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+
+                );
+                dpd.show(getSupportFragmentManager(),"Datepickerdialog");
+
+
+            }
+        });
+
+    }
+
+    private void getIdProduct(){
+
+        binding.spinnerProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(OfferActivity.this, ""+products.get(position).getId(), Toast.LENGTH_SHORT).show();
+                idProduct = products.get(position).getId();
+
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 }

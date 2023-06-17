@@ -7,13 +7,13 @@ public class Offer {
     private String productId;
     private double price;
     private int quantity;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
 
     public Offer() {
     }
 
-    public Offer(String productId, double price, int quantity, Date startDate, Date endDate) {
+    public Offer(String productId, double price, int quantity, String startDate, String endDate) {
         this.productId = productId;
         this.price = price;
         this.quantity = quantity;
@@ -21,7 +21,7 @@ public class Offer {
         this.endDate = endDate;
     }
 
-    public Offer(String id, String productId, double price, int quantity, Date startDate, Date endDate) {
+    public Offer(String id, String productId, double price, int quantity, String startDate, String endDate) {
         this.id = id;
         this.productId = productId;
         this.price = price;
@@ -65,19 +65,19 @@ public class Offer {
         this.quantity = quantity;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }

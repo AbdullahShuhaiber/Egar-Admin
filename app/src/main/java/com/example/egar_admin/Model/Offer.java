@@ -1,53 +1,22 @@
 package com.example.egar_admin.Model;
 
-import java.util.Date;
-
 public class Offer {
     private String id;
-    private String productId;
-
-    private String productName;
+    private Product product;
     private double price;
     private int quantity;
     private String startDate;
     private String endDate;
 
-    public Offer() {
-    }
 
-/*    public Offer(String productId, double price, int quantity, String startDate, String endDate) {
-        this.productId = productId;
-        this.price = price;
-        this.quantity = quantity;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }*/
 
-    public Offer(String productId, String productName, double price, String startDate, String endDate) {
-        this.productId = productId;
-        this.productName = productName;
-        this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Offer(String id, String productId, double price, int quantity, String startDate, String endDate) {
-        this.id = id;
-        this.productId = productId;
+    public Offer(Product product, double price, int quantity, String startDate, String endDate) {
+        this.product = product;
         this.price = price;
         this.quantity = quantity;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
 
     public String getId() {
         return id;
@@ -57,15 +26,13 @@ public class Offer {
         this.id = id;
     }
 
-    public String getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
-
-
 
     public double getPrice() {
         return price;

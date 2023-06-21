@@ -43,7 +43,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
     SpinnerAdapter adapter;
     Offer offer ;
 
-    String idProduct;
+    Product product;
     String productName;
 
     //private ProductSpinnerAdapter adapter;
@@ -152,9 +152,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
         String startDate = binding.etOfferStartDate.getText().toString();
         String endDate = binding.etOfferEndDate.getText().toString();
         String price = binding.etNewPrice.getText().toString();
-        offer = new Offer(idProduct,productName ,Double.parseDouble(price),1,startDate,endDate);
-
-       // offer =new Offer("1",Double.parseDouble(price),1,startDate ,endDate);
+        offer = new Offer(product,Double.parseDouble(price),1,startDate,endDate);
         offerController.addOffer(offer, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
@@ -223,11 +221,8 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(OfferActivity.this, ""+products.get(position).getId(), Toast.LENGTH_SHORT).show();
-                idProduct = products.get(position).getId();
+                product = products.get(position);
                 productName = products.get(position).getName();
-
-
-
             }
 
             @Override

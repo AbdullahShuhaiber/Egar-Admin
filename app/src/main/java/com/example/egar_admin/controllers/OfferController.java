@@ -18,6 +18,8 @@ public class OfferController {
     public void addOffer(Offer offer, ProcessCallback callback) {
         offersCollection.add(offer)
                 .addOnSuccessListener(documentReference -> {
+                    String id = documentReference.getId().toString().trim();
+                    offer.setId(id);
                     callback.onSuccess("Offer added successfully");
                 })
                 .addOnFailureListener(e -> {

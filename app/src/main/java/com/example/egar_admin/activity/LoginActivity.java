@@ -202,24 +202,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
+                Toast.makeText(binding.getRoot().getContext(),providerType,Toast.LENGTH_LONG).show();
                  if (providerType != null) {
                     if (providerType.equals("Delivery")) {
-                        if (FirebaseAuth.getInstance().getCurrentUser() == null){
-                            Snackbar.make(binding.getRoot(),"Please Create Your Account", Snackbar.LENGTH_LONG).show();
-                        }else {
                             Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
                             startActivity(intent);
                             finish();
-                        }
+
                     } else {
-                        if (FirebaseAuth.getInstance().getCurrentUser() == null){
-                            Snackbar.make(binding.getRoot(),"Please Create Your Account", Snackbar.LENGTH_LONG).show();
-                        }else {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         }
-                    }
+
                 } else {
                      binding.buttonAnimation.pauseAnimation();
                      binding.buttonAnimation.setVisibility(View.GONE);

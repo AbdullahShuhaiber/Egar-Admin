@@ -156,7 +156,6 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
         offerController.addOffer(offer, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                onBackPressed();
 
             }
 

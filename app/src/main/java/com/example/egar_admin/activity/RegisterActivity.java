@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -141,12 +142,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case R.id.bn_register:
                 if (dataCheck() && isValidPalestinianPhoneNumber() && isValidEmail()) {
                     register();
-                    Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
-                    String email = binding.etEmail.getText().toString().trim();
-                    String pass = binding.etPass.getText().toString().trim();
-                    intent1.putExtra("email", email);
-                    intent1.putExtra("password", pass);
-                    startActivity(intent1);
+
                 }
                 break;
             case R.id.btn_back:
@@ -219,6 +215,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onSuccess(String message) {
                         Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
+                                String email = binding.etEmail.getText().toString().trim();
+                                String pass = binding.etPass.getText().toString().trim();
+                                intent1.putExtra("email", email);
+                                intent1.putExtra("password", pass);
+                                startActivity(intent1);
+                            }
+                        },1222);
+
+
                     }
 
                     @Override

@@ -71,10 +71,8 @@ public class FirebaseAuthController {
 
                                 userRef.set(provider)
                                         .addOnSuccessListener(aVoid -> {
-                                            // Store the document ID in the provider object
                                             provider.setId(userRef.getId());
 
-                                            // Update the provider data with the updated provider object
                                             userRef.set(provider)
                                                     .addOnSuccessListener(aVoid1 -> {
                                                         callback.onSuccess("Account created successfully");

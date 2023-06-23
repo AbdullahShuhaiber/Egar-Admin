@@ -40,6 +40,7 @@ public class HomeFragment extends Fragment {
 
         binding.tab.addTab(binding.tab.newTab().setText("Product"));
         binding.tab.addTab(binding.tab.newTab().setText("Orders"));
+        binding.tab.addTab(binding.tab.newTab().setText("OfferProduct"));
         binding.tab.addTab(binding.tab.newTab().setText("Comments"));
 
        // FragmentManager fragmentManager = getSupportFragmentManager();

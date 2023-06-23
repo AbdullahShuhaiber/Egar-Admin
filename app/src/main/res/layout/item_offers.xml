@@ -132,7 +132,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
+<!--    <ImageView
         android:id="@+id/imageView26"
         android:layout_width="@dimen/_33sdp"
         android:layout_height="@dimen/_30sdp"
@@ -140,7 +140,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_favorite_border" />
+        app:srcCompat="@drawable/baseline_favorite_border" />-->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_provider"
         android:layout_width="@dimen/_55sdp"

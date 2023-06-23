@@ -17,15 +17,19 @@ import com.example.egar_admin.adapters.offers.OffersAdapter;
 import com.example.egar_admin.controllers.OfferController;
 import com.example.egar_admin.databinding.FragmentOfferProductBinding;
 import com.example.egar_admin.databinding.FragmentProductTapBinding;
+import com.example.egar_admin.interfaces.OnOfferFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class OfferProductFragment extends Fragment {
 
     FragmentOfferProductBinding binding;
-    private ArrayList<Offer> offers = new ArrayList<>();
+    private List<Offer> offerList = new ArrayList<>();
+    OfferController offerController = new OfferController();
     private OffersAdapter adapter;
 
     public OfferProductFragment() {
@@ -62,7 +66,7 @@ public class OfferProductFragment extends Fragment {
     }
 
     private void initializeRecyclerAdapter() {
-        adapter = new OffersAdapter(offers);
+        adapter = new OffersAdapter(offerList);
         //adapter.setCallback(this);
         binding.recOffers.setAdapter(adapter);
         binding.recOffers.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -70,15 +74,56 @@ public class OfferProductFragment extends Fragment {
 
 
     private void getOffers(){
-        OfferController offerController = new OfferController();
-        offerController.getAllOffers(new ProcessCallback() {
+        offerController.getOffersByProviderId(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnOfferFetchListener() {
             @Override
-            public void onSuccess(String message) {
+            public void onListFetchSuccess(List<Offer> offerList) {
 
             }
 
             @Override
-            public void onFailure(String message) {
+            public void onListFetchFailure(String message) {
+
+            }
+
+            @Override
+            public void onAddOfferSuccess(String offerId) {
+
+            }
+
+            @Override
+            public void onAddOfferFailure(String message) {
+
+            }
+
+            @Override
+            public void onUpdateOfferSuccess() {
+
+            }
+
+            @Override
+            public void onUpdateOfferFailure(String message) {
+
+            }
+
+            @Override
+            public void onDeleteOfferSuccess() {
+
+            }
+
+            @Override
+            public void onDeleteOfferFailure(String message) {
+
+            }
+
+            @Override
+            public void onGetOffersByServiceProviderIdSuccess(List<Offer> offers) {
+                offerList.clear();
+                offerList.addAll(offers.subList(0, Math.min(3, offers.size())));
+
+            }
+
+            @Override
+            public void onGetOffersByServiceProviderIdFailure(String message) {
 
             }
         });

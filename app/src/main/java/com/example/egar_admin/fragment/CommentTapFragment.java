@@ -10,11 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.egar_admin.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommentTapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class CommentTapFragment extends Fragment {
 
     public CommentTapFragment() {

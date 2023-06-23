@@ -1,10 +1,13 @@
 package com.example.egar_admin.controllers;
 
 import com.example.egar_admin.Model.Offer;
+import com.example.egar_admin.interfaces.OnOfferFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 public class OfferController {
     private static final String COLLECTION_PATH = "offers";
@@ -49,13 +52,17 @@ public class OfferController {
                 });
     }
 
-    public void getAllOffers(ProcessCallback callback) {
-        offersCollection.get()
+    public void getOffersByProviderId(String providerId, OnOfferFetchListener callback) {
+        offersCollection.whereEqualTo("product.provider.id", providerId)
+                .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    callback.onSuccess(queryDocumentSnapshots.toObjects(Offer.class).toString());
+                    List<Offer> offersList = queryDocumentSnapshots.toObjects(Offer.class);
+                    callback.onGetOffersByServiceProviderIdSuccess(offersList);
                 })
                 .addOnFailureListener(e -> {
-                    callback.onFailure(e.getMessage());
+                    callback.onGetOffersByServiceProviderIdFailure(e.getMessage());
                 });
     }
+
+
 }

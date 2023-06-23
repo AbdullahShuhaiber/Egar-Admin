@@ -60,11 +60,11 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initializeView() {
-     setOnClickListeners();
-     initializeRecyclerAdapter();
-     gCalendar();
-     getIdProduct();
-     getProduct();
+        setOnClickListeners();
+        initializeRecyclerAdapter();
+        gCalendar();
+        getIdProduct();
+        getProduct();
 
     }
 
@@ -174,12 +174,12 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        binding.etOfferStartDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+                                                                        @Override
+                                                                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                                                                            binding.etOfferStartDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
 
-                    }
-                    },
+                                                                        }
+                                                                    },
                         now.get(Calendar.YEAR), // Initial year selection
                         now.get(Calendar.MONTH), // Initial month selection
                         now.get(Calendar.DAY_OF_MONTH) // Inital day selection
@@ -195,12 +195,12 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        binding.etOfferEndDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+                                                                        @Override
+                                                                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                                                                            binding.etOfferEndDate.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
 
-                    }
-                    },
+                                                                        }
+                                                                    },
                         now.get(Calendar.YEAR), // Initial year selection
                         now.get(Calendar.MONTH), // Initial month selection
                         now.get(Calendar.DAY_OF_MONTH) // Inital day selection
@@ -221,7 +221,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(OfferActivity.this, ""+products.get(position).getId(), Toast.LENGTH_SHORT).show();
                 product = products.get(position);
-                productName = products.get(position).getName();
+                //productName = products.get(position).getName();
             }
 
             @Override

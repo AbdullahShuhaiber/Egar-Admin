@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.egar_admin.fragment.CommentTapFragment;
+import com.example.egar_admin.fragment.OfferProductFragment;
 import com.example.egar_admin.fragment.OrderTapFragment;
 import com.example.egar_admin.fragment.ProductTapFragment;
 
@@ -30,6 +31,8 @@ public class MyFragmentTapAdapter extends FragmentStateAdapter {
             return new ProductTapFragment();
         }else if (position == 1){
             return new OrderTapFragment();
+        }else if (position == 2){
+            return new OfferProductFragment();
         }
             return new CommentTapFragment();
 

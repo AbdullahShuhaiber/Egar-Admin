@@ -119,6 +119,7 @@ public class OfferProductFragment extends Fragment {
             public void onGetOffersByServiceProviderIdSuccess(List<Offer> offers) {
                 offerList.clear();
                 offerList.addAll(offers.subList(0, Math.min(3, offers.size())));
+                adapter.notifyDataSetChanged();
 
             }
 

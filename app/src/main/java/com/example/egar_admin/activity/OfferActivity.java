@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.egar_admin.Model.Offer;
 import com.example.egar_admin.Model.Product;
+import com.example.egar_admin.Model.Provider;
 import com.example.egar_admin.R;
 import com.example.egar_admin.adapters.SpinnerAdapter;
 import com.example.egar_admin.adapters.productShowProvider.ProductSpinnerAdapter;
@@ -156,6 +157,7 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
         offerController.addOffer(offer, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
+                onBackPressed();
 
             }
 
@@ -222,6 +224,15 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(OfferActivity.this, ""+products.get(position).getId(), Toast.LENGTH_SHORT).show();
                 product = products.get(position);
                 //productName = products.get(position).getName();
+//                String serviceProviderId = products.get(position).getServiceProviderId();
+//                String productName = products.get(position).getName();
+//                String description = products.get(position).getDescription();
+//                double price = products.get(position).getPrice();
+//                String imageUrl = products.get(position).getImageUrl();
+//                int quantityInCart = products.get(position).getQuantityInCart();
+//                String category = products.get(position).getCategory();
+//                Provider provider = products.get(position).getProvider();
+//                product =new Product(serviceProviderId,productName,description,price,imageUrl,quantityInCart,category,provider);
             }
 
             @Override

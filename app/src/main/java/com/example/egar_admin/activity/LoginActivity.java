@@ -202,27 +202,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
-                Toast.makeText(binding.getRoot().getContext(),providerType,Toast.LENGTH_LONG).show();
-                 if (providerType != null) {
-                    if (providerType.equals("Delivery")) {
-                            Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
-                            startActivity(intent);
-                            finish();
+                Snackbar.make(binding.getRoot(),providerType+"type",Snackbar.LENGTH_LONG).show();
+            }
 
-                    } else {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                } else {
-                     binding.buttonAnimation.pauseAnimation();
-                     binding.buttonAnimation.setVisibility(View.GONE);
-                     binding.buttonText.setVisibility(View.VISIBLE);
-                    Snackbar.make(binding.getRoot(), "Please Create Account + providertype is "+ providerType,Snackbar.LENGTH_LONG).show();
-                }
+            @Override
+            public void onProviderTypeNull(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
             }
         });
     }
+//                 if (providerType != null) {
+//                    if (providerType.equals("Delivery")) {
+//                            Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
+//                            startActivity(intent);
+//                            finish();
+//
+//                    } else {
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                            finish();
+//                        }
+//
+//                } else {
+//                     binding.buttonAnimation.pauseAnimation();
+//                     binding.buttonAnimation.setVisibility(View.GONE);
+//                     binding.buttonText.setVisibility(View.VISIBLE);
+//                    Snackbar.make(binding.getRoot(), "Please Create Account + providertype is "+ providerType,Snackbar.LENGTH_LONG).show();
+//                }
 
 }

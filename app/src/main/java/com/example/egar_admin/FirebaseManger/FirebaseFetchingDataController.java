@@ -76,6 +76,7 @@ public class FirebaseFetchingDataController {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference providersRef = db.collection("serviceproviders");
 
+
         Query query = providersRef.whereEqualTo("email", email);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,10 +89,10 @@ public class FirebaseFetchingDataController {
                         String providerType = document.getString("providerType");
                         callback.onProviderTypeChecked(providerType);
                     } else {
-                        callback.onProviderTypeChecked(null);
+                        callback.onProviderTypeNull("null Type");
                     }
                 } else {
-                    callback.onProviderTypeChecked(null);
+                    callback.onProviderTypeChecked("Failure Type");
                 }
             }
         });

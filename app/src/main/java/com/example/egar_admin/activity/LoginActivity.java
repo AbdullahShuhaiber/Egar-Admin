@@ -202,12 +202,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
+                Toast.makeText(LoginActivity.this, binding.etEmail.getText().toString().trim(), Toast.LENGTH_SHORT).show();
                 Snackbar.make(binding.getRoot(),providerType+"type",Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onProviderTypeNull(String message) {
                 Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onProviderTypeFailure(String message) {
+                Snackbar.make(binding.getRoot(),message+"اححاااا",Snackbar.LENGTH_LONG).show();
+
             }
         });
     }

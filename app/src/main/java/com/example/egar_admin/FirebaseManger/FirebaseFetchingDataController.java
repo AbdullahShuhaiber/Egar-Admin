@@ -75,14 +75,11 @@ public class FirebaseFetchingDataController {
     public void checkProviderTypeAndRedirectToActivity(String email, ProviderTypeCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference providersRef = db.collection("serviceproviders");
-
-
-        Query query = providersRef.whereEqualTo("email", email);
-
+        Query query = providersRef.whereEqualTo("email",email);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful() && task.isComplete()) {
                     QuerySnapshot snapshot = task.getResult();
                     if (snapshot != null && !snapshot.isEmpty()) {
                         DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one document per email
@@ -92,7 +89,7 @@ public class FirebaseFetchingDataController {
                         callback.onProviderTypeNull("null Type");
                     }
                 } else {
-                    callback.onProviderTypeChecked("Failure Type");
+                    callback.onProviderTypeFailure("Failure Type");
                 }
             }
         });

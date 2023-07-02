@@ -21,9 +21,13 @@ public class OfferController {
     public void addOffer(Offer offer, ProcessCallback callback) {
         offersCollection.add(offer)
                 .addOnSuccessListener(documentReference -> {
-                    String id = documentReference.getId().toString().trim();
-                    offer.setId(id);
-                    callback.onSuccess("Offer added successfully");
+                    String id = documentReference.getId();
+                    if (!id.isEmpty()) {
+                        offer.setId(id.trim());
+                        callback.onSuccess("تمت إضافة العرض بنجاح.");
+                    } else {
+                        callback.onFailure("فشل في الحصول على معرف العرض.");
+                    }
                 })
                 .addOnFailureListener(e -> {
                     callback.onFailure(e.getMessage());
@@ -31,26 +35,38 @@ public class OfferController {
     }
 
     public void deleteOffer(String offerId, ProcessCallback callback) {
-        DocumentReference offerRef = offersCollection.document(offerId);
-        offerRef.delete()
+        CollectionReference offersCollection = FirebaseFirestore.getInstance().collection("offers");
+
+        offersCollection.document(offerId).delete()
                 .addOnSuccessListener(aVoid -> {
-                    callback.onSuccess("Offer deleted successfully");
+                    callback.onSuccess("تم حذف العرض بنجاح.");
                 })
                 .addOnFailureListener(e -> {
-                    callback.onFailure(e.getMessage());
+                    callback.onFailure("فشل في حذف العرض. الخطأ: " + e.getMessage());
                 });
     }
 
+
     public void updateOffer(Offer offer, ProcessCallback callback) {
-        DocumentReference offerRef = offersCollection.document(offer.getId());
-        offerRef.set(offer)
-                .addOnSuccessListener(aVoid -> {
-                    callback.onSuccess("Offer updated successfully");
-                })
-                .addOnFailureListener(e -> {
-                    callback.onFailure(e.getMessage());
-                });
+        CollectionReference offersCollection = FirebaseFirestore.getInstance().collection("offers");
+
+        String offerId = offer.getId();
+
+        if (offerId != null) {
+            DocumentReference offerRef = offersCollection.document(offerId);
+
+            offerRef.set(offer)
+                    .addOnSuccessListener(aVoid -> {
+                        callback.onSuccess("تم تحديث العرض بنجاح.");
+                    })
+                    .addOnFailureListener(e -> {
+                        callback.onFailure("فشل في تحديث العرض. الخطأ: " + e.getMessage());
+                    });
+        } else {
+            callback.onFailure("لا يوجد معرف صالح للعرض.");
+        }
     }
+
 
     public void getOffersByProviderId(String providerId, OnOfferFetchListener callback) {
         offersCollection.whereEqualTo("product.provider.id", providerId)

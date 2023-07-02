@@ -2,12 +2,10 @@ package com.example.egar_admin.FirebaseManger;
 
 import androidx.annotation.NonNull;
 
-import com.example.egar_admin.interfaces.DataCallBack;
+import com.example.egar_admin.interfaces.DataCallBackUser;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.interfaces.ProviderTypeCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,7 +15,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.UserData;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -39,7 +36,7 @@ public class FirebaseFetchingDataController {
         return instance;
     }
 
-    public void getCurrentUserData(DataCallBack callback) {
+    public void getCurrentUserData(DataCallBackUser callback) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -70,6 +67,7 @@ public class FirebaseFetchingDataController {
             callback.onFailure("No current user");
         }
     }
+
 
 
     public void checkProviderTypeAndRedirectToActivity(String email, ProviderTypeCallback callback) {

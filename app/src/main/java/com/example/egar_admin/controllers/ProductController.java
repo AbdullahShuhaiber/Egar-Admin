@@ -173,6 +173,37 @@ public class ProductController {
             }
         });
     }
+    public void updateProduct(String productId, String nameProduct, String description, double price, boolean isFavorite, int quantityInCart, String category, ProcessCallback callback) {
+        CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
+
+        DocumentReference productRef = productsCollection.document(productId);
+
+        productRef.update(
+                "name", nameProduct,
+                "description", description,
+                "price", price,
+                "isFavorite", isFavorite,
+                "quantityInCart", quantityInCart,
+                "category", category
+        ).addOnSuccessListener(aVoid -> {
+            callback.onSuccess("Product updated successfully.");
+        }).addOnFailureListener(e -> {
+            callback.onFailure(e.getMessage());
+        });
+    }
+
+    // حذف المنتج
+    public void deleteProduct(String productId, ProcessCallback callback) {
+        CollectionReference productsCollection = FirebaseFirestore.getInstance().collection("products");
+
+        DocumentReference productRef = productsCollection.document(productId);
+
+        productRef.delete().addOnSuccessListener(aVoid -> {
+            callback.onSuccess("Product deleted successfully.");
+        }).addOnFailureListener(e -> {
+            callback.onFailure(e.getMessage());
+        });
+    }
 
     public void getProductById(String productId, ProductCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

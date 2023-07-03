@@ -19,6 +19,7 @@ import com.example.egar_admin.databinding.FragmentOfferProductBinding;
 import com.example.egar_admin.databinding.FragmentProductTapBinding;
 import com.example.egar_admin.interfaces.OnOfferFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -74,44 +75,9 @@ public class OfferProductFragment extends Fragment {
 
 
     private void getOffers(){
-        offerController.getOffersByProviderId(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnOfferFetchListener() {
+        offerController.getOffersByProviderId(FirebaseAuth.getInstance().getUid(), new OnOfferFetchListener() {
             @Override
             public void onListFetchSuccess(List<Offer> offerList) {
-
-            }
-
-            @Override
-            public void onListFetchFailure(String message) {
-
-            }
-
-            @Override
-            public void onAddOfferSuccess(String offerId) {
-
-            }
-
-            @Override
-            public void onAddOfferFailure(String message) {
-
-            }
-
-            @Override
-            public void onUpdateOfferSuccess() {
-
-            }
-
-            @Override
-            public void onUpdateOfferFailure(String message) {
-
-            }
-
-            @Override
-            public void onDeleteOfferSuccess() {
-
-            }
-
-            @Override
-            public void onDeleteOfferFailure(String message) {
 
             }
 
@@ -120,12 +86,11 @@ public class OfferProductFragment extends Fragment {
                 offerList.clear();
                 offerList.addAll(offers.subList(0, Math.min(3, offers.size())));
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
             public void onGetOffersByServiceProviderIdFailure(String message) {
-
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
             }
         });
 

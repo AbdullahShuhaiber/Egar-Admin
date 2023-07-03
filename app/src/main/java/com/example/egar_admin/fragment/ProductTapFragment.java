@@ -34,7 +34,6 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
 
 
     public ProductTapFragment() {
-        // Required empty public constructor
     }
 
 
@@ -77,7 +76,7 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
     }
 
     private void getProduct(){
-        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getCurrentUser().getUid(), new OnProductFetchListener() {
+        ProductController.getInstance().getAllProducts(FirebaseAuth.getInstance().getUid(), new OnProductFetchListener() {
             @Override
             public void onFetchLListSuccess(ArrayList<Product> list, String id) {
 

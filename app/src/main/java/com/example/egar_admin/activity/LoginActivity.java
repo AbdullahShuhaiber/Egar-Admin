@@ -37,6 +37,7 @@ import java.util.Locale;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityLoginBinding binding;
     NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +50,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         locationUtilsController.getCurrentLocation(new OnLocationFetchedListener() {
             @Override
             public void onLocationFetched(String location) {
-                Snackbar.make(binding.getRoot(),location,Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), location, Snackbar.LENGTH_LONG).show();
 //                Toast.makeText(getApplicationContext(), location, Toast.LENGTH_LONG).show();
             }
         });
-
-
-
 
 
     }
@@ -93,14 +91,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    private void screenOperations (){
+    private void screenOperations() {
         setOnClick();
         setTitle("LOGIN");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.active)));
-        getWindow().setStatusBarColor(ContextCompat.getColor(LoginActivity.this,R.color.active));
+        getWindow().setStatusBarColor(ContextCompat.getColor(LoginActivity.this, R.color.active));
         setDataInInputFieldFromRegister();
 
     }
+
     private void operationsSccren() {
 
     }
@@ -111,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
 //        Toast.makeText(this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(networkChangeListiners,intentFilter);
+        registerReceiver(networkChangeListiners, intentFilter);
     }
 
     @Override
@@ -140,19 +139,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onRestart();
     }
 
-    private  boolean setDataInInputFieldFromRegister (){
+    private boolean setDataInInputFieldFromRegister() {
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
-        String password =intent.getStringExtra("password");
-        if (password == null && email == null){
+        String password = intent.getStringExtra("password");
+        if (password == null && email == null) {
             return false;
-        }else {
+        } else {
             binding.etEmail.setText(intent.getStringExtra("email"));
             binding.etPassword.setText(intent.getStringExtra("password"));
             return true;
         }
     }
-    private boolean dataCheck (){
+
+    private boolean dataCheck() {
         String email = binding.etEmail.getText().toString();
         String password = binding.etPassword.getText().toString();
         if (email.isEmpty()) {
@@ -165,32 +165,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
-    private  void setOnClick(){
+    private void setOnClick() {
         binding.btnLogin.setOnClickListener(this::onClick);
         binding.tvCreateAccount.setOnClickListener(this::onClick);
         binding.tvForgotPassword.setOnClickListener(this::onClick);
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_login:
-                if (dataCheck()){
+                if (dataCheck()) {
                     binding.buttonAnimation.setVisibility(View.VISIBLE);
                     binding.buttonAnimation.playAnimation();
                     binding.buttonText.setVisibility(View.GONE);
                     checkProviderTypeAndRedirectToActivity();
-                }else {
+                } else {
                     Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();
                 }
 
                 break;
             case R.id.tv_createAccount:
-                Intent intent1 = new Intent(getApplicationContext(),RegisterActivity.class);
+                Intent intent1 = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.tv_forgotPassword:
-                Intent intent = new Intent(getApplicationContext(),ResetPassword.class);
+                Intent intent = new Intent(getApplicationContext(), ResetPassword.class);
                 startActivity(intent);
                 break;
 
@@ -202,39 +203,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
-                Toast.makeText(LoginActivity.this, binding.etEmail.getText().toString().trim(), Toast.LENGTH_SHORT).show();
-                Snackbar.make(binding.getRoot(),providerType+"type",Snackbar.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, providerType, Toast.LENGTH_SHORT).show();
+//                if (providerType != null) {
+//                    if (providerType.equals("Delivery")) {
+//                        Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//
+//                    } else {
+//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//
+//                } else {
+//                    binding.buttonAnimation.pauseAnimation();
+//                    binding.buttonAnimation.setVisibility(View.GONE);
+//                    binding.buttonText.setVisibility(View.VISIBLE);
+//                }
             }
 
             @Override
             public void onProviderTypeNull(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onProviderTypeFailure(String message) {
-                Snackbar.make(binding.getRoot(),message+"اححاااا",Snackbar.LENGTH_LONG).show();
-
+                Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
             }
         });
     }
-//                 if (providerType != null) {
-//                    if (providerType.equals("Delivery")) {
-//                            Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//
-//                    } else {
-//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//
-//                } else {
-//                     binding.buttonAnimation.pauseAnimation();
-//                     binding.buttonAnimation.setVisibility(View.GONE);
-//                     binding.buttonText.setVisibility(View.VISIBLE);
-//                    Snackbar.make(binding.getRoot(), "Please Create Account + providertype is "+ providerType,Snackbar.LENGTH_LONG).show();
-//                }
+
 
 }

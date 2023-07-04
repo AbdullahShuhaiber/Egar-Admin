@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.FirebaseManger.FirebaseFetchingDataController;
+import com.example.egar_admin.SharedPreferences.AppSharedPreferences;
 import com.example.egar_admin.controllers.LocationUtilsController;
 import com.example.egar_admin.interfaces.OnLocationFetchedListener;
 import com.example.egar_admin.interfaces.ProviderTypeCallback;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Toast.makeText(this, AppSharedPreferences.getInstance().getSharedPreferences().getString("isFirstRun","no")+"", Toast.LENGTH_SHORT).show();
         screenOperations();
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -180,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     binding.buttonAnimation.setVisibility(View.VISIBLE);
                     binding.buttonAnimation.playAnimation();
                     binding.buttonText.setVisibility(View.GONE);
-                    checkProviderTypeAndRedirectToActivity();
+                    loginAndCheckProviderType();
                 } else {
                     Snackbar.make(binding.getRoot(), "Please enter Data , The Input Filed is Required", Snackbar.LENGTH_LONG).setTextColor(ContextCompat.getColor(this, R.color.bronze)).show();
                 }
@@ -199,28 +201,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void loginAndCheckProviderType() {
+        FirebaseAuthController.getInstance().signIn(
+                binding.etEmail.getText().toString(),
+                binding.etPassword.getText().toString(),
+                new ProcessCallback() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
+                        checkProviderTypeAndRedirectToActivity();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     private void checkProviderTypeAndRedirectToActivity() {
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
                 Toast.makeText(LoginActivity.this, providerType, Toast.LENGTH_SHORT).show();
-//                if (providerType != null) {
-//                    if (providerType.equals("Delivery")) {
-//                        Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//
-//                    } else {
-//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//
-//                } else {
-//                    binding.buttonAnimation.pauseAnimation();
-//                    binding.buttonAnimation.setVisibility(View.GONE);
-//                    binding.buttonText.setVisibility(View.VISIBLE);
-//                }
+                if (providerType != null) {
+                    if (providerType.equals("Delivery")) {
+                        Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                } else {
+                    binding.buttonAnimation.pauseAnimation();
+                    binding.buttonAnimation.setVisibility(View.GONE);
+                    binding.buttonText.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

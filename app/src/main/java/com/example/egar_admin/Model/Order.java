@@ -2,7 +2,7 @@ package com.example.egar_admin.Model;
 
 import android.location.Location;
 
-import com.example.egar_admin.enams.OrderStatus;
+import com.example.egar_admin.enums.OrderStatus;
 
 import java.util.Date;
 

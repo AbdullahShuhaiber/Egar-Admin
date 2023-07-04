@@ -58,9 +58,26 @@ public class SplashActivity extends AppCompatActivity {
                 String isFirstRun = appSharedPreferences.getSharedPreferences().getString("isFirstRun", "no");
 
                 if (isFirstRun.equals("yse")) {
-                    Log.d("isFirstRun", isFirstRun);
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
+                    FirebaseAuthController.getInstance().isSignedIn(new SignInStatusListener() {
+                        @Override
+                        public void onUserSignedInAsDeliveryProvider() {
+                            Intent intent = new Intent(getApplicationContext(),DeliveryActivity.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onUserSignedInAsRegularProvider() {
+                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onUserNotSignedIn() {
+                            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
                 } else if (isFirstRun.equals("no")) {
                     Log.e("isFirstRun2", isFirstRun);
                     Intent intent = new Intent(SplashActivity.this, GetStarted.class);
@@ -68,24 +85,6 @@ public class SplashActivity extends AppCompatActivity {
                 }else {
                     Toast.makeText(SplashActivity.this, "Pager Error", Toast.LENGTH_SHORT).show();
                 }
-                FirebaseAuthController.getInstance().isSignedIn(new SignInStatusListener() {
-                    @Override
-                    public void onUserSignedInAsDeliveryProvider() {
-                        Intent intent = new Intent(getApplicationContext(),DeliveryActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onUserSignedInAsRegularProvider() {
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onUserNotSignedIn() {
-
-                    }
-                });
             }
         }, 888);
     }

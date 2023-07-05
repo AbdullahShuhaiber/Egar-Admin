@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Toast.makeText(SplashActivity.this, AppSharedPreferences.getInstance().getSharedPreferences().getString("isFirstRun","no"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(SplashActivity.this, AppSharedPreferences.getInstance().getSharedPreferences().getString("isFirstRun","no"), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -57,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
                 AppSharedPreferences appSharedPreferences = AppSharedPreferences.getInstance();
                 String isFirstRun = appSharedPreferences.getSharedPreferences().getString("isFirstRun", "no");
 
-                if (isFirstRun.equals("yse")) {
+                if (isFirstRun.equals("yes")) {
                     FirebaseAuthController.getInstance().isSignedIn(new SignInStatusListener() {
                         @Override
                         public void onUserSignedInAsDeliveryProvider() {

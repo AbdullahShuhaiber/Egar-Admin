@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Toast.makeText(this, AppSharedPreferences.getInstance().getSharedPreferences().getString("isFirstRun","no")+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, AppSharedPreferences.getInstance().getSharedPreferences().getString("isFirstRun","no")+"", Toast.LENGTH_SHORT).show();
         screenOperations();
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());

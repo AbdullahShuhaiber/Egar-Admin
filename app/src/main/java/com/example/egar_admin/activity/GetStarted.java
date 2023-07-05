@@ -31,7 +31,7 @@ public class GetStarted extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_started);
         backbtn = findViewById(R.id.backbtn);
-        AppSharedPreferences.getInstance().getEditor().putString("isFirstRun", "yse").commit();
+        AppSharedPreferences.getInstance().getEditor().putString("isFirstRun", "yes").commit();
         nextbtn = findViewById(R.id.nextbtn);
         skipbtn = findViewById(R.id.skipButton);
 

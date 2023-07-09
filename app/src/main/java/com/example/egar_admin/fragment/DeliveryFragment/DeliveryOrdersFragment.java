@@ -7,8 +7,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.egar_admin.Model.Order;
 import com.example.egar_admin.R;
+import com.example.egar_admin.controllers.OrderController;
+import com.example.egar_admin.databinding.FragmentDeliveryOrdersBinding;
+import com.example.egar_admin.enums.OrderStatus;
+import com.example.egar_admin.interfaces.OnOrderFetchListener;
+
+import java.util.List;
 
 
 public class DeliveryOrdersFragment extends Fragment {
@@ -17,6 +25,7 @@ public class DeliveryOrdersFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    FragmentDeliveryOrdersBinding binding;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -49,6 +58,48 @@ public class DeliveryOrdersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_delivery_orders, container, false);
+        binding = FragmentDeliveryOrdersBinding.inflate(inflater);
+//        getOrdersByStatusCompleted();
+        Toast.makeText(getActivity(), OrderStatus.COMPLETED.toString(), Toast.LENGTH_SHORT).show();
+        return binding.getRoot();
+    }
+    private void getOrdersByStatusCompleted(){
+        OrderController.getInstance().getOrdersByStatus(OrderStatus.COMPLETED, new OnOrderFetchListener() {
+            @Override
+            public void onAddOrderSuccess(String orderId) {
+
+            }
+
+            @Override
+            public void onAddOrderFailure(String message) {
+
+            }
+
+            @Override
+            public void onDeleteOrderSuccess() {
+
+            }
+
+            @Override
+            public void onDeleteOrderFailure(String message) {
+
+            }
+
+            @Override
+            public void onGetOrdersByServiceProviderIdSuccess(List<Order> orders) {
+
+            }
+
+            @Override
+            public void onGetOrdersByServiceProviderIdFailure(String message) {
+
+            }
+
+            @Override
+            public void onGetOrdersByStatusSuccess(List<Order> orders) {
+                Toast.makeText(getActivity(), "تم جلب الطلبات بنجاح"+orders.size(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

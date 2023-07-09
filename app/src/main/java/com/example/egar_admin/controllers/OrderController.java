@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 
 import com.example.egar_admin.Model.Order;
+import com.example.egar_admin.enums.OrderStatus;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,7 +49,7 @@ public class OrderController {
         HashMap<String, Object> orderData = new HashMap<>();
 
         orderData.put("userId", order.getUserId());
-        orderData.put("serviceProviderId", order.getServiceProviderId());
+        orderData.put("product", order.getProduct());
         orderData.put("quantity", order.getQuantity());
         orderData.put("totalAmount", order.getTotalAmount());
         orderData.put("orderDate", order.getOrderDate().toString());
@@ -74,7 +75,7 @@ public class OrderController {
         DocumentReference orderRef = db.collection("orders").document(order.getOrderId());
 
         orderRef.update("userId", order.getUserId(),
-                        "serviceProviderId", order.getServiceProviderId(),
+                        "product", order.getProduct(),
                         "quantity", order.getQuantity(),
                         "totalAmount", order.getTotalAmount(),
                         "orderDate", order.getOrderDate(),
@@ -112,7 +113,7 @@ public class OrderController {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference ordersCollection = db.collection("orders");
 
-        Query query = ordersCollection.whereEqualTo("serviceProviderId", serviceProviderId);
+        Query query = ordersCollection.whereEqualTo("product.provider.id", serviceProviderId);
 
         query.get()
                 .addOnCompleteListener(task -> {
@@ -129,6 +130,28 @@ public class OrderController {
                     }
                 });
     }
+
+    public void getOrdersByStatus(OrderStatus status, OnOrderFetchListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference ordersCollection = db.collection("orders");
+
+        Query query = ordersCollection.whereEqualTo("orderStatus", status);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Order> orders = new ArrayList<>();
+                for (DocumentSnapshot document : task.getResult()) {
+                    Order order = document.toObject(Order.class);
+                    orders.add(order);
+                }
+                listener.onGetOrdersByStatusSuccess(orders);
+            } else {
+                Log.w(TAG, "Error getting orders by status: " + status, task.getException());
+                listener.onGetOrdersByServiceProviderIdFailure(task.getException().getMessage());
+            }
+        });
+    }
+
 
 }
 

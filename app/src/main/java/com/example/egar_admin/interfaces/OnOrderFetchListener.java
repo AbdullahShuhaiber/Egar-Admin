@@ -12,5 +12,8 @@ public interface OnOrderFetchListener {
     void onDeleteOrderFailure(String message);
     void onGetOrdersByServiceProviderIdSuccess(List<Order> orders);
     void onGetOrdersByServiceProviderIdFailure(String message);
+
+    void onGetOrdersByStatusSuccess(List<Order> orders);
+
 }
 

@@ -12,7 +12,9 @@ import android.widget.Toast;
 import com.example.egar_admin.Model.Order;
 import com.example.egar_admin.R;
 import com.example.egar_admin.controllers.OrderController;
+import com.example.egar_admin.databinding.FragmentOrderTapBinding;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class OrderTapFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    FragmentOrderTapBinding binding ;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -68,8 +71,9 @@ public class OrderTapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        binding = FragmentOrderTapBinding.inflate(inflater);
         getOrders();
-        return inflater.inflate(R.layout.fragment_order_tap, container, false);
+        return binding.getRoot();
     }
     private void getOrders(){
         OrderController.getInstance().getOrdersByServiceProviderId(FirebaseAuth.getInstance().getUid(), new OnOrderFetchListener() {
@@ -102,6 +106,11 @@ public class OrderTapFragment extends Fragment {
 
             @Override
             public void onGetOrdersByServiceProviderIdFailure(String message) {
+
+            }
+
+            @Override
+            public void onGetOrdersByStatusSuccess(List<Order> orders) {
 
             }
         });

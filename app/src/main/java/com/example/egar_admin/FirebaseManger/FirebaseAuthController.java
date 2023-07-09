@@ -28,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -65,14 +66,25 @@ public class FirebaseAuthController {
                         }).addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
                                 Uri downloadUri = task2.getResult();
+                                Calendar calendar = Calendar.getInstance();
+                                int year = calendar.get(Calendar.YEAR);
+                                int month = calendar.get(Calendar.MONTH) + 1;
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
 
-                                Provider provider = new Provider(name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString());
+                                String currentDate = day + "/" + month + "/" + year;
+                                String currentTime = hour + ":" + minute;
+
+                                Provider provider = new Provider(name, email, phoneNumber, providerType, address, city, bio, downloadUri.toString(),currentDate,currentTime);
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 DocumentReference userRef = db.collection("serviceproviders").document(auth.getCurrentUser().getUid());
 
                                 userRef.set(provider)
                                         .addOnSuccessListener(aVoid -> {
+
+
                                             provider.setId(userRef.getId());
 
                                             userRef.set(provider)

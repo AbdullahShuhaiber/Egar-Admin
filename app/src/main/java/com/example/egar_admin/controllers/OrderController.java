@@ -51,7 +51,7 @@ public class OrderController {
         orderData.put("serviceProviderId", order.getServiceProviderId());
         orderData.put("quantity", order.getQuantity());
         orderData.put("totalAmount", order.getTotalAmount());
-        orderData.put("orderDate", order.getOrderDate());
+        orderData.put("orderDate", order.getOrderDate().toString());
         orderData.put("orderStatus", order.getOrderStatus().toString());
         orderData.put("paymentMethod", order.getPaymentMethod());
         orderData.put("shippingLocation", order.getShippingLocation());

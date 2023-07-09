@@ -15,7 +15,7 @@
         android:paddingStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_10sdp"
-        android:text="Add View Product"
+        android:text="Add Product To Offer"
         app:cornerRadius="@dimen/_10sdp"
         android:textColor="@color/white"
         android:textAllCaps="false"

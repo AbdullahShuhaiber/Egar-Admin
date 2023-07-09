@@ -154,15 +154,17 @@ public class OfferActivity extends AppCompatActivity implements View.OnClickList
         String endDate = binding.etOfferEndDate.getText().toString();
         String price = binding.etNewPrice.getText().toString();
         offer = new Offer(product,Double.parseDouble(price),1,startDate,endDate);
-        offerController.addOffer(offer, new ProcessCallback() {
+        offerController.addOffer(product, Double.parseDouble(price), 1, startDate, endDate, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
                 onBackPressed();
 
             }
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });

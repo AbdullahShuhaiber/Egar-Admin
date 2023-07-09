@@ -12,8 +12,26 @@ public class Provider implements Serializable {
     private String city;
     private String bio;
     private String image;
+    private  String currentDate ;
+    private String currentTime ;
 
-    public Provider(String name, String email, String phoneNumber, String providerType, String address, String city, String bio, String image) {
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public Provider(String name, String email, String phoneNumber, String providerType, String address, String city, String bio, String image,String currentDate,String currentTime) {
         this.name = name;
         this.email = email;
         this.providerType = providerType;
@@ -22,6 +40,8 @@ public class Provider implements Serializable {
         this.city=city;
         this.bio=bio;
         this.image=image;
+        this.currentDate = currentDate;
+        this.currentTime = currentTime;
     }
 
     public Provider(String name, String email, String phoneNumber, String providerType) {

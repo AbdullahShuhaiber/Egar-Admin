@@ -7,8 +7,7 @@ import java.util.List;
 public interface OnOrderFetchListener {
     void onAddOrderSuccess(String orderId);
     void onAddOrderFailure(String message);
-    void onUpdateOrderSuccess();
-    void onUpdateOrderFailure(String message);
+
     void onDeleteOrderSuccess();
     void onDeleteOrderFailure(String message);
     void onGetOrdersByServiceProviderIdSuccess(List<Order> orders);

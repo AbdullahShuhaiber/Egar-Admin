@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String uid = FirebaseAuth.getInstance().getUid();
-        if (uid != null) {
-            Snackbar.make(binding.getRoot(), uid, Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(binding.getRoot(), "User ID not available", Snackbar.LENGTH_LONG).show();
-        }
+//        String uid = FirebaseAuth.getInstance().getUid();
+//        if (uid != null) {
+//            Snackbar.make(binding.getRoot(), uid, Snackbar.LENGTH_LONG).show();
+//        } else {
+//            Snackbar.make(binding.getRoot(), "User ID not available", Snackbar.LENGTH_LONG).show();
+//        }
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;

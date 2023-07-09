@@ -9,6 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="home_20">#332196F3</color>
     <color name="bac_edit_text">#F3F3F3</color>
+
+    <color name="category">#FF3F51B5</color>
+    <color name="category_20">#333F51B5</color>
+
     <color name="text_app">#0B35AB</color>
     <color name="dark_blue">#001653</color>
     <color name="green">#4CAF50</color>

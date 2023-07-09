@@ -23,5 +23,25 @@
         android:label="Orders"
         tools:layout="@layout/fragment_orders" />
 
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.egar_admin.ui.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+
+    <fragment
+        android:id="@+id/nav_Conditions"
+        android:name="com.example.egar_admin.ui.ConditionsFragment"
+        android:label="Conditions"
+        tools:layout="@layout/fragment_conditions" />
+
+
+    <fragment
+        android:id="@+id/nav_WhoAreWe"
+        android:name="com.example.egar_admin.ui.WhoAreWeFragment"
+        android:label="who are we"
+        tools:layout="@layout/fragment_who_are_we" />
+
 
 </navigation>

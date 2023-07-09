@@ -61,6 +61,8 @@
     <string name="products">Products</string>
     <string name="logout">LogOut</string>
     <string name="settings">Settings</string>
+    <string name="whoarewe">WhoAreWe</string>
+    <string name="conditions">Conditions</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

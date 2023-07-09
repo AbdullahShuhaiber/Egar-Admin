@@ -26,14 +26,14 @@
             android:title="@string/settings" />
 
         <item
-            android:id="@+id/nav_"
+            android:id="@+id/nav_WhoAreWe"
             android:icon="@drawable/baseline_supervised_user_circle_24"
-            android:title="من نحن" />
+            android:title="@string/whoarewe" />
 
         <item
-            android:id="@+id/nav_2"
+            android:id="@+id/nav_Conditions"
             android:icon="@drawable/baseline_priority_high"
-            android:title="الشروط الاحكام" />
+            android:title="@string/conditions" />
 
 
 

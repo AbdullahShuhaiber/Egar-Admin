@@ -1,5 +1,6 @@
 package com.example.egar_admin.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,18 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.egar_admin.R;
+import com.example.egar_admin.activity.ChangePasswordActivity;
+import com.example.egar_admin.activity.FavoriteActivity;
+import com.example.egar_admin.activity.PersonalInformationActivity;
+import com.example.egar_admin.databinding.FragmentSettingsBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FragmentSettingsBinding binding ;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,6 +67,32 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater);
+        setOnClick();
+         return binding.getRoot();
+
+    }
+    private void setOnClick(){
+        binding.cardPersonalInformation.setOnClickListener(this::onClick);
+        binding.changepassword.setOnClickListener(this::onClick);
+        binding.favoriteP.setOnClickListener(this::onClick);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.card_personal_information:
+                Intent intent = new Intent(getActivity(), PersonalInformationActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.changepassword:
+                Intent intent1 = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.favorite_p:
+                Intent intent2 = new Intent(getActivity(), FavoriteActivity.class);
+                startActivity(intent2);
+                break;
+        }
     }
 }

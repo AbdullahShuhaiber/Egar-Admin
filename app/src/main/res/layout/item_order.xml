@@ -6,22 +6,26 @@
     app:cardCornerRadius="@dimen/_10sdp"
     app:cardElevation="@dimen/_10sdp"
     android:layout_margin="@dimen/_5sdp"
-
     android:layout_height="@dimen/_100sdp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@drawable/sh_card"
         android:layout_height="match_parent">
 
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/text_nameUserOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="name user"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,17 +33,21 @@
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:text="TextView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/active"
+            android:textSize="@dimen/_12ssp"
+            android:text="Egar name :"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/text_nameUserOrder" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/textEgarNmae"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:textColor="@color/black"
+            android:text="سيارة فيراري"
             app:layout_constraintBottom_toBottomOf="@+id/textView15"
             app:layout_constraintStart_toEndOf="@+id/textView15"
             app:layout_constraintTop_toTopOf="@+id/textView15" />
@@ -48,28 +56,37 @@
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/active"
+            android:textSize="@dimen/_12ssp"
+            android:text="The appointment :"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/textOderDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="2023-07-9 م"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/textView19"
             app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toTopOf="@+id/textView19" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/text_stust"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="16dp"
-            android:text="TextView"
+            android:text="New"
+            android:textColor="@color/white"
+            android:padding="@dimen/_3sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:background="@drawable/sh_card_order"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

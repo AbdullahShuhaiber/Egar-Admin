@@ -48,7 +48,7 @@ public class OrderController {
 
         HashMap<String, Object> orderData = new HashMap<>();
 
-        orderData.put("userId", order.getUserId());
+        orderData.put("userId", order.getUser().getId());
         orderData.put("product", order.getProduct());
         orderData.put("quantity", order.getQuantity());
         orderData.put("totalAmount", order.getTotalAmount());
@@ -74,7 +74,7 @@ public class OrderController {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference orderRef = db.collection("orders").document(order.getOrderId());
 
-        orderRef.update("userId", order.getUserId(),
+        orderRef.update("userId", order.getUser().getId(),
                         "product", order.getProduct(),
                         "quantity", order.getQuantity(),
                         "totalAmount", order.getTotalAmount(),

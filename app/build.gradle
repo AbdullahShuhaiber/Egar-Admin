@@ -43,6 +43,7 @@ dependencies {
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation("com.google.firebase:firebase-messaging")
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
 
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.squareup.picasso:picasso:2.71828'

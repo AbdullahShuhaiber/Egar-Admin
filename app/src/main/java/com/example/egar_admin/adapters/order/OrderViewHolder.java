@@ -16,7 +16,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
         this.binding=binding;
     }
     public void savaData(Order order){
-        binding.textNameUserOrder.setText(order.getUserId());
+        binding.textNameUserOrder.setText(order.getUser().getName());
         binding.textEgarNmae.setText(order.getOrderId());
         binding.textOderDate.setText(order.getOrderDate());
 

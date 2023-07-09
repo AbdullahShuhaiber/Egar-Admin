@@ -99,7 +99,6 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
     private  void setOnClick(){
         binding.ordersLayout.setOnClickListener(this::onClick);
         binding.profileLayout.setOnClickListener(this::onClick);
-        binding.walletLayout.setOnClickListener(this::onClick);
     }
 
     private void onSelectedTab(){
@@ -110,7 +109,6 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
                     .commit();
 
             binding.profileImage.setBackgroundResource(R.drawable.baseline_supervised_user_circle_24);
-            binding.walletImage.setBackgroundResource(R.drawable.baseline_account_balance_wallet_24);
 
             binding.tvOrders.setVisibility(View.VISIBLE);
             binding.ordersImage.setBackgroundResource(R.drawable.ic_orders);
@@ -130,18 +128,6 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
 
         }
 
-        if (selectedTab ==3){
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.fragmentView,DeliveryWalletFragment.class,null)
-                    .commit();
-
-            binding.tvWallet.setVisibility(View.VISIBLE);
-            binding.walletImage.setBackgroundResource(R.drawable.baseline_account_balance_wallet_24);
-            binding.walletLayout.setBackgroundResource(R.drawable.home_round);
-
-        }
-
 
     }
 
@@ -156,12 +142,10 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
                         .commit();
 
                 binding.tvProfile.setVisibility(View.GONE);
-                binding.tvWallet.setVisibility(View.GONE);
 
 
 
                 binding.profileLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                binding.walletLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
                 binding.tvOrders.setVisibility(View.VISIBLE);
                 binding.ordersImage.setBackgroundResource(R.drawable.ic_orders);
@@ -182,12 +166,10 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
                         .setReorderingAllowed(true)
                         .replace(R.id.fragmentView,DeliveryProfileFragment.class,null)
                         .commit();
-                binding.tvWallet.setVisibility(View.GONE);
                 binding.tvOrders.setVisibility(View.GONE);
 
 
                 binding.ordersLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                binding.walletLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
                 binding.tvProfile.setVisibility(View.VISIBLE);
                 binding.profileImage.setBackgroundResource(R.drawable.baseline_supervised_user_circle_24);
@@ -199,30 +181,6 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
                 binding.profileLayout.startAnimation(scaleAnimation);
 
                 selectedTab = 2;
-            }
-        }
-        if (v.getId() == R.id.walletLayout){
-            if (selectedTab !=3){
-                getSupportFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.fragmentView, DeliveryWalletFragment.class,null)
-                        .commit();
-                binding.tvProfile.setVisibility(View.GONE);
-                binding.tvOrders.setVisibility(View.GONE);
-
-                binding.ordersLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                binding.profileLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-
-                binding.tvWallet.setVisibility(View.VISIBLE);
-                binding.walletImage.setBackgroundResource(R.drawable.baseline_account_balance_wallet_24);
-                binding.walletLayout.setBackgroundResource(R.drawable.home_round);
-
-                ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f,1.0f,1f,1f, Animation.RELATIVE_TO_SELF,1f);
-                scaleAnimation.setDuration(400);
-                scaleAnimation.setFillAfter(true);
-                binding.walletLayout.startAnimation(scaleAnimation);
-
-                selectedTab = 3;
             }
         }
     }

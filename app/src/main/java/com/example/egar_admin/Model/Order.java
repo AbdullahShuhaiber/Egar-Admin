@@ -1,11 +1,10 @@
 package com.example.egar_admin.Model;
 
-import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.enums.OrderStatus;
 
 public class Order {
     private String orderId;
-    private String userId;
+    private com.example.egar_admin.Model.User user;
     private Product product;
     private int quantity;
     private double totalAmount;
@@ -18,9 +17,9 @@ public class Order {
         // Required empty constructor for Firebase
     }
 
-    public Order(String orderId, String userId, Product product, int quantity, double totalAmount, String orderDate, OrderStatus orderStatus, String paymentMethod, String shippingLocation) {
+    public Order(String orderId, User userId, Product product, int quantity, double totalAmount, String orderDate, OrderStatus orderStatus, String paymentMethod, String shippingLocation) {
         this.orderId = orderId;
-        this.userId = userId;
+        this.user = userId;
         this.product = product;
         this.quantity = quantity;
         this.totalAmount = totalAmount;
@@ -30,8 +29,8 @@ public class Order {
         this.shippingLocation = shippingLocation;
     }
 
-    public Order(String uid, Product product, int i, double amount, String date, OrderStatus pending, String payPal, String address) {
-        this.userId = uid;
+    public Order(com.example.egar_admin.Model.User user, Product product, int i, double amount, String date, OrderStatus pending, String payPal, String address) {
+        this.user = user;
         this.product = product;
         this.quantity = i;
         this.totalAmount = amount;
@@ -51,12 +50,12 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public String getUserId() {
-        return userId;
+    public com.example.egar_admin.Model.User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(com.example.egar_admin.Model.User user) {
+        this.user = user;
     }
 
     public Product getProduct() {

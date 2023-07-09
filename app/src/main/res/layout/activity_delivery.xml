@@ -115,38 +115,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/walletLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:layout_margin="@dimen/_10sdp"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp">
 
-            <ImageView
-                android:id="@+id/walletImage"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-
-                android:adjustViewBounds="true" />
-
-            <TextView
-                android:id="@+id/tv_wallet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cart"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_11ssp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
 
 
     </LinearLayout>

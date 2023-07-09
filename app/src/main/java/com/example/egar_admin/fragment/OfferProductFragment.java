@@ -1,5 +1,6 @@
 package com.example.egar_admin.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,21 +13,24 @@ import android.view.ViewGroup;
 import com.example.egar_admin.Model.Offer;
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
+import com.example.egar_admin.activity.ShowService_Offer_Details;
 import com.example.egar_admin.adapters.ProductHomeAdapter;
 import com.example.egar_admin.adapters.offers.OffersAdapter;
 import com.example.egar_admin.controllers.OfferController;
 import com.example.egar_admin.databinding.FragmentOfferProductBinding;
 import com.example.egar_admin.databinding.FragmentProductTapBinding;
+import com.example.egar_admin.interfaces.ItemCallbackOffer;
 import com.example.egar_admin.interfaces.OnOfferFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class OfferProductFragment extends Fragment {
+public class OfferProductFragment extends Fragment implements ItemCallbackOffer {
 
     FragmentOfferProductBinding binding;
     private List<Offer> offerList = new ArrayList<>();
@@ -68,7 +72,7 @@ public class OfferProductFragment extends Fragment {
 
     private void initializeRecyclerAdapter() {
         adapter = new OffersAdapter(offerList);
-        //adapter.setCallback(this);
+        adapter.setCallbackOffer(this::onItemClick);
         binding.recOffers.setAdapter(adapter);
         binding.recOffers.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -94,5 +98,12 @@ public class OfferProductFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(Offer offer) {
+        Intent intent = new Intent(getActivity(), ShowService_Offer_Details.class);
+        intent.putExtra("offer", (Serializable) offer);
+        startActivity(intent);
     }
 }

@@ -20,5 +20,24 @@
             android:icon="@drawable/ic_order_details"
             android:title="@string/add_product" />
 
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/baseline_settings"
+            android:title="@string/settings" />
+
+        <item
+            android:id="@+id/nav_"
+            android:icon="@drawable/baseline_supervised_user_circle_24"
+            android:title="من نحن" />
+
+        <item
+            android:id="@+id/nav_2"
+            android:icon="@drawable/baseline_priority_high"
+            android:title="الشروط الاحكام" />
+
+
+
     </group>
+
+    
 </menu>

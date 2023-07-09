@@ -1,8 +1,11 @@
 package com.example.egar_admin.Model;
 
-import android.net.Uri;
 
-public class Product {
+
+import java.io.Serializable;
+
+
+public class Product implements Serializable {
     private String id;
     private String serviceProviderId; // New field for merchant ID
     private String name;

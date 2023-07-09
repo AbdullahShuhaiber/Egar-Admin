@@ -8,29 +8,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.egar_admin.Model.Product;
 import com.example.egar_admin.R;
 import com.example.egar_admin.activity.OfferActivity;
+import com.example.egar_admin.activity.ShowService_Product_Details;
 import com.example.egar_admin.adapters.ProductHomeAdapter;
 import com.example.egar_admin.controllers.ProductController;
 
 import com.example.egar_admin.databinding.FragmentProductTapBinding;
+import com.example.egar_admin.interfaces.ItemCallbackLongProduct;
+import com.example.egar_admin.interfaces.ItemCallbackProduct;
 import com.example.egar_admin.interfaces.OnProductFetchListener;
 import com.example.egar_admin.activity.ProductActivity;
+import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductTapFragment extends Fragment implements View.OnClickListener {
+public class ProductTapFragment extends Fragment implements View.OnClickListener, ItemCallbackProduct , ItemCallbackLongProduct,PopupMenu.OnMenuItemClickListener {
 
     FragmentProductTapBinding binding;
     private ArrayList<Product> products = new ArrayList<>();
     private ProductHomeAdapter adapter;
+    Product product1 = new Product();
 
 
     public ProductTapFragment() {
@@ -64,7 +72,8 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
 
     private void initializeRecyclerAdapter() {
         adapter = new ProductHomeAdapter(products);
-        //adapter.setCallback(this);
+        adapter.setCallbackProduct(this::onItemClick);
+        adapter.setCallbackLongProduct(this::onItemLongClick);
         binding.rec.setAdapter(adapter);
         binding.rec.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -126,4 +135,46 @@ public class ProductTapFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onItemClick(Product product) {
+        Intent intent = new Intent(getActivity(), ShowService_Product_Details.class);
+        intent.putExtra("product", (Serializable) product);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemLongClick(Product product) {
+        product1 =product;
+        PopupMenu popup = new PopupMenu(getActivity(), binding.rec);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.menu_click);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_delete:
+                Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
+                ProductController.getInstance().deleteProduct(product1.getId(), new ProcessCallback() {
+                    @Override
+                    public void onSuccess(String message) {
+                        products.remove(products.get(getId()));
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+
+                    }
+                });
+
+                return true;
+            case R.id.item_update:
+                Toast.makeText(getActivity(), "update", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
 }

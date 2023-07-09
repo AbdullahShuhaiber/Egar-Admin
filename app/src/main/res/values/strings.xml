@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">خدمات إيجار</string>
+    <string name="app_name">Egar Admin</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -60,6 +60,7 @@
     <string name="orders">Orders</string>
     <string name="products">Products</string>
     <string name="logout">LogOut</string>
+    <string name="settings">Settings</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

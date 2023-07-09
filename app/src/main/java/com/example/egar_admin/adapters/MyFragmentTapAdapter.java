@@ -33,7 +33,7 @@ public class MyFragmentTapAdapter extends FragmentStateAdapter {
             return new OrderTapFragment();
         }else if (position == 2){
             return new OfferProductFragment();
-        }
+        }else
             return new CommentTapFragment();
 
 
@@ -41,6 +41,6 @@ public class MyFragmentTapAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

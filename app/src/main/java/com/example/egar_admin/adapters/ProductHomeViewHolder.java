@@ -8,45 +8,51 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.egar_admin.Model.Product;
 
 import com.example.egar_admin.databinding.ItemProductShowBinding;
+import com.example.egar_admin.interfaces.ItemCallbackLongProduct;
+import com.example.egar_admin.interfaces.ItemCallbackProduct;
 import com.squareup.picasso.Picasso;
 
 public class ProductHomeViewHolder extends RecyclerView.ViewHolder /*implements View.OnClickListener*/ {
 
     ItemProductShowBinding binding;
 
-    public ProductHomeViewHolder(ItemProductShowBinding binding) {
+    ItemCallbackProduct callbackProduct;
+    ItemCallbackLongProduct callbackLongProduct;
+
+    public ProductHomeViewHolder(ItemProductShowBinding binding, ItemCallbackProduct callbackProduct,ItemCallbackLongProduct callbackLongProduct) {
         super(binding.getRoot());
         this.binding=binding;
-        initializeView();
-    }
-
-    private void initializeView() {
-        setOnClickListeners();
-    }
-
-    private void setOnClickListeners() {
-       // binding.imgDelete.setOnClickListener(this::onClick);
-        //binding.noteItemView.setOnClickListener(this::onClick);
+        this.callbackProduct=callbackProduct;
+        this.callbackLongProduct=callbackLongProduct;
     }
 
     public void savaData(Product product){
         binding.tvProductShow.setText(product.getName());
-        binding.tvProductDescription.setText(product.getDescription());
         binding.tvProductPrice.setText(String.valueOf(product.getPrice()));
+        binding.tvProductDescription.setText(product.getDescription());
         Picasso.get().load(product.getImageUrl()).into(binding.imgProductShow);
 
-/*
-        binding.imgDelete.setOnClickListener(new View.OnClickListener() {
+
+
+        binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (callback != null) {
-                    callback.onDelete(product);
-                }
+                callbackProduct.onItemClick(product);
             }
         });
-*/
+
+        binding.imageList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbackLongProduct.onItemLongClick(product);
+            }
+        });
+
 
     }
+
+
+
 
 /*    @Override
     public void onClick(View v) {

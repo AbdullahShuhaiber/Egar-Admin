@@ -22,5 +22,22 @@
         android:fitsSystemWindows="true"
         android:background="@color/white"
         android:layout_marginTop="@dimen/_40sdp"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer">
+
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/btn_background"
+            android:textSize="@dimen/_16ssp"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:text="LogOut"/>
+
+    </com.google.android.material.navigation.NavigationView>
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -161,7 +161,7 @@ public class OrderController {
         CollectionReference ordersCollection = db.collection("orders");
 
         Query query = ordersCollection.whereEqualTo("orderStatus", status)
-                .whereEqualTo("serviceProviderId", serviceProviderId);
+                .whereEqualTo("product.provider.id", serviceProviderId);
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

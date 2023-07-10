@@ -63,8 +63,8 @@
     <string name="settings">Settings</string>
     <string name="whoarewe">WhoAreWe</string>
     <string name="conditions">Conditions</string>
-    <string name="approval">Approval</string>
-    <string name="cancel">Cancel</string>
+    <string name="approval">Confirm</string>
+    <string name="cancel">Delete</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

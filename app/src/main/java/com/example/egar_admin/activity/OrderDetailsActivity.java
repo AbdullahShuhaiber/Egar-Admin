@@ -34,6 +34,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
+        String key = getIntent().getStringExtra("delivery");
+        if (key != null) {
+            if (key.equals("delivery")){
+                binding.buttonApproval.setText("Delivery Order");
+            }else {
+                binding.buttonApproval.setText("Confirm Order");
+            }
+        } else {
+
+        }
+
+
         initializeView();
     }
 
@@ -53,6 +65,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private Order order(){
         Order order = (Order) getIntent().getSerializableExtra("order");
+
         return order;
     }
 
@@ -69,43 +82,68 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void cancel(){
+        if (getIntent().getStringExtra("delivery").equals("delivery")){
+            Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            OrderController.getInstance().updateOrderStatus(order().getOrderId(), OrderStatus.CANCELLED, new ProcessCallback() {
+                @Override
+                public void onSuccess(String message) {
+                    Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
-        OrderController.getInstance().updateOrderStatus(order().getOrderId(), OrderStatus.CANCELLED, new ProcessCallback() {
-            @Override
-            public void onSuccess(String message) {
-                Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+                @Override
+                public void onFailure(String message) {
+                    Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
-            @Override
-            public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                }
+            });
 
-            }
-        });
+        }
+
 
     }
 
     private void approval(){
+        if (getIntent().getStringExtra("delivery").equals("delivery")){
 
-        OrderController.getInstance().updateOrderStatus(order().getOrderId(), OrderStatus.COMPLETED, new ProcessCallback() {
-            @Override
-            public void onSuccess(String message) {
-                Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+            OrderController.getInstance().updateOrderStatus(order().getOrderId(),OrderStatus.IN_DELIVERY, new ProcessCallback() {
+                @Override
+                public void onSuccess(String message) {
+                    Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
-            @Override
-            public void onFailure(String message) {
-                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+                @Override
+                public void onFailure(String message) {
+                    Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
-            }
-        });
+                }
+            });
+        }else {
+            OrderController.getInstance().updateOrderStatus(order().getOrderId(), OrderStatus.COMPLETED, new ProcessCallback() {
+                @Override
+                public void onSuccess(String message) {
+                    Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
+                @Override
+                public void onFailure(String message) {
+                    Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
+
+                }
+            });
+
+        }
     }
 
         @Override

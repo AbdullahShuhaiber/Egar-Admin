@@ -1,5 +1,6 @@
 package com.example.egar_admin.fragment.DeliveryFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,22 +9,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 
 import com.example.egar_admin.Model.Order;
+import com.example.egar_admin.activity.OrderDetailsActivity;
 import com.example.egar_admin.adapters.order.OrderAdapter;
 import com.example.egar_admin.controllers.OrderController;
+import com.example.egar_admin.interfaces.ItemCallBackOrder;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
 import com.example.egar_admin.interfaces.OnOrderStatusFetchListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DeliveryOrdersFragment extends Fragment  {
+public class DeliveryOrdersFragment extends Fragment implements  ItemCallBackOrder {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,6 +77,7 @@ public class DeliveryOrdersFragment extends Fragment  {
     }
     private void initializeRecyclerAdapter() {
         adapter = new OrderAdapter(orderList);
+        adapter.setCallBackOrder(this);
         binding.rvOrdersDelivery.setAdapter(adapter);
         binding.rvOrdersDelivery.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -118,4 +124,11 @@ public class DeliveryOrdersFragment extends Fragment  {
     }
 
 
+    @Override
+    public void onItemClick(Order order) {
+        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+        intent.putExtra("order", (Serializable) order);
+        intent.putExtra("delivery","delivery");
+        startActivity(intent);
+    }
 }

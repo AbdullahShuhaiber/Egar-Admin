@@ -4,8 +4,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.egar_admin.Model.Notification;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.CollectionReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
@@ -16,31 +22,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            // قم بمعالجة البيانات المستلمة هنا
-            // يمكنك تنفيذ إجراءات مخصصة استنادًا إلى البيانات التي تم استلامها
-            // مثلاً، يمكنك إنشاء إشعار أو تنفيذ إجراءات أخرى
+            String notificationTitle = remoteMessage.getData().get("title");
+            String notificationBody = remoteMessage.getData().get("body");
+            Notification notification = new Notification(notificationTitle, notificationBody);
+            addNotificationToDatabase(notification);
         }
 
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            // قم بمعالجة جسم الإشعار هنا
-            // يمكنك عرض إشعار للمستخدم أو تنفيذ إجراءات أخرى استنادًا إلى جسم الإشعار المستلم
+            String notificationTitle = remoteMessage.getNotification().getTitle();
+            String notificationBody = remoteMessage.getNotification().getBody();
+            Notification notification = new Notification(notificationTitle, notificationBody);
+            addNotificationToDatabase(notification);
         }
+    }
+
+    private void addNotificationToDatabase(Notification notification) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference notificationsCollection = db.collection("notifications");
+
+        Map<String, Object> notificationData = new HashMap<>();
+        notificationData.put("title", notification.getTitle());
+        notificationData.put("body", notification.getBody());
+
+        notificationsCollection.add(notificationData)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Notification added with ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error adding notification", e);
+                });
     }
 
     @Override
     public void onNewToken(@NonNull String token) {
-        // يتم استدعاء هذه الدالة عند تغيير رمز الجهاز الخاص بالتطبيق (Firebase Token)
-        // قم بتحديث رمز الجهاز في قاعدة البيانات أو المكان المناسب لاستخدامه لاحقًا
-        Log.d(TAG, "Refreshed token: " + token);
-        // قم بتنفيذ الإجراءات المطلوبة لتحديث رمز الجهاز هنا
-    }
-
-    private void handleNow() {
-        // قم بتنفيذ الإجراءات اللازمة للتعامل مع الإشعار في الوقت الحالي (أقل من 10 ثوانٍ)
-    }
-
-    private void scheduleJob() {
-        // قم بجدولة العمل الطويل الأمد (10 ثوانٍ أو أكثر) باستخدام WorkManager
+        // يمكنك تنفيذ الإجراءات اللازمة عند تحديث رمز التوكن الخاص بالجهاز هنا
     }
 }

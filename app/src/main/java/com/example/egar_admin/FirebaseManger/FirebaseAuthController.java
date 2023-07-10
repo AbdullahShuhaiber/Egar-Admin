@@ -204,6 +204,45 @@ public class FirebaseAuthController {
         });
     }
 
+    public void updateProviderProfile(String providerId, String name, String email, String phoneNumber, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imagesRef = storage.getReference().child("profile_images_providers").child(providerId);
+
+        UploadTask uploadTask = imagesRef.putFile(profileImageUri);
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return imagesRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference providerRef = db.collection("serviceproviders").document(providerId);
+
+                providerRef.update("name", name,
+                                "email", email,
+                                "phoneNumber", phoneNumber,
+                                "address", address,
+                                "city", city,
+                                "bio", bio,
+                                "profileImageUri", downloadUri.toString())
+                        .addOnSuccessListener(aVoid -> {
+                            callback.onSuccess("Provider profile updated successfully");
+                        })
+                        .addOnFailureListener(e -> {
+                            callback.onFailure(e.getMessage());
+                        });
+            } else {
+                callback.onFailure("Error uploading profile image");
+            }
+        }).addOnFailureListener(e -> {
+            callback.onFailure(e.getMessage());
+        });
+    }
+
+
     public void changePassword(String previousPassword, String newPassword, String confirmPassword, ProcessCallback callback) {
         if (!newPassword.equals(confirmPassword)) {
             callback.onFailure("تأكيد كلمة المرور الجديدة غير صحيح");

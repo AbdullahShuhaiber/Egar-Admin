@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        Toast.makeText(this, AppSharedPreferences.getInstance().getSharedPreferences().getString("isFirstRun","no")+"", Toast.LENGTH_SHORT).show();
         screenOperations();
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -102,15 +101,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void operationsSccren() {
-
-    }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-//        Toast.makeText(this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners, intentFilter);
     }
@@ -223,7 +218,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseFetchingDataController.getInstance().checkProviderTypeAndRedirectToActivity(binding.etEmail.getText().toString().trim(), new ProviderTypeCallback() {
             @Override
             public void onProviderTypeChecked(String providerType) {
-                Toast.makeText(LoginActivity.this, providerType, Toast.LENGTH_SHORT).show();
                 if (providerType != null) {
                     if (providerType.equals("Delivery")) {
                         Intent intent = new Intent(LoginActivity.this, DeliveryActivity.class);

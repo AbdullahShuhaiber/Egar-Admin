@@ -190,6 +190,8 @@ public class OrderController {
                 for (DocumentSnapshot document : task.getResult()) {
                     Order order = document.toObject(Order.class);
                     orders.add(order);
+                    order.setOrderStatus(OrderStatus.IN_PROGRESS);
+                    ordersCollection.document(document.getId()).update("orderStatus", OrderStatus.IN_PROGRESS.toString());
                 }
                 int orderCount = orders.size();
                 listener.onGetOrdersWithCountByStatusSuccess(orders, orderCount);

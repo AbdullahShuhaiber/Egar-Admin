@@ -16,7 +16,7 @@
 
 
         <TextView
-            android:id="@+id/text_nameUserOrder"
+            android:id="@+id/textNameUserOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -39,7 +39,7 @@
             android:textSize="@dimen/_12ssp"
             android:text="Egar name :"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_nameUserOrder" />
+            app:layout_constraintTop_toBottomOf="@+id/textNameUserOrder" />
 
         <TextView
             android:id="@+id/textEgarNmae"

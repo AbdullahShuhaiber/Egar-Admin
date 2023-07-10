@@ -14,21 +14,24 @@ import android.widget.Toast;
 import com.example.egar_admin.Model.Order;
 import com.example.egar_admin.R;
 import com.example.egar_admin.activity.OrderActivity;
+import com.example.egar_admin.activity.OrderDetailsActivity;
 import com.example.egar_admin.adapters.ProductHomeAdapter;
 import com.example.egar_admin.adapters.order.OrderAdapter;
 import com.example.egar_admin.controllers.OrderController;
 import com.example.egar_admin.databinding.FragmentOrderTapBinding;
 import com.example.egar_admin.enums.OrderStatus;
+import com.example.egar_admin.interfaces.ItemCallBackOrder;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
 import com.example.egar_admin.interfaces.OnOrdersWithCountFetchListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderTapFragment extends Fragment implements View.OnClickListener {
+public class OrderTapFragment extends Fragment implements View.OnClickListener, ItemCallBackOrder {
 
     FragmentOrderTapBinding binding ;
 
@@ -75,10 +78,12 @@ public class OrderTapFragment extends Fragment implements View.OnClickListener {
 
     private void initializeRecyclerAdapter() {
         adapter = new OrderAdapter(orderList);
+        adapter.setCallBackOrder(this::onItemClick);
         binding.recOrderPending.setAdapter(adapter);
         binding.recOrderPending.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapter = new OrderAdapter(orderList2);
+        adapter.setCallBackOrder(this::onItemClick);
         binding.recOrderInProgress.setAdapter(adapter);
         binding.recOrderInProgress.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -252,5 +257,12 @@ public class OrderTapFragment extends Fragment implements View.OnClickListener {
         }
 
 
+    }
+
+    @Override
+    public void onItemClick(Order order) {
+        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+        intent.putExtra("order", (Serializable) order);
+        startActivity(intent);
     }
 }

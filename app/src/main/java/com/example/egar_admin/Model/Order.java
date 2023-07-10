@@ -2,9 +2,11 @@ package com.example.egar_admin.Model;
 
 import com.example.egar_admin.enums.OrderStatus;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
     private String orderId;
-    private com.example.egar_admin.Model.User user;
+    private User user;
     private Product product;
     private int quantity;
     private double totalAmount;

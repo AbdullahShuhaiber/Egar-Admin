@@ -26,6 +26,11 @@
         <activity
             android:name=".activity.FavoriteActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activity.OrderActivity"
+            android:exported="false"
+            android:theme="@style/SplashNoActionBar"/>
         <activity
             android:name=".activity.PersonalInformationActivity"
             android:exported="false" />
@@ -72,7 +77,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.OrderDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/SplashNoActionBar"/>
         <activity
             android:name=".activity.CommentsActivity"
             android:exported="false" />

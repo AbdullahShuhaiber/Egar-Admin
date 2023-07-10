@@ -3,6 +3,7 @@ package com.example.egar_admin.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,13 +13,15 @@ import com.example.egar_admin.adapters.order.OrderAdapter;
 import com.example.egar_admin.controllers.OrderController;
 import com.example.egar_admin.databinding.ActivityOrderBinding;
 import com.example.egar_admin.enums.OrderStatus;
+import com.example.egar_admin.interfaces.ItemCallBackOrder;
 import com.example.egar_admin.interfaces.OnOrdersWithCountFetchListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
+public class OrderActivity extends AppCompatActivity implements View.OnClickListener, ItemCallBackOrder {
 
     ActivityOrderBinding binding;
 
@@ -44,6 +47,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
     private void initializeRecyclerAdapter() {
         adapter = new OrderAdapter(orderList);
+        adapter.setCallBackOrder(this::onItemClick);
         binding.recOrder.setAdapter(adapter);
         binding.recOrder.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
@@ -76,5 +80,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         if (v.getId() == R.id.img_back){
             onBackPressed();
         }
+    }
+
+    @Override
+    public void onItemClick(Order order) {
+        Intent intent = new Intent(getApplicationContext(),OrderDetailsActivity.class);
+        intent.putExtra("order", (Serializable) order);
+        startActivity(intent);
     }
 }

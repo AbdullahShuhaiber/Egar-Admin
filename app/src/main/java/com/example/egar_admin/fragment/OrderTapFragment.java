@@ -104,6 +104,10 @@ public class OrderTapFragment extends Fragment implements View.OnClickListener, 
         binding.LayoutCompleted.setOnClickListener(this::onClick);
         binding.LayoutCancelled.setOnClickListener(this::onClick);
         binding.tvPendingShowAll.setOnClickListener(this::onClick);
+        binding.tvInProgressShowAll.setOnClickListener(this::onClick);
+        binding.tvCompletedShowAll.setOnClickListener(this::onClick);
+        binding.tvCancelledShowAll.setOnClickListener(this::onClick);
+
     }
 
     private void getOrderPending(){
@@ -237,22 +241,22 @@ public class OrderTapFragment extends Fragment implements View.OnClickListener, 
         }
         if (v.getId() == R.id.tv_Pending_show_all){
             Intent intent = new Intent(getActivity(), OrderActivity.class);
-            intent.putExtra("status",String.valueOf(OrderStatus.PENDING));
+            intent.putExtra("status","status1");
             startActivity(intent);
         }
         if (v.getId() == R.id.tv_InProgress_show_all){
             Intent intent = new Intent(getActivity(), OrderActivity.class);
-            intent.putExtra("status",String.valueOf(OrderStatus.IN_PROGRESS));
+            intent.putExtra("status","status2");
             startActivity(intent);
         }
         if (v.getId() == R.id.tv_Completed_show_all){
             Intent intent = new Intent(getActivity(), OrderActivity.class);
-            intent.putExtra("status",String.valueOf(OrderStatus.COMPLETED));
+            intent.putExtra("status","status3");
             startActivity(intent);
         }
         if (v.getId() == R.id.tv_Cancelled_show_all){
             Intent intent = new Intent(getActivity(), OrderActivity.class);
-            intent.putExtra("status",String.valueOf(OrderStatus.CANCELLED));
+            intent.putExtra("status","status4");
             startActivity(intent);
         }
 

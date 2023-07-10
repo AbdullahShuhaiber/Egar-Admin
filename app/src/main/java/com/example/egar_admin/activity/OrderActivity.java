@@ -55,24 +55,76 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
     private void getOrders() {
 
-        if (getIntent().getStringExtra("status") == String.valueOf(OrderStatus.PENDING)){
-            status = getIntent().getStringExtra("status");
+        if (getIntent().getStringExtra("status") == "status1"){
+           // status = getIntent().getStringExtra("status");
+
+            OrderController.getInstance().getOrdersWithCountByStatusAndServiceProviderId(OrderStatus.PENDING, FirebaseAuth.getInstance().getUid(), new OnOrdersWithCountFetchListener() {
+                @Override
+                public void onGetOrdersWithCountByStatusSuccess(List<Order> orders, int orderCount) {
+                    orderList.clear();
+                    orderList.addAll(orders);
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onGetOrdersWithCountByStatusFailure(String message) {
+
+                }
+            });
 
         }
-        OrderController.getInstance().getOrdersWithCountByStatusAndServiceProviderId(OrderStatus.PENDING, FirebaseAuth.getInstance().getUid(), new OnOrdersWithCountFetchListener() {
-            @Override
-            public void onGetOrdersWithCountByStatusSuccess(List<Order> orders, int orderCount) {
-                orderList.clear();
-                orderList.addAll(orders);
-                adapter.notifyDataSetChanged();
 
-            }
+        else if (getIntent().getStringExtra("status") == "status2") {
+            OrderController.getInstance().getOrdersWithCountByStatusAndServiceProviderId(OrderStatus.IN_PROGRESS, FirebaseAuth.getInstance().getUid(), new OnOrdersWithCountFetchListener() {
+                @Override
+                public void onGetOrdersWithCountByStatusSuccess(List<Order> orders, int orderCount) {
+                    orderList.clear();
+                    orderList.addAll(orders);
+                    adapter.notifyDataSetChanged();
 
-            @Override
-            public void onGetOrdersWithCountByStatusFailure(String message) {
+                }
 
-            }
-        });
+                @Override
+                public void onGetOrdersWithCountByStatusFailure(String message) {
+
+                }
+            });
+        }
+
+        else if (getIntent().getStringExtra("status") == "status3") {
+            OrderController.getInstance().getOrdersWithCountByStatusAndServiceProviderId(OrderStatus.COMPLETED, FirebaseAuth.getInstance().getUid(), new OnOrdersWithCountFetchListener() {
+                @Override
+                public void onGetOrdersWithCountByStatusSuccess(List<Order> orders, int orderCount) {
+                    orderList.clear();
+                    orderList.addAll(orders);
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onGetOrdersWithCountByStatusFailure(String message) {
+
+                }
+            });
+        }
+
+        else if (getIntent().getStringExtra("status") == "status4") {
+            OrderController.getInstance().getOrdersWithCountByStatusAndServiceProviderId(OrderStatus.CANCELLED, FirebaseAuth.getInstance().getUid(), new OnOrdersWithCountFetchListener() {
+                @Override
+                public void onGetOrdersWithCountByStatusSuccess(List<Order> orders, int orderCount) {
+                    orderList.clear();
+                    orderList.addAll(orders);
+                    adapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onGetOrdersWithCountByStatusFailure(String message) {
+
+                }
+            });
+        }
     }
 
     @Override

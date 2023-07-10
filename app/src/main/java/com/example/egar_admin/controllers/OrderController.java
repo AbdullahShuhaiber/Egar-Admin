@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.example.egar_admin.Model.Order;
 import com.example.egar_admin.enums.OrderStatus;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
+import com.example.egar_admin.interfaces.OnOrdersWithCountFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -156,7 +157,7 @@ public class OrderController {
             }
         });
     }
-    public void getOrdersByStatusAndServiceProviderId(OrderStatus status, String serviceProviderId, OnOrderFetchListener listener) {
+    public void getOrdersWithCountByStatusAndServiceProviderId(OrderStatus status, String serviceProviderId, OnOrdersWithCountFetchListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference ordersCollection = db.collection("orders");
 
@@ -170,10 +171,11 @@ public class OrderController {
                     Order order = document.toObject(Order.class);
                     orders.add(order);
                 }
-                listener.onGetOrdersByStatusSuccess(orders);
+                int orderCount = orders.size();
+                listener.onGetOrdersWithCountByStatusSuccess(orders, orderCount);
             } else {
-                Log.w(TAG, "Error getting orders by status and service provider ID: " + status, task.getException());
-                listener.onGetOrdersByServiceProviderIdFailure(task.getException().getMessage());
+                Log.w(TAG, "Error getting orders with count by status and service provider ID: " + status, task.getException());
+                listener.onGetOrdersWithCountByStatusFailure(task.getException().getMessage());
             }
         });
     }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.egar_admin.Model.Order;
 import com.example.egar_admin.enums.OrderStatus;
+import com.example.egar_admin.interfaces.OnOrderByIdFetchListener;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
 import com.example.egar_admin.interfaces.OnOrdersWithCountFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
@@ -75,6 +76,25 @@ public class OrderController {
     }
 
 
+    public void getOrderById(String orderId, OnOrderByIdFetchListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference ordersCollection = db.collection("orders");
+
+        ordersCollection.document(orderId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Order order = documentSnapshot.toObject(Order.class);
+                        listener.onGetOrderSuccess(order);
+                    } else {
+                        listener.onGetOrderFailure("Order not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // On failure, log an error message to the console
+                    Log.e(TAG, "Error getting order", e);
+                    listener.onGetOrderFailure(e.getMessage());
+                });
+    }
 
     public void updateOrder(Order order,OnOrderFetchListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

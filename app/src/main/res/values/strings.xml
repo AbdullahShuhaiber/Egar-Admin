@@ -64,7 +64,7 @@
     <string name="whoarewe">WhoAreWe</string>
     <string name="conditions">Conditions</string>
     <string name="approval">Confirm</string>
-    <string name="cancel">Delete</string>
+    <string name="cancel">Cancel</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

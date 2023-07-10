@@ -22,9 +22,7 @@ import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityDeliveryBinding;
 import com.example.egar_admin.fragment.DeliveryFragment.DeliveryOrdersFragment;
 import com.example.egar_admin.fragment.DeliveryFragment.DeliveryProfileFragment;
-import com.example.egar_admin.fragment.DeliveryFragment.DeliveryWalletFragment;
-import com.example.egar_admin.ui.homeAdmin.HomeFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class DeliveryActivity extends AppCompatActivity implements View.OnClickListener{
 

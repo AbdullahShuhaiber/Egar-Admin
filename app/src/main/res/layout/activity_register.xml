@@ -256,29 +256,43 @@
                             app:layout_constraintStart_toEndOf="@+id/checkBox_HomesApartments"
                             app:layout_constraintTop_toBottomOf="@id/checkBox_cars" />
 
-
-
-
-
-
-
-
                 </com.google.android.material.chip.ChipGroup>
+                <TextView
+                    android:id="@+id/tv_gover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Governorate"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_18ssp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/chipGroup"
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="@dimen/_190sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_19sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_gover"
+                    app:layout_constraintEnd_toEndOf="@+id/chipGroup"
+                    app:layout_constraintStart_toEndOf="@+id/tv_gover"
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
                 <TextView
                     android:id="@+id/tv_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginTop="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gover"
                     android:text="@string/password"
-
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18ssp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+                     />
 
 
                 <LinearLayout

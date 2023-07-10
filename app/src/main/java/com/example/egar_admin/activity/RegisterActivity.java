@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 
@@ -37,6 +38,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +70,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setupActivityResults();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.active)));
         getWindow().setStatusBarColor(ContextCompat.getColor(RegisterActivity.this,R.color.active));
+        List<String> gazaGovernorates = new ArrayList<>();
+        gazaGovernorates.add("محافظة شمال غزة");
+        gazaGovernorates.add(" محافظة غزة");
+        gazaGovernorates.add("محافظة الوسطى");
+        gazaGovernorates.add(" محافظة خان يونس");
+        gazaGovernorates.add("محافظة رفح");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, gazaGovernorates);
+        binding.spinner.setAdapter(adapter);
 
     }
     private boolean isValidPalestinianPhoneNumber() {
@@ -201,13 +213,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void register() {
+        String selectedGovernorate = binding.spinner.getSelectedItem().toString();
+
         FirebaseAuthController.getInstance().createAccount(
                 binding.etName.getText().toString().trim(),
                 binding.etEmail.getText().toString().trim(),
                 binding.etPass.getText().toString().trim(),
                 binding.etPhone.getText().toString().trim(),
                 getSelectedChipText(),
-                "Khan Younes",
+                selectedGovernorate,
                 "Gaza",
                 "End To The End Services And Products",
                 pickedImageUri,

@@ -59,6 +59,9 @@
             android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ChangePasswordActivity"
             android:exported="false" />
         <activity

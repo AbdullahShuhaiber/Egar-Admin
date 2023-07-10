@@ -11,6 +11,7 @@ import com.example.egar_admin.Model.Order;
 import com.example.egar_admin.enums.OrderStatus;
 import com.example.egar_admin.interfaces.OnOrderByIdFetchListener;
 import com.example.egar_admin.interfaces.OnOrderFetchListener;
+import com.example.egar_admin.interfaces.OnOrderStatusFetchListener;
 import com.example.egar_admin.interfaces.OnOrdersWithCountFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,94 +49,7 @@ public class OrderController {
         return instance;
     }
 
-    public void addOrder(Order order, OnOrderFetchListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference ordersCollection = db.collection("orders");
 
-        HashMap<String, Object> orderData = new HashMap<>();
-
-        orderData.put("userId", order.getUser().getId());
-        orderData.put("product", order.getProduct());
-        orderData.put("quantity", order.getQuantity());
-        orderData.put("totalAmount", order.getTotalAmount());
-        orderData.put("orderDate", order.getOrderDate().toString());
-        orderData.put("orderStatus", order.getOrderStatus().toString());
-        orderData.put("paymentMethod", order.getPaymentMethod());
-        orderData.put("shippingLocation", order.getShippingLocation());
-
-        ordersCollection.add(orderData)
-                .addOnSuccessListener(documentReference -> {
-                    orderData.put("orderId", documentReference.getId());
-                    Log.d(TAG, "Order added with ID: " + documentReference.getId());
-                    listener.onAddOrderSuccess(documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    // On failure, log an error message to the console
-                    Log.e(TAG, "Error adding order", e);
-                    listener.onAddOrderFailure(e.getMessage());
-                });
-    }
-
-
-    public void getOrderById(String orderId, OnOrderByIdFetchListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference ordersCollection = db.collection("orders");
-
-        ordersCollection.document(orderId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Order order = documentSnapshot.toObject(Order.class);
-                        listener.onGetOrderSuccess(order);
-                    } else {
-                        listener.onGetOrderFailure("Order not found");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // On failure, log an error message to the console
-                    Log.e(TAG, "Error getting order", e);
-                    listener.onGetOrderFailure(e.getMessage());
-                });
-    }
-
-    public void updateOrder(Order order,OnOrderFetchListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference orderRef = db.collection("orders").document(order.getOrderId());
-
-        orderRef.update("userId", order.getUser().getId(),
-                        "product", order.getProduct(),
-                        "quantity", order.getQuantity(),
-                        "totalAmount", order.getTotalAmount(),
-                        "orderDate", order.getOrderDate(),
-                        "orderStatus", order.getOrderStatus().toString(),
-                        "paymentMethod", order.getPaymentMethod(),
-                        "shippingLocation", order.getShippingLocation())
-                .addOnSuccessListener(aVoid -> {
-                    listener.onDeleteOrderSuccess();
-                    Log.d(TAG, "Order updated successfully");
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error updating order", e);
-                    listener.onDeleteOrderFailure(e.getMessage());
-                });
-    }
-
-
-    public void deleteOrder(Order order,OnOrderFetchListener listener) {
-        db.collection("orders").document(order.getOrderId())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Order deleted successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting order", e);
-                    }
-                });
-    }
     public void getOrdersByServiceProviderId(String serviceProviderId,OnOrderFetchListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference ordersCollection = db.collection("orders");
@@ -156,27 +71,26 @@ public class OrderController {
                     }
                 });
     }
-
-    public void getOrdersByStatus(OrderStatus status, OnOrderFetchListener listener) {
+    public void getCompletedOrders(OnOrderStatusFetchListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference ordersCollection = db.collection("orders");
 
-        Query query = ordersCollection.whereEqualTo("orderStatus", status);
+        Query query = ordersCollection.whereEqualTo("orderStatus", OrderStatus.COMPLETED);
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                List<Order> orders = new ArrayList<>();
+                List<Order> completedOrders = new ArrayList<>();
                 for (DocumentSnapshot document : task.getResult()) {
                     Order order = document.toObject(Order.class);
-                    orders.add(order);
+                    completedOrders.add(order);
                 }
-                listener.onGetOrdersByStatusSuccess(orders);
+                listener.onGetOrdersSuccess(completedOrders);
             } else {
-                Log.w(TAG, "Error getting orders by status: " + status, task.getException());
-                listener.onGetOrdersByServiceProviderIdFailure(task.getException().getMessage());
+                listener.onGetOrderStatusFailure(task.getException().getMessage());
             }
         });
     }
+
     public void getOrdersWithCountByStatusAndServiceProviderId(OrderStatus status, String serviceProviderId, OnOrdersWithCountFetchListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference ordersCollection = db.collection("orders");
@@ -190,8 +104,6 @@ public class OrderController {
                 for (DocumentSnapshot document : task.getResult()) {
                     Order order = document.toObject(Order.class);
                     orders.add(order);
-                    order.setOrderStatus(OrderStatus.IN_PROGRESS);
-                    ordersCollection.document(document.getId()).update("orderStatus", OrderStatus.IN_PROGRESS.toString());
                 }
                 int orderCount = orders.size();
                 listener.onGetOrdersWithCountByStatusSuccess(orders, orderCount);
@@ -204,21 +116,59 @@ public class OrderController {
 
 
     public void updateOrderStatus(String orderId, OrderStatus newStatus, final ProcessCallback callback) {
-        DocumentReference orderRef = FirebaseFirestore.getInstance().collection("orders").document(orderId);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference ordersCollection = db.collection("orders");
 
-        orderRef.update("orderStatus", newStatus.toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            callback.onSuccess(task.getResult().toString());
-                        } else {
-                            callback.onFailure(task.getException().getMessage());
-                        }
-                    }
-                });
+        Query query = ordersCollection.whereEqualTo("orderId", orderId).limit(1);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (!querySnapshot.isEmpty()) {
+                    DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                    String documentId = document.getId();
+
+                    DocumentReference orderRef = ordersCollection.document(documentId);
+                    orderRef.update("orderStatus", newStatus.toString())
+                            .addOnCompleteListener(updateTask -> {
+                                if (updateTask.isSuccessful()) {
+                                    callback.onSuccess("تم تحديث حالة الطلب بنجاح");
+                                } else {
+                                    callback.onFailure(updateTask.getException().getMessage());
+                                }
+                            });
+                } else {
+                    callback.onFailure("لم يتم العثور على الوثيقة المطابقة");
+                }
+            } else {
+                // فشل في جلب الوثيقة
+                callback.onFailure(task.getException().getMessage());
+            }
+        });
     }
 
+
+    public void getOrderStatusById(String orderId, OnOrderStatusFetchListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference ordersCollection = db.collection("orders");
+
+        Query query = ordersCollection.whereEqualTo("orderId", orderId).limit(1);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (!querySnapshot.isEmpty()) {
+                    DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                    String orderStatus = document.getString("orderStatus");
+                    listener.onGetOrderStatusSuccess(orderStatus);
+                } else {
+                    listener.onGetOrderStatusFailure("لم يتم العثور على الوثيقة المطابقة");
+                }
+            } else {
+                listener.onGetOrderStatusFailure(task.getException().getMessage());
+            }
+        });
+    }
 
 
 }

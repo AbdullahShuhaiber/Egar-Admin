@@ -35,7 +35,9 @@ public class User implements Serializable {
     }
 
     public User() {
+        // منشئ بدون معاملات
     }
+
 
     public String getId() {
         return id;

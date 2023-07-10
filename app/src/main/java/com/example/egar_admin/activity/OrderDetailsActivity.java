@@ -13,8 +13,10 @@ import com.example.egar_admin.R;
 import com.example.egar_admin.controllers.OrderController;
 import com.example.egar_admin.databinding.ActivityOrderDetailsBinding;
 import com.example.egar_admin.enums.OrderStatus;
+import com.example.egar_admin.interfaces.OnOrderStatusFetchListener;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.example.egar_admin.ui.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 
@@ -71,7 +73,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         OrderController.getInstance().updateOrderStatus(order().getOrderId(), OrderStatus.CANCELLED, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                Toast.makeText(OrderDetailsActivity.this, "Cancel okay", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -79,6 +81,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });
@@ -86,12 +89,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void approval(){
-       // Toast.makeText(this, "Approval", Toast.LENGTH_SHORT).show();
 
         OrderController.getInstance().updateOrderStatus(order().getOrderId(), OrderStatus.COMPLETED, new ProcessCallback() {
             @Override
             public void onSuccess(String message) {
-                Toast.makeText(OrderDetailsActivity.this, "Approval okay", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -99,6 +101,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });

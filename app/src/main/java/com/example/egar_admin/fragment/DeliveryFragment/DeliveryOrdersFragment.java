@@ -3,29 +3,35 @@ package com.example.egar_admin.fragment.DeliveryFragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.egar_admin.Model.Order;
-import com.example.egar_admin.R;
-import com.example.egar_admin.controllers.OrderController;
-import com.example.egar_admin.databinding.FragmentDeliveryOrdersBinding;
-import com.example.egar_admin.enums.OrderStatus;
-import com.example.egar_admin.interfaces.OnOrderFetchListener;
 
+import com.example.egar_admin.Model.Order;
+import com.example.egar_admin.adapters.order.OrderAdapter;
+import com.example.egar_admin.controllers.OrderController;
+import com.example.egar_admin.interfaces.OnOrderFetchListener;
+import com.example.egar_admin.interfaces.OnOrderStatusFetchListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class DeliveryOrdersFragment extends Fragment {
+public class DeliveryOrdersFragment extends Fragment  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    FragmentDeliveryOrdersBinding binding;
+    com.example.egar_admin.databinding.FragmentDeliveryOrdersBinding binding;
+    OrderAdapter adapter;
+    List<Order> orderList = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,48 +64,58 @@ public class DeliveryOrdersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentDeliveryOrdersBinding.inflate(inflater);
-//        getOrdersByStatusCompleted();
-        Toast.makeText(getActivity(), OrderStatus.COMPLETED.toString(), Toast.LENGTH_SHORT).show();
+        binding = com.example.egar_admin.databinding.FragmentDeliveryOrdersBinding.inflate(inflater);
+        getOrdersByStatusCompleted();
+
+        initializeRecyclerAdapter();
         return binding.getRoot();
     }
+    private void initializeRecyclerAdapter() {
+        adapter = new OrderAdapter(orderList);
+        binding.rvOrdersDelivery.setAdapter(adapter);
+        binding.rvOrdersDelivery.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
     private void getOrdersByStatusCompleted(){
-        OrderController.getInstance().getOrdersByStatus(OrderStatus.COMPLETED, new OnOrderFetchListener() {
+        OrderController.getInstance().getCompletedOrders(new OnOrderStatusFetchListener() {
             @Override
-            public void onAddOrderSuccess(String orderId) {
+            public void onGetOrderStatusSuccess(String orderStatus) {
 
             }
 
             @Override
-            public void onAddOrderFailure(String message) {
+            public void onGetOrderStatusFailure(String s) {
 
             }
 
             @Override
-            public void onDeleteOrderSuccess() {
-
-            }
-
-            @Override
-            public void onDeleteOrderFailure(String message) {
-
-            }
-
-            @Override
-            public void onGetOrdersByServiceProviderIdSuccess(List<Order> orders) {
-
-            }
-
-            @Override
-            public void onGetOrdersByServiceProviderIdFailure(String message) {
-
-            }
-
-            @Override
-            public void onGetOrdersByStatusSuccess(List<Order> orders) {
-                Toast.makeText(getActivity(), "تم جلب الطلبات بنجاح"+orders.size(), Toast.LENGTH_SHORT).show();
+            public void onGetOrdersSuccess(List<Order> completedOrders) {
+                orderList.clear();
+                orderList.addAll(completedOrders);
+                adapter.notifyDataSetChanged();
 
             }
         });
+//        OrderController.getInstance().getCompletedOrders(new OnOrderStatusFetchListener() {
+//            @Override
+//            public void onGetOrderStatusSuccess(String orderStatus) {
+//
+//            }
+//
+//            @Override
+//            public void onGetOrderStatusFailure(String s) {
+//
+//            }
+//
+//            @Override
+//            public void onGetOrdersSuccess(List<Order> completedOrders) {
+//                Toast.makeText(getActivity(), "size"+completedOrders.size(), Toast.LENGTH_SHORT).show();
+////                Toast.makeText(getActivity(), "تم جلب الطلبات بنجاح"+completedOrders.size(), Toast.LENGTH_SHORT).show();
+////                orderList.clear();
+////                orderList.addAll(completedOrders);
+////                adapter.notifyDataSetChanged();
+//            }
+//        });
     }
+
+
 }

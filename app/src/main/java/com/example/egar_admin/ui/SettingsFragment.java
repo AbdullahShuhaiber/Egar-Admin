@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.egar_admin.R;
 import com.example.egar_admin.activity.ChangePasswordActivity;
+import com.example.egar_admin.activity.ChatActivity;
 import com.example.egar_admin.activity.FavoriteActivity;
 import com.example.egar_admin.activity.PersonalInformationActivity;
 import com.example.egar_admin.databinding.FragmentSettingsBinding;
@@ -76,6 +77,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         binding.cardPersonalInformation.setOnClickListener(this::onClick);
         binding.changepassword.setOnClickListener(this::onClick);
         binding.favoriteP.setOnClickListener(this::onClick);
+        binding.conversations.setOnClickListener(this);
     }
 
     @Override
@@ -92,6 +94,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             case R.id.favorite_p:
                 Intent intent2 = new Intent(getActivity(), FavoriteActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.conversations:
+                Intent intent3 = new Intent(getActivity(), ChatActivity.class);
+                startActivity(intent3);
                 break;
         }
     }

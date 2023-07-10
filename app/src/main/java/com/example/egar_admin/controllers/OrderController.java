@@ -156,6 +156,28 @@ public class OrderController {
             }
         });
     }
+    public void getOrdersByStatusAndServiceProviderId(OrderStatus status, String serviceProviderId, OnOrderFetchListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference ordersCollection = db.collection("orders");
+
+        Query query = ordersCollection.whereEqualTo("orderStatus", status)
+                .whereEqualTo("serviceProviderId", serviceProviderId);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Order> orders = new ArrayList<>();
+                for (DocumentSnapshot document : task.getResult()) {
+                    Order order = document.toObject(Order.class);
+                    orders.add(order);
+                }
+                listener.onGetOrdersByStatusSuccess(orders);
+            } else {
+                Log.w(TAG, "Error getting orders by status and service provider ID: " + status, task.getException());
+                listener.onGetOrdersByServiceProviderIdFailure(task.getException().getMessage());
+            }
+        });
+    }
+
 
     public void updateOrderStatus(String orderId, OrderStatus newStatus, final ProcessCallback callback) {
         DocumentReference orderRef = FirebaseFirestore.getInstance().collection("orders").document(orderId);

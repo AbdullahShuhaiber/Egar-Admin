@@ -222,8 +222,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 binding.etPhone.getText().toString().trim(),
                 getSelectedChipText(),
                 selectedGovernorate,
-                "Gaza",
-                "End To The End Services And Products",
+                "Gaza Strip",
+                "End-to-End Services and Products: Your One-Stop Solution for Rental Services",
                 pickedImageUri,
                 new ProcessCallback() {
                     @Override
@@ -239,7 +239,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 intent1.putExtra("password", pass);
                                 startActivity(intent1);
                             }
-                        },1222);
+                        },600);
 
 
                     }

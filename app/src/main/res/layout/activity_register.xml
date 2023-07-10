@@ -275,6 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_19sdp"
+                    android:padding="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_gover"
                     app:layout_constraintEnd_toEndOf="@+id/chipGroup"
                     app:layout_constraintStart_toEndOf="@+id/tv_gover"

@@ -10,6 +10,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
+import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.R;
 import com.example.egar_admin.databinding.ActivityDeliveryBinding;
@@ -30,6 +33,8 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
     ActivityDeliveryBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
 
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,20 @@ public class DeliveryActivity extends AppCompatActivity implements View.OnClickL
 
 
         initializeView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkChangeListiners);
+
     }
 /*    @SuppressLint("NonConstantResourceId")
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

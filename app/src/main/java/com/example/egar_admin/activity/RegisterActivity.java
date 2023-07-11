@@ -6,7 +6,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 
+import com.example.egar_admin.BroadcastReceivers.NetworkChangeListiners;
 import com.example.egar_admin.FirebaseManger.FirebaseAuthController;
 import com.example.egar_admin.R;
 import com.example.egar_admin.adapters.MyFragmentAdapter;
@@ -48,6 +51,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     ActivityRegisterBinding binding;
     private MyFragmentAdapter adapter;
 
+
+    NetworkChangeListiners networkChangeListiners = new NetworkChangeListiners();
 
     private Uri pickedImageUri;
 
@@ -111,6 +116,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return isValid;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListiners, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(networkChangeListiners);
+
+    }
     private boolean dataCheck (){
         String name = binding.etName.getText().toString().trim();
         String email = binding.etEmail.getText().toString().trim();
@@ -133,11 +151,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return true;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-    }
 
     private void setOnClick(){
 

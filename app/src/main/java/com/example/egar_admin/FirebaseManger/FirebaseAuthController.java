@@ -204,7 +204,7 @@ public class FirebaseAuthController {
         });
     }
 
-    public void updateProviderProfile(String providerId, String name, String email, String phoneNumber, String address, String city, String bio, Uri profileImageUri, ProcessCallback callback) {
+    public void updateProviderProfile(String providerId, String name, String email, String phoneNumber/*, String address, String city, String bio*/, Uri profileImageUri, ProcessCallback callback) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference imagesRef = storage.getReference().child("profile_images_providers").child(providerId);
 
@@ -224,9 +224,9 @@ public class FirebaseAuthController {
                 providerRef.update("name", name,
                                 "email", email,
                                 "phoneNumber", phoneNumber,
-                                "address", address,
-                                "city", city,
-                                "bio", bio,
+                               // "address", address,
+                               // "city", city,
+                               // "bio", bio,
                                 "profileImageUri", downloadUri.toString())
                         .addOnSuccessListener(aVoid -> {
                             callback.onSuccess("Provider profile updated successfully");

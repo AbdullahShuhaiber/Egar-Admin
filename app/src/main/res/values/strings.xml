@@ -15,7 +15,6 @@
     <string name="login">Login</string>
     <string name="welcome_again">Welcome again</string>
     <string name="phone">phone</string>
-    <string name="email">EMAIL</string>
     <string name="enter_email">Enter Email</string>
     <string name="enter_phone">Enter phone</string>
     <string name="password">password</string>
@@ -66,5 +65,11 @@
     <string name="approval">Confirm</string>
     <string name="cancel">Cancel</string>
     <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="modify_personal_information">Modify personal information</string>
+    <string name="name">name</string>
+    <string name="email">email</string>
+    <string name="phone_number">phone number</string>
+    <string name="update">Update</string>
 
 </resources>

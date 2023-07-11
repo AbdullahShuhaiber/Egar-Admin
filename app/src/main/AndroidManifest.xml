@@ -32,10 +32,10 @@
             android:exported="false"
             android:theme="@style/SplashNoActionBar"/>
         <activity
-            android:name=".activity.PersonalInformationActivity"
+            android:name=".activity.OfferActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.OfferActivity"
+            android:name=".activity.Personal_InformationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ShowService_Offer_Details"

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.egar_admin.R;
 import com.example.egar_admin.activity.ChangePasswordActivity;
-import com.example.egar_admin.activity.PersonalInformationActivity;
+import com.example.egar_admin.activity.Personal_InformationActivity;
 import com.example.egar_admin.databinding.FragmentDeliveryProfileBinding;
 
 
@@ -68,7 +68,7 @@ public class DeliveryProfileFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.card_personal_information:
-                Intent intent = new Intent(getActivity(), PersonalInformationActivity.class);
+                Intent intent = new Intent(getActivity(), Personal_InformationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.changepassword:

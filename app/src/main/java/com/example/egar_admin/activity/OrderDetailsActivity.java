@@ -82,7 +82,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void cancel(){
-        if (getIntent().getStringExtra("delivery").equals("delivery")){
+        if (getIntent().getStringExtra("delivery") != null && getIntent().getStringExtra("delivery").equals("delivery")){
             Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
             startActivity(intent);
             finish();
@@ -109,7 +109,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void approval(){
-        if (getIntent().getStringExtra("delivery").equals("delivery")){
+        if (getIntent().getStringExtra("delivery") != null && getIntent().getStringExtra("delivery").equals("delivery")){
 
             OrderController.getInstance().updateOrderStatus(order().getOrderId(),OrderStatus.IN_DELIVERY, new ProcessCallback() {
                 @Override

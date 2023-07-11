@@ -103,39 +103,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    public void printUserData(ProcessCallback callback) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("serviceproviders").document(userId);
-
-        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    String name = documentSnapshot.getString("name");
-                    String email = documentSnapshot.getString("email");
-                    String providerType = documentSnapshot.getString("providerType");
-                    String phoneNumber = documentSnapshot.getString("phoneNumber");
-                    String password = documentSnapshot.getString("password");
-
-                    String userData ="id" + FirebaseAuth.getInstance().getCurrentUser().getUid()+"\n"
-                            +"Name: " + name + "\n"
-                            + "Email: " + email + "\n"
-                            + "Provider Type: " + providerType + "\n"
-                            + "Phone Number: " + phoneNumber + "\n"
-                            + "Password: " + password;
-
-//                    Toast.makeText(getApplicationContext(), userData, Toast.LENGTH_LONG).show();
-                } else {
-                    callback.onFailure("User document does not exist");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFailure(e.getMessage());
-            }
-        });
-    }
 
 }

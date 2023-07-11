@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,7 +18,9 @@ import com.example.egar_admin.adapters.MyFragmentTapAdapter;
 
 import com.example.egar_admin.databinding.FragmentHomeBinding;
 import com.example.egar_admin.interfaces.DataCallBackUser;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
@@ -92,6 +95,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(String message) {
+                Snackbar.make(binding.getRoot(),message,Snackbar.LENGTH_LONG).show();
 
             }
         });

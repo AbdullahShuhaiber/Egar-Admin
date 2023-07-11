@@ -7,5 +7,9 @@ import java.util.List;
 public interface OnReviewFetchListener {
     void onFetchSuccess(Review review);
     void onFetchFailure(String errorMessage);
+
+    void onGetReviewsSuccess(List<Review> reviews);
+
+    void onGetReviewsFailure(String message);
 }
 

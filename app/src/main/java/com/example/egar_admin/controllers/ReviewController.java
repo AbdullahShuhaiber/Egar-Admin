@@ -14,6 +14,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -124,6 +125,27 @@ public class ReviewController {
                     listCallBack.onFul("Failed to fetch reviews");
                 });
     }
+
+    public void getReviewsByServiceId(String serviceId, OnReviewFetchListener listener) {
+        CollectionReference reviewsCollection = FirebaseFirestore.getInstance().collection("reviews");
+
+        Query query = reviewsCollection.whereEqualTo("serviceId", serviceId);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Review> reviews = new ArrayList<>();
+                for (DocumentSnapshot document : task.getResult()) {
+                    Review review = document.toObject(Review.class);
+                    review.setReviewId(document.getId());
+                    reviews.add(review);
+                }
+                listener.onGetReviewsSuccess(reviews);
+            } else {
+                listener.onGetReviewsFailure(task.getException().getMessage());
+            }
+        });
+    }
+
 
     public void getReviewById(String reviewId, OnReviewFetchListener listener) {
         // Get review by ID from Firestore

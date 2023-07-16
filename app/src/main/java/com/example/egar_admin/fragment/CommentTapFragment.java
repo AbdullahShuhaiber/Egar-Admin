@@ -44,7 +44,6 @@ public class CommentTapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         binding = FragmentCommentTapBinding.inflate(inflater);
         initializeView();
@@ -68,7 +67,7 @@ public class CommentTapFragment extends Fragment {
         ratingController.getRatingsByServiceProviderId(FirebaseAuth.getInstance().getUid(), new OnRatingsFetchListener() {
             @Override
             public void onRatingsFetched(List<Rating> ratings) {
-                Toast.makeText(getActivity(), ""+ratings.size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "size"+ratings.size(), Toast.LENGTH_LONG).show();
                 ratingss.clear();
                 ratingss.addAll(ratings);
                 adapter.notifyDataSetChanged();
@@ -76,6 +75,7 @@ public class CommentTapFragment extends Fragment {
 
             @Override
             public void onFailure(String errorMessage) {
+                Snackbar.make(binding.getRoot(),errorMessage,Snackbar.LENGTH_LONG).show();
 
             }
 

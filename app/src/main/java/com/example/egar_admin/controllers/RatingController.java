@@ -66,7 +66,7 @@ public class RatingController {
                 });
     }
     public void getRatingsByServiceProviderId(String serviceProviderId, OnRatingsFetchListener listener) {
-        ratingsCollection.whereEqualTo("serviceProviderId", serviceProviderId)
+        ratingsCollection.whereEqualTo("serviceProviderID", serviceProviderId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<com.example.egar_admin.Model.Rating> ratings = queryDocumentSnapshots.toObjects(com.example.egar_admin.Model.Rating.class);

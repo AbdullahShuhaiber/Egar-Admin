@@ -46,9 +46,12 @@
         <activity
             android:name=".activity.DeliveryActivity"
             android:exported="false" />
+
         <activity
             android:name=".activity.NotificationsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/SplashNoActionBar"/>
+
         <activity
             android:name=".activity.DelegateSelectionActivity"
             android:exported="false" />

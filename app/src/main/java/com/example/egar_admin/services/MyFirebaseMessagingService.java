@@ -24,7 +24,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             String notificationTitle = remoteMessage.getData().get("title");
             String notificationBody = remoteMessage.getData().get("body");
-            Notification notification = new Notification(notificationTitle, notificationBody);
+            Notification notification = new Notification(notificationTitle, notificationBody,"","");
             addNotificationToDatabase(notification);
         }
 
@@ -32,7 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             String notificationTitle = remoteMessage.getNotification().getTitle();
             String notificationBody = remoteMessage.getNotification().getBody();
-            Notification notification = new Notification(notificationTitle, notificationBody);
+            Notification notification = new Notification(notificationTitle, notificationBody,"","");
             addNotificationToDatabase(notification);
         }
     }

@@ -18,6 +18,7 @@ import com.example.egar_admin.R;
 
 
 import com.example.egar_admin.activity.LoginActivity;
+import com.example.egar_admin.activity.NotificationsActivity;
 import com.example.egar_admin.databinding.ActivityMainBinding;
 import com.example.egar_admin.dialog.LoadingDialog;
 import com.example.egar_admin.interfaces.ProcessCallback;
@@ -94,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-/*    @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }*/
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -122,13 +123,13 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(networkChangeListiners);
 
     }
-    /*    @Override
+        @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_logOut) {
-            logout();
-        }
+        if (item.getItemId() == R.id.action_notifications) {
+            Intent intent=new Intent(getApplicationContext(), NotificationsActivity.class);
+            startActivity(intent);        }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
 
     private void logout() {

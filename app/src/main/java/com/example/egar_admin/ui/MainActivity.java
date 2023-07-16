@@ -56,7 +56,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         dialog = new LoadingDialog(this);
-        setUpDialog();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+
+            }
+        },3500);
 //        String uid = FirebaseAuth.getInstance().getUid();
 //        if (uid != null) {
 //            Snackbar.make(binding.getRoot(), uid, Snackbar.LENGTH_LONG).show();
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.cancel();
 
             }
-        },3500);
+        },1000);
     }
 
 
@@ -139,4 +145,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setUpDialog();
+    }
 }

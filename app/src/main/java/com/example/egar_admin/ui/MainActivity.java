@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 
 import android.view.Menu;
@@ -18,6 +19,7 @@ import com.example.egar_admin.R;
 
 import com.example.egar_admin.activity.LoginActivity;
 import com.example.egar_admin.databinding.ActivityMainBinding;
+import com.example.egar_admin.dialog.LoadingDialog;
 import com.example.egar_admin.interfaces.ProcessCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private LoadingDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        dialog = new LoadingDialog(this);
+        setUpDialog();
 //        String uid = FirebaseAuth.getInstance().getUid();
 //        if (uid != null) {
 //            Snackbar.make(binding.getRoot(), uid, Snackbar.LENGTH_LONG).show();
@@ -78,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void setUpDialog(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+
+            }
+        },3500);
+    }
+
 
 /*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        dialog.show();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListiners, intentFilter);
     }
